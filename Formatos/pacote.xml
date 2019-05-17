@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<pacote>
+    <cabecalho>
+        <versao>1</versao>
+        <geracao nome="Douglas Rodrigues de Almeida" data="01/01/2019"></geracao>
+    </cabecalho>
+    <conteudo>
+        <tarefas>
+            <tarefa></tarefa>
+            <tarefa></tarefa>
+        </tarefas>
+        <processos>
+            <processo>
+                <atividade></atividade>
+            </processo>
+            <processo>
+                <atividade></atividade>
+                <atividade></atividade>
+            </processo>
+        </processos>
+    </conteudo>
+</pacote>
