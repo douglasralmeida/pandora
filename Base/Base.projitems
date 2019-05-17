@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>a1e6330c-935a-4756-b231-82b4eb2c3e0f</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Base</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Atividade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Filho.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objeto.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pacote.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Processo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tarefa.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Comando.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Conversor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operacao.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plenus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WinAPI.cs" />
+  </ItemGroup>
+</Project>
