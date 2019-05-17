@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="Modelagem.ProcessoControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Modelagem"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel x:Name="PainelProcesso">
+        <DockPanel x:Name="PainelProcessoCabecalho" DockPanel.Dock="Top">
+            <WrapPanel Orientation="Vertical">
+                <Label Content="Processo" FontSize="18"></Label>
+                <Grid MinWidth="320">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0">Nome:</Label>
+                    <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">NOME_PROCESSO</TextBox>
+                    <Label Grid.Row="1">Descrição:</Label>
+                    <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">DESC_PROCESSO</TextBox>
+                </Grid>
+            </WrapPanel>
+        </DockPanel>
+        <DockPanel x:Name="PainelAtividades" Margin="8">
+            <DockPanel DockPanel.Dock="Top">
+                <Label>Atividades</Label>
+            </DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <ToolBarTray x:Name="BarraAtividade" DockPanel.Dock="Top">
+                    <ToolBar>
+                        <Button>Inserir Atividade...</Button>
+                        <Button>Excluir Atividade</Button>
+                    </ToolBar>
+                </ToolBarTray>
+                <ListView x:Name="listaAtividades">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Dados">
+                            <GridViewColumn Header="Atividade" Width="320"/>
+                            <GridViewColumn Header="Tipo" Width="100"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
+        </DockPanel>
+    </DockPanel>
+</UserControl>

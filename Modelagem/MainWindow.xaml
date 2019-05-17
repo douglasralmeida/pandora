@@ -1,0 +1,72 @@
+﻿<Window x:Class="Modelagem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Modelagem"
+        mc:Ignorable="d"
+        Title="Modelagem de Processos" Height="450" Width="800">
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button x:Name="BotaoNovoProc" Content="Novo pacote" VerticalAlignment="Bottom" Click="BotaoNovoProc_Click" />
+                <Button Content="Abrir pacote..." />
+                <Button Content="Salvar processo..." />
+            </ToolBar>
+            <ToolBar>
+                <Button Command="Cut" />
+                <Button Command="Copy" Content="Copy" />
+                <Button Command="Paste" Content="Paste" />
+            </ToolBar>
+        </ToolBarTray>
+        <!-- Painel Lateral -->
+        <DockPanel x:Name="PainelExplorador" DockPanel.Dock="Left">
+            <Label DockPanel.Dock="Top" Content="Explorador" FontWeight="Bold"/>
+            <TabControl DockPanel.Dock="Top">
+                <TabItem Header="Processos">
+                    <DockPanel>
+                        <ToolBarTray DockPanel.Dock="Top">
+                            <ToolBar>
+                                <Button Content="Novo processo"/>
+                                <Button Content="Excluir processo" />
+                            </ToolBar>
+                        </ToolBarTray>
+                        <TreeView MinWidth="220">
+                            <TreeViewItem Header="Todos os processos">
+                                <TreeViewItem Header="Processo A">
+
+                                </TreeViewItem>
+                                <TreeViewItem Header="Processo B">
+
+                                </TreeViewItem>
+                            </TreeViewItem>
+                        </TreeView>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Tarefas">
+                    <DockPanel>
+                        <ToolBarTray DockPanel.Dock="Top">
+                            <ToolBar>
+                                <Button Content="Nova tarefa"/>
+                                <Button Content="Excluir tarefa" />
+                            </ToolBar>
+                        </ToolBarTray>
+                        <TreeView MinWidth="220">
+                            <TreeViewItem Header="Todos as tarefas">
+                                <TreeViewItem Header="Tarefa A">
+
+                                </TreeViewItem>
+                                <TreeViewItem Header="Tarefa B">
+
+                                </TreeViewItem>
+                            </TreeViewItem>
+                        </TreeView>
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+        <!-- Painel Central -->
+        <ContentControl></ContentControl>
+
+    </DockPanel>
+</Window>
