@@ -11,9 +11,9 @@ namespace Base
             nomeElementoXml = "";
         }
 
-        public virtual bool analisarXml(XElement xml)
+        public virtual void analisarXml(XElement xml)
         {
-            return true;
+        
         }
         public virtual XElement gerarXml()
         {

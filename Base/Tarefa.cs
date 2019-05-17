@@ -18,14 +18,13 @@ namespace Base
 
         private string nome;       
 
-        private List<Operacoes> operacoes;
+        private List<Operacao> operacoes;
 
         public Tarefa(string nome)
         {
             this.nome = nome;
             this.entradas = new List<string>();
-            this.operacoes = new List<Operacoes>();
-            this.possuiProximaEtapa = 0;
+            this.operacoes = new List<Operacao>();
             this.etapa = 0;
         }
 

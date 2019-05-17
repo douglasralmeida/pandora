@@ -27,23 +27,23 @@ namespace Base
         }
         private void carregarComandos()
         {
-            Atividade atividade;
+            //Atividade atividade;
             String[] comandos = File.ReadAllLines(arqc);
             String[] param;
 
             foreach (String comando in comandos)
             {
                 param = comando.Split('|');
-                atividade = new Atividade(param[0]);
-                atividade.setDescricao(param[1]);
-                atividade.setComando(param[2]);
-                atividades.Add(atividade);
+                //atividade = new Atividade(param[0]);
+                //atividade.setDescricao(param[1]);
+                //atividade.setComando(param[2]);
+                //atividades.Add(atividade);
             }
         }
 
         internal void executarAtividade(Atividade atividade)
         {
-            comando.enviar(atividade.getComandoProcessado());
+            //comando.enviar(atividade.getComandoProcessado());
         }
 
         public void inserirTexto(string texto)
@@ -55,16 +55,16 @@ namespace Base
 
         public bool encontrarJanela()
         {
-            handlePai = UI.encontrarJanela(IntPtr.Zero, "OWL_Window");
+            handlePai = WinAPI.encontrarJanela(IntPtr.Zero, "OWL_Window");
             if (handlePai == IntPtr.Zero)
                 return false;
-            handleTerminal = UI.encontrarJanela(handlePai, null);
+            handleTerminal = WinAPI.encontrarJanela(handlePai, null);
             if (handleTerminal == IntPtr.Zero)
                 return false;
-            handleTerminal = UI.encontrarJanela(handleTerminal, null);
+            handleTerminal = WinAPI.encontrarJanela(handleTerminal, null);
             if (handleTerminal == IntPtr.Zero)
                 return false;
-            handleTerminal = UI.encontrarJanela(handleTerminal, null);
+            handleTerminal = WinAPI.encontrarJanela(handleTerminal, null);
             if (handleTerminal != IntPtr.Zero)
             {
                 comando = new Comando(handlePai);

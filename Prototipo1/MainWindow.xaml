@@ -11,12 +11,13 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Enviar" HorizontalAlignment="Left" Height="34" Margin="35,86,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click"/>
-        <TextBox x:Name="editClasse" HorizontalAlignment="Left" Height="23" Margin="16,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Salvar tela" HorizontalAlignment="Left" Height="34" Margin="35,125,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click_1"/>
+        <Button Content="Enviar" HorizontalAlignment="Left" Height="34" Margin="16,59,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click"/>
+        <TextBox x:Name="editClasse" HorizontalAlignment="Left" Height="23" Margin="99,21,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+        <Button Content="Salvar tela" HorizontalAlignment="Left" Height="34" Margin="16,98,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click_1"/>
         <Button Content="Carregar tela salva" HorizontalAlignment="Left" Height="34" Margin="264,327,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_2"/>
         <Button Content="Filtrar caracteres" HorizontalAlignment="Left" Height="34" Margin="264,366,0,-25" VerticalAlignment="Top" Width="128" Click="Button_Click_3"/>
         <TextBox x:Name="textoExibir" Height="312" Margin="264,10,5,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontFamily="Consolas"/>
+        <Label Content="Enviar texto:" HorizontalAlignment="Left" Height="29" Margin="16,19,0,0" VerticalAlignment="Top" Width="78"/>
 
     </Grid>
 </Window>
