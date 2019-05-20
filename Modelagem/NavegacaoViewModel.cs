@@ -31,7 +31,7 @@ namespace Modelagem
 
         private void AbrirTarefa(object obj)
         {
-            EscolhidoViewModel = new TarefaViewModel();
+            EscolhidoViewModel = new TarefaViewModel(tarefa);
         }
         private void AbrirInicio(object obj)
         {
