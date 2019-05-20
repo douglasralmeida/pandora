@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Base
 {
@@ -9,6 +10,11 @@ namespace Base
         public Filho()
         {
             filhos = new List<Filho>();
+        }
+
+        public Filho(XElement xml) : base(xml)
+        {
+
         }
     }
 }

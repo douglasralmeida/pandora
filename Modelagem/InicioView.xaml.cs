@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Modelagem
 {
     /// <summary>
-    /// Interação lógica para TarefaControl.xam
+    /// Interação lógica para InicioViewModel.xam
     /// </summary>
-    public partial class TarefaControl : UserControl
+    public partial class InicioView : UserControl
     {
-        public TarefaControl()
+        public InicioView()
         {
             InitializeComponent();
         }

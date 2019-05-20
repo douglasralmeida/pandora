@@ -6,16 +6,40 @@
     </cabecalho>
     <conteudo>
         <tarefas>
-            <tarefa></tarefa>
-            <tarefa></tarefa>
+            <tarefa>
+                <nome></nome>
+                <descricao></descricao>
+                <operacoes>
+                    <operacao>
+                        <comando></comando>
+                        <comando></comando>
+                        <comando></comando>
+                    </operacao>
+                </operacoes>
+            </tarefa>
+            <tarefa>
+                <nome></nome>
+                <descricao></descricao>
+                <operacoes>
+                    <operacao>
+                        <comando></comando>
+                    </operacao>
+                </operacoes>
+            </tarefa>
         </tarefas>
         <processos>
             <processo>
-                <atividade></atividade>
+                <nome></nome>
+                <atividades>
+                    <tarefa></tarefa>
+                </atividades>
             </processo>
             <processo>
-                <atividade></atividade>
-                <atividade></atividade>
+                <nome></nome>
+                <atividades>
+                    <subprocesso></subprocesso>
+                    <tarefa></tarefa>
+                </atividades>
             </processo>
         </processos>
     </conteudo>

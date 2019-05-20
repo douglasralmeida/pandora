@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<pacote>
+    <cabecalho>
+        <versao>1</versao>
+        <geracao nome="Douglas Rodrigues de Almeida" data="20/05/2019"></geracao>
+    </cabecalho>
+    <conteudo>
+        <tarefas>
+            <tarefa>
+                <nome>INFBEN</nome>
+                <descricao>Imprime a tela do INFBEN</descricao>
+                <operacoes>
+                    <operacao>
+                        <comando>INFBEN{ENTER}</comando>
+                    </operacao>
+                </operacoes>
+            </tarefa>
+        </tarefas>
+        <processos>
+            <processo>
+                <atividades></atividades>
+            </processo>
+        </processos>
+    </conteudo>
+</pacote>

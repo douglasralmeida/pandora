@@ -11,7 +11,12 @@ namespace Base
             nomeElementoXml = "";
         }
 
-        public virtual void analisarXml(XElement xml)
+        public Objeto(XElement xml) : base()
+        {
+            analisarXml(xml);
+        }
+
+        protected virtual void analisarXml(XElement xml)
         {
         
         }

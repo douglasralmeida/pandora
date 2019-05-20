@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Atividade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Config.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Filho.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Objeto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pacote.cs" />
@@ -22,5 +23,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Operacao.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plenus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WinAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)XMLAuxiliar.cs" />
   </ItemGroup>
 </Project>
