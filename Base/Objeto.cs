@@ -2,7 +2,7 @@
 
 namespace Base
 {
-    class Objeto
+    public class Objeto
     {
         protected string nomeElementoXml;
 

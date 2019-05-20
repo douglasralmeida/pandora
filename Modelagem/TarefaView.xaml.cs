@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,19 @@ namespace Modelagem
     /// </summary>
     public partial class TarefaView : UserControl
     {
-        public TarefaControl()
+        public static readonly DependencyProperty TarefaProperty = DependencyProperty.Register("Tarefa", typeof(Base.Tarefa), typeof(TarefaView));
+
+        public Base.Tarefa Tarefa
+        {
+            get { return (Base.Tarefa)GetValue(TarefaProperty); }
+            set { SetValue(TarefaProperty, value); }
+        }
+        public TarefaView()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
+
+
     }
 }

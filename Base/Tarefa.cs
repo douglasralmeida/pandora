@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Base
 {
-    class Tarefa : Objeto
+    public class Tarefa : Objeto
     {
         private const string TAREFA_INVALIDA = "O pacote informado possui dados de tarefas inválidos.";
 
@@ -24,6 +24,12 @@ namespace Base
         private string nome;       
 
         private List<Operacao> listaOperacoes;
+
+        public string Nome
+        {
+            get { return this.nome; }
+            set { this.nome = value; }
+        }
 
         public Tarefa(string nome)
         {
@@ -91,11 +97,6 @@ namespace Base
         public string getDescricao()
         {
             return this.descricao;
-        }
-
-        public string getNome()
-        {
-            return this.nome;
         }
 
         public int getOperacoesCount()

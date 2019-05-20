@@ -76,7 +76,7 @@ namespace Modelagem
         {
             var viewModel = (NavegacaoViewModel)DataContext;
             if (viewModel.TarefaComando.CanExecute(null))
-                viewModel.TarefaComando.Execute(tarefa);
+                viewModel.TarefaComando.Execute(null);
         }
 
         private void limparUI()

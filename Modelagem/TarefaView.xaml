@@ -22,7 +22,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0">Nome:</Label>
-                    <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">NOME_TAREFA</TextBox>
+                    <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Tarefa.Nome}"></TextBox>
                     <Label Grid.Row="1">Descrição:</Label>
                     <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">DESC_TAREFA</TextBox>
                     <Label Grid.Row="2">Sistema:</Label>
