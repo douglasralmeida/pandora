@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>1c5417f0-6e85-46a5-ab56-850e3103611d</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Dialogo</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ActiveTaskDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskDialogCommonDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskDialogNotificationArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UnsafeNativeMethods.cs" />
+  </ItemGroup>
+</Project>
