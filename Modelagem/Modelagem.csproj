@@ -61,6 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoolToValueConverter.cs" />
     <Compile Include="CaixaDialogo.cs" />
     <Compile Include="Editor.cs" />
     <Compile Include="InicioViewModel.cs" />

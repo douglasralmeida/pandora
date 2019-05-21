@@ -17,6 +17,8 @@ using System.Windows.Shapes;
 
 namespace Modelagem
 {
+    public class BoolToStringConverter : BoolToValueConverter<String> { };
+
     /// <summary>
     /// Interação lógica para MainWindow.xam
     /// </summary>

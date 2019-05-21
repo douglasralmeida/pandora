@@ -11,25 +11,31 @@ namespace Modelagem
     {
         private string nomeArquivo;
 
-        private Pacote _pacote;
+        private bool _modificado;
 
+        private Pacote _pacote;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Modificado
+        public bool Modificado
         {
             get
             {
-                if (_pacote.Modificado)
-                    return "Modificado";
-                else
-                    return "Não modificado";
+                return _modificado;
+            }
+            set
+            {
+                if (_modificado != value)
+                {
+                    _modificado = value;
+                    OnPropertyChanged("Modificado");
+                }
             }
         }
 
         public Editor()
         {
-
+            _modificado = false;
         }
 
         public bool abrir(string nomearquivo)
@@ -40,6 +46,7 @@ namespace Modelagem
             if (processarXML(xml))
             {
                 nomeArquivo = nomearquivo;
+                Modificado = false;
                 return true;
             }
 
@@ -88,6 +95,7 @@ namespace Modelagem
             _pacote = new Pacote(usuarioGerador);
             _pacote.PropertyChanged += Pacote_PropertyChanged;
             nomeArquivo = "sem nome.pandorapac";
+            Modificado = true;
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -99,7 +107,7 @@ namespace Modelagem
 
         private void Pacote_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            OnPropertyChanged("Modificado");
+            Modificado = true;
         }
 
         private bool processarXML(XElement xml)
@@ -118,6 +126,7 @@ namespace Modelagem
             xml = gerarXML();
             xml.Save(nomeArquivo);
             this.nomeArquivo = nomeArquivo;
+            Modificado = false;
         }
     }
 }

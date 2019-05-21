@@ -24,8 +24,6 @@ namespace Base
 
         private string _nomegerador;
 
-        private bool _modificado;
-
         private ObservableCollection<Base.Tarefa> _tarefas;
 
         private List<Processo> listaProcessos;
@@ -37,7 +35,6 @@ namespace Base
             _tarefas = new ObservableCollection<Tarefa>();
             _tarefas.CollectionChanged += Tarefas_CollectionChanged;
             listaProcessos = new List<Processo>();
-            _modificado = false;
         }
 
         public Pacote(XElement xml)
@@ -47,28 +44,18 @@ namespace Base
             _tarefas = new ObservableCollection<Tarefa>();
             _tarefas.CollectionChanged += Tarefas_CollectionChanged;
             analisarXml(xml);
-            _modificado = true;
         }
 
-        public bool Modificado
+
+        public ObservableCollection<Tarefa> Tarefas
         {
             get
             {
-                return _modificado;
-            }
-            set
-            {
-                if (_modificado != value)
-                {
-                    _modificado = value;
-                    OnPropertyChanged("Modificado");
-                }
+                return _tarefas;
             }
         }
 
-        public ObservableCollection<Tarefa> Tarefas => _tarefas;
-
-        private void carregarCabecalhoXml(XElement cabecalho)
+        private void carregarCabecalho(XElement cabecalho)
         {
             XElement el;
 
@@ -83,7 +70,7 @@ namespace Base
                 _nomegerador = el.Attribute("nome").Value;
         }
 
-        private void carregarConteudoXML(XElement conteudo)
+        private void carregarConteudo(XElement conteudo)
         {
             XElement tarefas, processos;
             Processo novoprocesso;
@@ -144,11 +131,11 @@ namespace Base
 
             cabecalho = pacote.Elements().First();
             XMLAuxiliar.checarNomeXml(cabecalho, "cabecalho", PAC_SEMCABECA);
-            carregarCabecalhoXml(cabecalho);
+            carregarCabecalho(cabecalho);
 
             XMLAuxiliar.checarFilhoXML(pacote, "conteudo", PAC_SEMCONTEUDO);
             conteudo = pacote.Element("conteudo");
-            carregarConteudoXML(conteudo);
+            carregarConteudo(conteudo);
         }
         public override XElement gerarXml()
         {
@@ -184,7 +171,7 @@ namespace Base
 
         void Tarefas_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
         {
-            Modificado = true;
+            OnPropertyChanged("Tarefas");
         }
     }
 }

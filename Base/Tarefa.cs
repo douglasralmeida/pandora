@@ -25,8 +25,6 @@ namespace Base
 
         private string _nome;
 
-        private bool _modificado;
-
         private ObservableCollection<Operacao> _operacoes;
 
         public Tarefa(string nome)
@@ -36,7 +34,6 @@ namespace Base
             _operacoes = new ObservableCollection<Operacao>();
             _operacoes.CollectionChanged += Operacoes_CollectionChanged;
             _etapa = 0;
-            _modificado = true;
         }
 
         public Tarefa(XElement xml)
@@ -47,7 +44,6 @@ namespace Base
             _etapa = 0;
 
             analisarXml(xml);
-            _modificado = false;
         }
 
         public string Descricao
@@ -61,7 +57,6 @@ namespace Base
                 if (_descricao != value)
                 {
                     _descricao = value;
-                    _modificado = true;
                     OnPropertyChanged("Descricao");
                 }
             }
@@ -78,29 +73,18 @@ namespace Base
                 if (_nome != value)
                 {
                     _nome = value;
-                    _modificado = true;
                     OnPropertyChanged("Nome");
                 }
             }
         }
 
-        public bool Modificado
+        public ObservableCollection<Operacao> Operacoes
         {
             get
             {
-                return _modificado;
-            }
-            set
-            {
-                if (_modificado != value)
-                {
-                    _modificado = value;
-                    OnPropertyChanged("Modificado");
-                }
+                return _operacoes;
             }
         }
-
-        public ObservableCollection<Operacao> Operacoes => _operacoes;
 
         public void adicionarEntrada(string entrada)
         {
@@ -164,9 +148,9 @@ namespace Base
             _proximaEntrada = 0;
         }
 
-        void Operacoes_CollectionChanged(object aSender, NotifyCollectionChangedEventArgs aArgs)
+        void Operacoes_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
         {
-            Modificado = true;
+            OnPropertyChanged("Operacoes");
         }
 
         public string proximaOperacao()
