@@ -53,6 +53,11 @@ namespace Base
             {
                 return _id;
             }
+            set
+            {
+                if (_id != value)
+                    _id = value;
+            }
         }
 
         public string Parametros

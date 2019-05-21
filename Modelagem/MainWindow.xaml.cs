@@ -140,7 +140,7 @@ namespace Modelagem
                     }
                     else
                     {
-                        if (treeView.SelectedItem == treeView.Items.GetItemAt(0))
+                        if (treeView.SelectedItem != null && treeView.SelectedItem == treeView.Items.GetItemAt(0))
                             exibirPacote();
                     }
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,11 @@ namespace Modelagem
             return operacaoView.DialogResult ?? true;
         }
 
+        public void excluirOperacao(Base.Operacao operacao)
+        {
+            _tarefa.Operacoes.Remove(operacao);
+        }
+
         public void inserirOperacao()
         {
             int quantidadeOperacoes;
@@ -58,6 +64,29 @@ namespace Modelagem
             Base.Operacao operacao = ((ListViewItem)sender).Content as Base.Operacao;
 
             editarOperacao(operacao);
+        }
+
+        private void BtoExcluirOperacao_Click(object sender, RoutedEventArgs e)
+        {
+            const string PERG_EXCLUIROP = "Você tem certeza que deseja excluir a operação selecionada?";
+
+            if (CaixaDialogo.PerguntaSimples(PERG_EXCLUIROP))
+            {
+                if (listaOperacoes.SelectedItems.Count > 0)
+                {
+                    var lista = listaOperacoes.SelectedItems.Cast<Base.Operacao>().ToList();
+                    foreach (Base.Operacao operacao in lista)
+                    {
+                        excluirOperacao(operacao);
+                    }
+                    _tarefa.reprocessarOperacaoIds();
+                }
+            }
+        }
+
+        private void BtoIncluirOperacao_Click(object sender, RoutedEventArgs e)
+        {
+            inserirOperacao();
         }
     }
 }

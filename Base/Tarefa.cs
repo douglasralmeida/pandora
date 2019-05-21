@@ -161,6 +161,17 @@ namespace Base
             return (_etapa < this.getOperacoesCount());
         }
 
+        public void reprocessarOperacaoIds()
+        {
+            int i = 1;
+
+            foreach (Base.Operacao operacao in Operacoes)
+            {
+                operacao.Id = i;
+                i++;
+            }
+        }
+
         public override string ToString()
         {
             return _nome;
