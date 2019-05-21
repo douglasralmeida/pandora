@@ -1,10 +1,13 @@
-﻿using System.Xml.Linq;
+﻿using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace Base
 {
-    public class Objeto
+    public class Objeto : INotifyPropertyChanged
     {
         protected string nomeElementoXml;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public Objeto()
         {
@@ -20,6 +23,11 @@ namespace Base
         {
         
         }
+
+        public virtual void colarDe(Objeto objeto)
+        {
+            
+        }
         public virtual XElement gerarXml()
         {
             //XAttribute[] vazio = { };
@@ -28,6 +36,13 @@ namespace Base
             //return builder.ToArray();
 
             return null;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -62,6 +62,9 @@
       <DependentUpon>InicioView.xaml</DependentUpon>
     </Compile>
     <Compile Include="NavegacaoViewModel.cs" />
+    <Compile Include="OperacaoView.xaml.cs">
+      <DependentUpon>OperacaoView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TarefaView.xaml.cs">
       <DependentUpon>TarefaView.xaml</DependentUpon>
     </Compile>
@@ -82,6 +85,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="OperacaoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ProcessoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

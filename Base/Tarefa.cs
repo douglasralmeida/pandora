@@ -14,59 +14,79 @@ namespace Base
 
         private const string ENTRADA = "{ENTRADA}";
 
-        private string descricao;
+        private string _descricao;
 
-        private List<string> entradas;
+        private List<string> _entradas;
 
-        private int proximaEntrada;
+        private int _proximaEntrada;
 
-        private int etapa;
+        private int _etapa;
 
-        private string nome;
+        private string _nome;
 
-        private ObservableCollection<Operacao> listaOperacoes;
-
-        public string Descricao
-        {
-            get { return this.descricao; }
-            set { this.descricao = value; }
-        }
-
-        public string Nome
-        {
-            get { return this.nome; }
-            set { this.nome = value; }
-        }
-
-        public ObservableCollection<Operacao> Operacoes => this.listaOperacoes;
+        private ObservableCollection<Operacao> _operacoes;
 
         public Tarefa(string nome)
         {
-            this.nome = nome;
-            this.entradas = new List<string>();
-            this.listaOperacoes = new ObservableCollection<Operacao>();
-            this.etapa = 0;
+            _nome = nome;
+            _entradas = new List<string>();
+            _operacoes = new ObservableCollection<Operacao>();
+            _etapa = 0;
         }
 
         public Tarefa(XElement xml)
         {
-            this.entradas = new List<string>();
-            this.listaOperacoes = new ObservableCollection<Operacao>();
-            this.etapa = 0;
+            _entradas = new List<string>();
+            _operacoes = new ObservableCollection<Operacao>();
+            _etapa = 0;
 
             analisarXml(xml);
         }
 
+        public string Descricao
+        {
+            get
+            {
+                return _descricao;
+            }
+            set
+            {
+                if (_descricao != value)
+                {
+                    _descricao = value;
+                    OnPropertyChanged("Descricao");
+                }
+            }
+        }
+
+        public string Nome
+        {
+            get
+            {
+                return _nome;
+            }
+            set
+            {
+                if (_nome != value)
+                {
+                    _nome = value;
+                    OnPropertyChanged("Nome");
+                }
+            }
+        }
+
+        public ObservableCollection<Operacao> Operacoes => _operacoes;
+
         public void adicionarEntrada(string entrada)
         {
-            this.entradas.Add(entrada);
+            _entradas.Add(entrada);
         }
 
         public void adicionarEntradas(string[] entradas)
         {
             foreach (string e in entradas)
             {
-                this.entradas.Add(e);
+                _entradas.Add(e);
             }
         }
         protected override void analisarXml(XElement xml)
@@ -77,13 +97,13 @@ namespace Base
             string[] elementosnecessarios = { "nome", "descricao" };
 
             XMLAuxiliar.checarFilhosXML(xml, elementosnecessarios, TAREFA_INVALIDA);
-            this.nome = xml.Element("nome").Value;
-            this.descricao = xml.Element("descricao").Value;
+            _nome = xml.Element("nome").Value;
+            _descricao = xml.Element("descricao").Value;
 
             if (xml.Elements("operacoes").Count() > 0)
             {
                 operacoes = xml.Element("operacoes");
-                i = 0;
+                i = 1;
                 foreach (XElement el in operacoes.Elements())
                 {
                     if (el.Name == "operacao")
@@ -91,7 +111,7 @@ namespace Base
                         novaoperacao = carregarOperacao(el, i);
                         if (novaoperacao != null)
                         {
-                            listaOperacoes.Add(novaoperacao);
+                            _operacoes.Add(novaoperacao);
                             i++;
                         }
                     }
@@ -108,49 +128,42 @@ namespace Base
             return operacao;
         }
 
-        public string getDescricao()
-        {
-            return this.descricao;
-        }
-
         public int getOperacoesCount()
         {
-            return this.listaOperacoes.Count;
+            return _operacoes.Count;
         }
 
         public void iniciar()
         {
-            etapa = 0;
-            proximaEntrada = 0;
+            _etapa = 0;
+            _proximaEntrada = 0;
         }
 
         public string proximaOperacao()
         {
             int i;
-            //Operacao operacao;
-
-            StringBuilder builder = new StringBuilder(this.listaOperacoes.ElementAt(etapa).getComando());
+            StringBuilder builder = new StringBuilder(_operacoes.ElementAt(_etapa).Comando);
 
             while (builder.ToString().IndexOf(ENTRADA) != -1)
             {
                 i = builder.ToString().IndexOf(ENTRADA);
                 builder.Remove(i, ENTRADA.Length);
-                builder.Insert(i, entradas[proximaEntrada]);
-                proximaEntrada++;
+                builder.Insert(i, _entradas[_proximaEntrada]);
+                _proximaEntrada++;
             }
-            etapa++;
+            _etapa++;
 
             return builder.ToString();
         }
 
         public bool possuiProximaOperacao()
         {
-            return (etapa < this.getOperacoesCount());
+            return (_etapa < this.getOperacoesCount());
         }
 
         public override string ToString()
         {
-            return this.nome;
+            return _nome;
         }
     }
 }

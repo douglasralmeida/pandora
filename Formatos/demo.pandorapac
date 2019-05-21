@@ -11,7 +11,7 @@
                 <descricao>Imprime a tela do INFBEN</descricao>
                 <operacoes>
                     <operacao>
-                        <comando>INFBEN{ENTER}</comando>
+                        <comando>Digitar "INFBEN{ENTER}"</comando>
                     </operacao>
                 </operacoes>
             </tarefa>

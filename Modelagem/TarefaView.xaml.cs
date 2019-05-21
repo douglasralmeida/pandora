@@ -21,26 +21,43 @@ namespace Modelagem
     /// </summary>
     public partial class TarefaView : UserControl
     {
-        private readonly TarefaViewModel viewModel;
-
-        private Base.Tarefa tarefa;
-
-        public Base.Tarefa Tarefa
-        {
-            get { return tarefa; }
-        }
+        private readonly Base.Tarefa _tarefa;
 
         public TarefaView(Base.Tarefa tarefa)
         {
             InitializeComponent();
-            viewModel = new TarefaViewModel(tarefa);
-            DataContext = viewModel;
+            _tarefa = tarefa;
+            DataContext = _tarefa;
+        }
+        
+        public bool editarOperacao(Base.Operacao operacao)
+        {
+            OperacaoView operacaoView = new OperacaoView(operacao);
+
+            operacaoView.Owner = Application.Current.MainWindow;
+            operacaoView.ShowDialog();
+
+            return operacaoView.DialogResult ?? true;
         }
 
-        private void exibirTarefa()
+        public void inserirOperacao()
         {
-            editNome.Text = Tarefa.Nome;
-            editDesc.Text = Tarefa.Descricao;
+            int quantidadeOperacoes;
+            Base.Operacao novaoperacao;
+
+            quantidadeOperacoes = _tarefa.getOperacoesCount();
+            novaoperacao = new Base.Operacao(quantidadeOperacoes + 1, "NovaOperacao", "");
+            if (editarOperacao(novaoperacao))
+            {
+                _tarefa.Operacoes.Add(novaoperacao);
+            }
+        }
+
+        protected void OperacaoDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Base.Operacao operacao = ((ListViewItem)sender).Content as Base.Operacao;
+
+            editarOperacao(operacao);
         }
     }
 }

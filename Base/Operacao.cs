@@ -11,43 +11,94 @@ namespace Base
     {
         private const string TAREFA_INVALIDA = "O pacote informado possui dados de operações inválidos.";
 
-        private int id;
+        private int _id;
 
-        private string comando;
+        private string _comando;
 
-        public Operacao(int id, string comando)
+        private string _parametros;
+
+        public Operacao(int id, string comando, string parametros)
         {
-            this.id = id;
-            this.comando = comando;
+            _id = id;
+            _comando = comando;
+            _parametros = parametros;
         }
 
         public Operacao(XElement xml, int i)
         {
-            this.id = i;
+            _id = i;
             analisarXml(xml);
+        }
+
+        public string Comando
+        {
+            get
+            {
+                return _comando;
+            }
+
+            set
+            {
+                if (_comando != value)
+                {
+                    _comando = value;
+                    OnPropertyChanged("Comando");
+                }
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+        }
+
+        public string Parametros
+        {
+            get
+            {
+                return _parametros;
+            }
+
+            set
+            {
+                if (_parametros != value)
+                {
+                    _parametros = value;
+                    OnPropertyChanged("Parametros");
+                }
+            }
         }
 
         protected override void analisarXml(XElement xml)
         {
+            char[] separadores = { ' ' };
+            string[] comandos;
             string[] elementosnecessarios = { "comando" };
 
             XMLAuxiliar.checarFilhosXML(xml, elementosnecessarios, TAREFA_INVALIDA);
-            this.comando = xml.Element("comando").Value;
+            comandos = xml.Element("comando").Value.Split(separadores, 2);
+            if (comandos.Count() > 0)
+                _comando = comandos[0];
+            if (comandos.Count() > 1)
+                _parametros = comandos[1];
         }
 
-        public string getComando()
+        public override void colarDe(Objeto origem)
         {
-            return this.comando;
-        }
+            Operacao objeto;
 
-        public int getId()
-        {
-            return this.id;
+            objeto = (Operacao)origem;
+            _id = objeto.Id;
+            Comando = objeto.Comando;
+            Parametros = objeto.Parametros;
         }
 
         public override string ToString()
         {
-            return this.comando;
+            return _comando + " " + _parametros;
         }
     }
 }
