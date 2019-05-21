@@ -6,11 +6,6 @@
         xmlns:local="clr-namespace:Modelagem"
         mc:Ignorable="d"
         Title="Modelagem de Processos" Height="450" Width="800">
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type local:TarefaViewModel}">
-            <local:TarefaView/>
-        </DataTemplate>
-    </Window.Resources>
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
@@ -71,7 +66,7 @@
             </TabControl>
         </DockPanel>
         <!-- Painel Central -->
-        <ContentControl x:Name="Paginas" Content="{Binding EscolhidoViewModel}"></ContentControl>
-
+        <ContentControl x:Name="Paginas">
+        </ContentControl>
     </DockPanel>
 </Window>

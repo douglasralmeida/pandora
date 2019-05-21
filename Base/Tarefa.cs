@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,9 +22,15 @@ namespace Base
 
         private int etapa;
 
-        private string nome;       
+        private string nome;
 
-        private List<Operacao> listaOperacoes;
+        private ObservableCollection<Operacao> listaOperacoes;
+
+        public string Descricao
+        {
+            get { return this.descricao; }
+            set { this.descricao = value; }
+        }
 
         public string Nome
         {
@@ -31,18 +38,20 @@ namespace Base
             set { this.nome = value; }
         }
 
+        public ObservableCollection<Operacao> Operacoes => this.listaOperacoes;
+
         public Tarefa(string nome)
         {
             this.nome = nome;
             this.entradas = new List<string>();
-            this.listaOperacoes = new List<Operacao>();
+            this.listaOperacoes = new ObservableCollection<Operacao>();
             this.etapa = 0;
         }
 
         public Tarefa(XElement xml)
         {
             this.entradas = new List<string>();
-            this.listaOperacoes = new List<Operacao>();
+            this.listaOperacoes = new ObservableCollection<Operacao>();
             this.etapa = 0;
 
             analisarXml(xml);
@@ -62,6 +71,7 @@ namespace Base
         }
         protected override void analisarXml(XElement xml)
         {
+            int i;
             Operacao novaoperacao;
             XElement operacoes;
             string[] elementosnecessarios = { "nome", "descricao" };
@@ -73,23 +83,27 @@ namespace Base
             if (xml.Elements("operacoes").Count() > 0)
             {
                 operacoes = xml.Element("operacoes");
+                i = 0;
                 foreach (XElement el in operacoes.Elements())
                 {
                     if (el.Name == "operacao")
                     {
-                        novaoperacao = carregarOperacao(el);
+                        novaoperacao = carregarOperacao(el, i);
                         if (novaoperacao != null)
+                        {
                             listaOperacoes.Add(novaoperacao);
+                            i++;
+                        }
                     }
                 }
             }
         }
 
-        private Operacao carregarOperacao(XElement xml)
+        private Operacao carregarOperacao(XElement xml, int i)
         {
             Operacao operacao;
 
-            operacao = new Operacao(xml);
+            operacao = new Operacao(xml, i);
 
             return operacao;
         }

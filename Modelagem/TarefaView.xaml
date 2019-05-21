@@ -22,9 +22,9 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0">Nome:</Label>
-                    <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Tarefa.Nome}"></TextBox>
+                    <TextBox Name="editNome" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Nome}"></TextBox>
                     <Label Grid.Row="1">Descrição:</Label>
-                    <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">DESC_TAREFA</TextBox>
+                    <TextBox Name="editDesc"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="Descricao"></TextBox>
                     <Label Grid.Row="2">Sistema:</Label>
                     <WrapPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
                         <CheckBox VerticalAlignment="Center">Plenus/CV3</CheckBox>
@@ -43,10 +43,7 @@
                         <Button>Excluir Operação</Button>
                     </ToolBar>
                 </ToolBarTray>
-                <ListView x:Name="listaOperacoes">
-                    <ListBoxItem Content="Item"/>
-                    <ListBoxItem Content="Item2"/>
-
+                <ListView x:Name="listaOperacoes" ItemsSource="{Binding Operacoes}">
                 </ListView>
             </DockPanel>
         </DockPanel>

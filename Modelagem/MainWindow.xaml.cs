@@ -74,9 +74,7 @@ namespace Modelagem
 
         private void exibirTarefa(Tarefa tarefa)
         {
-            var viewModel = (NavegacaoViewModel)DataContext;
-            if (viewModel.TarefaComando.CanExecute(null))
-                viewModel.TarefaComando.Execute(tarefa);
+            Paginas.Content = new TarefaView(tarefa);
         }
 
         private void limparUI()

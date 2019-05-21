@@ -22,7 +22,6 @@ namespace Modelagem
             set { escolhidoViewModel = value; OnPropertyChanged("EscolhidoViewModel"); }
         }
 
-
         public NavegacaoViewModel()
         {
             TarefaComando = new BaseComando(AbrirTarefa);
@@ -31,7 +30,7 @@ namespace Modelagem
 
         private void AbrirTarefa(object obj)
         {
-            EscolhidoViewModel = new TarefaViewModel(tarefa);
+            EscolhidoViewModel = new TarefaViewModel(obj as Base.Tarefa);
         }
         private void AbrirInicio(object obj)
         {

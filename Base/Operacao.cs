@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Base
 {
-    class Operacao : Objeto
+    public class Operacao : Objeto
     {
         private const string TAREFA_INVALIDA = "O pacote informado possui dados de operações inválidos.";
 
@@ -21,9 +21,10 @@ namespace Base
             this.comando = comando;
         }
 
-        public Operacao(XElement xml)
+        public Operacao(XElement xml, int i)
         {
-
+            this.id = i;
+            analisarXml(xml);
         }
 
         protected override void analisarXml(XElement xml)

@@ -17,23 +17,30 @@ using System.Windows.Shapes;
 namespace Modelagem
 {
     /// <summary>
-    /// Interação lógica para TarefaControl.xam
+    /// Interação lógica para TarefaControl.xaml
     /// </summary>
     public partial class TarefaView : UserControl
     {
-        public static readonly DependencyProperty TarefaProperty = DependencyProperty.Register("Tarefa", typeof(Base.Tarefa), typeof(TarefaView));
+        private readonly TarefaViewModel viewModel;
+
+        private Base.Tarefa tarefa;
 
         public Base.Tarefa Tarefa
         {
-            get { return (Base.Tarefa)GetValue(TarefaProperty); }
-            set { SetValue(TarefaProperty, value); }
+            get { return tarefa; }
         }
-        public TarefaView()
+
+        public TarefaView(Base.Tarefa tarefa)
         {
             InitializeComponent();
-            this.DataContext = this;
+            viewModel = new TarefaViewModel(tarefa);
+            DataContext = viewModel;
         }
 
-
+        private void exibirTarefa()
+        {
+            editNome.Text = Tarefa.Nome;
+            editDesc.Text = Tarefa.Descricao;
+        }
     }
 }
