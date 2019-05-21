@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="Modelagem de Processos" Height="450" Width="800">
     <DockPanel>
+        <!-- Barra de Status -->
+        <StatusBar  DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Name="txtPacoteModificado" Text="{Binding Modificado}"></TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+        <!-- Barra de Ferramentas -->
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
                 <Button x:Name="BotaoNovoProc" Content="Novo pacote" Click="BtoNovoPacote_Click" />

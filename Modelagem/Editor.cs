@@ -1,18 +1,31 @@
 ﻿using Base;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Linq;
 
 namespace Modelagem
 {
-    class Editor
+    class Editor : INotifyPropertyChanged
     {
         private string nomeArquivo;
 
-        private bool modificado;
+        private Pacote _pacote;
 
-        private Pacote pacote;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string Modificado
+        {
+            get
+            {
+                if (_pacote.Modificado)
+                    return "Modificado";
+                else
+                    return "Não modificado";
+            }
+        }
 
         public Editor()
         {
@@ -26,7 +39,6 @@ namespace Modelagem
             xml = XElement.Load(nomearquivo);
             if (processarXML(xml))
             {
-                modificado = false;
                 nomeArquivo = nomearquivo;
                 return true;
             }
@@ -38,7 +50,7 @@ namespace Modelagem
         {
             XElement xml;
 
-            xml = pacote.gerarXml();
+            xml = _pacote.gerarXml();
 
             return xml;
         }
@@ -55,22 +67,15 @@ namespace Modelagem
 
         public TreeViewItem getArvoreTarefas()
         {
-            List<Tarefa> lista;
             TreeViewItem item;
 
-            lista = pacote.getListaTarefas();
             item = new TreeViewItem();
             item.Header = "Todas as tarefas";
-            foreach (Tarefa nome in lista)
+            foreach (Tarefa nome in _pacote.Tarefas)
             {
                 item.Items.Add(nome);
             }
             return item;
-        }
-
-        public bool getModificado()
-        {
-            return modificado;
         }
 
         public string getNomeArquivo()
@@ -80,17 +85,31 @@ namespace Modelagem
 
         public void novo(string usuarioGerador)
         {
-            pacote = new Pacote(usuarioGerador);
+            _pacote = new Pacote(usuarioGerador);
+            _pacote.PropertyChanged += Pacote_PropertyChanged;
             nomeArquivo = "sem nome.pandorapac";
-            modificado = true;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Pacote_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged("Modificado");
         }
 
         private bool processarXML(XElement xml)
         {
-            pacote = new Pacote(xml);
+            _pacote = new Pacote(xml);
+            _pacote.PropertyChanged += Pacote_PropertyChanged;
 
             return true;
         }
+
 
         public void salvar(string nomeArquivo)
         {
@@ -98,7 +117,6 @@ namespace Modelagem
 
             xml = gerarXML();
             xml.Save(nomeArquivo);
-            modificado = false;
             this.nomeArquivo = nomeArquivo;
         }
     }

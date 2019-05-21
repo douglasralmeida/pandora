@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -20,27 +22,51 @@ namespace Base
 
         private const string XMLVER = "1";
 
-        private string nomegerador;
+        private string _nomegerador;
 
-        private List<Tarefa> listaTarefas;
+        private bool _modificado;
+
+        private ObservableCollection<Base.Tarefa> _tarefas;
 
         private List<Processo> listaProcessos;
 
         public Pacote(string nomecriador)
         {
-            this.nomegerador = nomecriador;
+            this._nomegerador = nomecriador;
             this.nomeElementoXml = "pacote";
+            _tarefas = new ObservableCollection<Tarefa>();
+            _tarefas.CollectionChanged += Tarefas_CollectionChanged;
             listaProcessos = new List<Processo>();
-            listaTarefas = new List<Tarefa>();
+            _modificado = false;
         }
 
         public Pacote(XElement xml)
         {
             this.nomeElementoXml = "pacote";
             listaProcessos = new List<Processo>();
-            listaTarefas = new List<Tarefa>();
+            _tarefas = new ObservableCollection<Tarefa>();
+            _tarefas.CollectionChanged += Tarefas_CollectionChanged;
             analisarXml(xml);
+            _modificado = true;
         }
+
+        public bool Modificado
+        {
+            get
+            {
+                return _modificado;
+            }
+            set
+            {
+                if (_modificado != value)
+                {
+                    _modificado = value;
+                    OnPropertyChanged("Modificado");
+                }
+            }
+        }
+
+        public ObservableCollection<Tarefa> Tarefas => _tarefas;
 
         private void carregarCabecalhoXml(XElement cabecalho)
         {
@@ -54,7 +80,7 @@ namespace Base
             el = cabecalho.Element("geracao");
 
             if (el.Attributes("nome").Count() > 0)
-                nomegerador = el.Attribute("nome").Value;
+                _nomegerador = el.Attribute("nome").Value;
         }
 
         private void carregarConteudoXML(XElement conteudo)
@@ -75,7 +101,7 @@ namespace Base
                 {
                     novatarefa = carregarTarefa(el);
                     if (novatarefa != null)
-                        listaTarefas.Add(novatarefa);
+                        _tarefas.Add(novatarefa);
                 }
             }
             foreach (XElement el in processos.Elements())
@@ -107,11 +133,6 @@ namespace Base
             return tarefa;
         }
 
-        public List<Tarefa> getListaTarefas()
-        {
-            return listaTarefas;
-        }
-
         protected override void analisarXml(XElement xml)
         {
             XElement pacote, cabecalho, conteudo;
@@ -135,7 +156,7 @@ namespace Base
             XElement cabecalho, geracao, conteudo, pacote;
             XElement processos, tarefas;
 
-            builder.Add(new XAttribute("nome", nomegerador));
+            builder.Add(new XAttribute("nome", _nomegerador));
             builder.Add(new XAttribute("data", DateTime.Now));
 
             geracao = new XElement("geracao");
@@ -159,6 +180,11 @@ namespace Base
             pacote.Add(conteudo);
 
             return pacote;
+        }
+
+        void Tarefas_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
+        {
+            Modificado = true;
         }
     }
 }

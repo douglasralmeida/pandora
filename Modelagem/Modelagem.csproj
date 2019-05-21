@@ -67,14 +67,12 @@
     <Compile Include="InicioView.xaml.cs">
       <DependentUpon>InicioView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NavegacaoViewModel.cs" />
     <Compile Include="OperacaoView.xaml.cs">
       <DependentUpon>OperacaoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TarefaView.xaml.cs">
       <DependentUpon>TarefaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TarefaViewModel.cs" />
     <Page Include="InicioView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

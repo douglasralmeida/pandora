@@ -32,9 +32,9 @@ namespace Modelagem
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new NavegacaoViewModel();
             config = new Config();
             editor = new Editor();
+            DataContext = editor;
             novoPacote();
         }
 
@@ -67,9 +67,7 @@ namespace Modelagem
 
         private void exibirPacote()
         {
-            var viewModel = (NavegacaoViewModel)DataContext;
-            if (viewModel.InicioComando.CanExecute(null))
-                viewModel.InicioComando.Execute(null);
+
         }
 
         private void exibirTarefa(Tarefa tarefa)
