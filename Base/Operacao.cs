@@ -19,6 +19,7 @@ namespace Base
 
         public Operacao(int id, string comando, string parametros)
         {
+            nomeElementoXml = "operacao";
             _id = id;
             _comando = comando;
             _parametros = parametros;
@@ -27,6 +28,7 @@ namespace Base
 
         public Operacao(XElement xml, int i)
         {
+            nomeElementoXml = "operacao";
             _id = i;
             analisarXml(xml);
         }
@@ -100,6 +102,19 @@ namespace Base
             _id = objeto.Id;
             Comando = objeto.Comando;
             Parametros = objeto.Parametros;
+        }
+
+        public override XElement gerarXml()
+        {
+            XElement comando;
+            XElement operacao;
+
+            comando = new XElement("comando");
+            comando.Value = _comando + " " + _parametros;
+            operacao = new XElement(nomeElementoXml);
+            operacao.Add(comando);
+
+            return operacao;
         }
 
         public override string ToString()

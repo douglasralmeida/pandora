@@ -137,6 +137,25 @@ namespace Base
             return operacao;
         }
 
+        public override XElement gerarXml()
+        {
+            XElement tarefa;
+            XElement operacoes;
+
+            tarefa = new XElement(nomeElementoXml);
+            tarefa.Add(new XElement("nome", Nome));
+            tarefa.Add(new XElement("descricao", Descricao));
+            operacoes = new XElement("operacoes");
+            foreach (Base.Operacao operacao in _operacoes)
+            {
+                operacoes.Add(operacao.gerarXml());
+            }
+
+            tarefa.Add(operacoes);
+
+            return tarefa;
+        }
+
         public int getOperacoesCount()
         {
             return _operacoes.Count;
