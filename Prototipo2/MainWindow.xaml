@@ -5,18 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Prototipo1"
         mc:Ignorable="d"
-        Title="Prototipo 2" Height="434" Width="516">
-    <Grid Margin="0,0,2,-21" Height="375" VerticalAlignment="Top">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="73*"/>
-            <ColumnDefinition Width="433*"/>
-            <ColumnDefinition Width="0*"/>
-        </Grid.ColumnDefinitions>
-        <Button Content="Testar" HorizontalAlignment="Left" Height="34" Margin="280,109,0,0" VerticalAlignment="Top" Width="83" Grid.Column="1" Click="Button_Click_1"/>
-        <Button Content="Executar" HorizontalAlignment="Left" Height="34" Margin="35,181,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="textoExibir" Height="94" Margin="191,10,5,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontFamily="Consolas" Grid.Column="1"/>
-        <ListBox x:Name="listaComandos" HorizontalAlignment="Left" Height="115" Margin="35,10,0,0" VerticalAlignment="Top" Width="112" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="editEntrada" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="19" Margin="35,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112"/>
-
-    </Grid>
+        Title="Prototipo 2" Height="462" Width="516">
+    <DockPanel>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Usuário:" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Height="22" Width="120"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Matricula:" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Height="22" Width="120"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Senha:" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Height="22" Width="120"/>
+        </Grid>
+        <DockPanel>
+            <Grid>
+                <Button x:Name="btoAbrirPacote" Content="Abrir Pacote..." HorizontalAlignment="Left" Height="34" Margin="10,10,0,0" VerticalAlignment="Top" Width="83" Grid.ColumnSpan="2" Click="BtoAbrirPacote_Click"/>
+                <ListBox x:Name="listaTarefas" HorizontalAlignment="Left" Margin="10,58,0,138" Width="175" ItemsSource="{Binding Tarefas}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Nome}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label Content="Entrada:" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="editEntrada" HorizontalAlignment="Left" Height="19" Margin="68,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112"/>
+                <Button x:Name="btoAbrirPlenus" Content="Abrir Plenus e executar" HorizontalAlignment="Left" Height="34" Margin="10,215,0,0" VerticalAlignment="Top" Width="175" Grid.ColumnSpan="2" Click="BtoAbrirPlenus_Click"/>
+                <Button Content="Executar de uma janela aberta" HorizontalAlignment="Left" Height="34" Margin="10,260,0,0" VerticalAlignment="Top" Width="175" Click="Button_Click" Grid.ColumnSpan="2"/>
+                <Button Content="Testar saída" HorizontalAlignment="Left" Height="34" Margin="269,215,0,0" VerticalAlignment="Top" Width="83" Grid.Column="1" Click="Button_Click_1"/>
+                <TextBox x:Name="textoExibir" Height="191" Margin="191,10,5,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontFamily="Consolas" Grid.Column="1"/>
+            </Grid>
+        </DockPanel>
+    </DockPanel>
 </Window>

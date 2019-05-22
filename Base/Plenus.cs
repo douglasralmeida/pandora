@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Windows;
 
 namespace Base
 {
     class Plenus
     {
+        private string _argumentosIniciais;
+
+        private string _localExecutavel;
+
         private const string arqc = "comandos.txt";
         Comando comando = null;
         Conversor conversor;
@@ -22,7 +28,17 @@ namespace Base
             conversor.carregarFiltros();
             atividades = new List<Atividade>();
             carregarComandos();
+
+            _argumentosIniciais = "cv3.plc";
+            _localExecutavel = "C:\\Wplenus\\Plenus.exe";
         }
+
+        public void abrirPrograma()
+        {
+            Process.Start(_localExecutavel, _argumentosIniciais);
+            Thread.Sleep(3000);
+        }
+
         private void carregarComandos()
         {
             //Atividade atividade;
@@ -69,6 +85,14 @@ namespace Base
             }
 
             return handleTerminal != IntPtr.Zero;
+        }
+
+        public void logar(string[] credencial)
+        {
+            foreach (string s in credencial)
+            {
+                comando.enviarTexto(s);
+            }
         }
 
         private void menuSimular(int submenu, int itemmenu)
