@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pacote>
+  <cabecalho>
+    <versao>1</versao>
+    <geracao nome="Usuário sem nome" data="2019-05-22T14:47:52.0873647-03:00" />
+  </cabecalho>
+  <conteudo>
+    <processos />
+    <tarefas>
+      <tarefa>
+        <nome>NovaTarefaB</nome>
+        <descricao />
+        <operacoes>
+          <operacao>
+            <comando>NovaOperacaoA 123</comando>
+          </operacao>
+          <operacao>
+            <comando>NovaOperacaoB 1233</comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+    </tarefas>
+  </conteudo>
+</pacote>

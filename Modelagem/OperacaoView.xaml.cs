@@ -46,6 +46,7 @@ namespace Modelagem
         private void Window_ContentRendered(object sender, EventArgs e)
         {
             editComando.Focus();
+            editComando.SelectAll();
         }
 
     }

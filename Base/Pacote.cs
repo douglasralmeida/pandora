@@ -24,9 +24,19 @@ namespace Base
 
         private string _nomegerador;
 
-        private ObservableCollection<Base.Tarefa> _tarefas;
+        private readonly ObservableCollection<Tarefa> _tarefas;
+
+        public event TarefaAddedEventHandler TarefaAdded;
 
         private List<Processo> listaProcessos;
+
+        public ObservableCollection<Tarefa> Tarefas
+        {
+            get
+            {
+                return _tarefas;
+            }
+        }
 
         public Pacote(string nomecriador)
         {
@@ -46,13 +56,24 @@ namespace Base
             analisarXml(xml);
         }
 
+ 
 
-        public ObservableCollection<Tarefa> Tarefas
+        protected override void analisarXml(XElement xml)
         {
-            get
-            {
-                return _tarefas;
-            }
+            XElement pacote, cabecalho, conteudo;
+
+            XMLAuxiliar.checarNomeXml(xml, nomeElementoXml, PAC_INVALIDO);
+            pacote = xml;
+            if (!pacote.HasElements)
+                throw new PandoraException(PAC_SEMCABECA);
+
+            cabecalho = pacote.Elements().First();
+            XMLAuxiliar.checarNomeXml(cabecalho, "cabecalho", PAC_SEMCABECA);
+            carregarCabecalho(cabecalho);
+
+            XMLAuxiliar.checarFilhoXML(pacote, "conteudo", PAC_SEMCONTEUDO);
+            conteudo = pacote.Element("conteudo");
+            carregarConteudo(conteudo);
         }
 
         private void carregarCabecalho(XElement cabecalho)
@@ -120,23 +141,11 @@ namespace Base
             return tarefa;
         }
 
-        protected override void analisarXml(XElement xml)
+        public void excluirTarefa(Tarefa tarefa)
         {
-            XElement pacote, cabecalho, conteudo;
-
-            XMLAuxiliar.checarNomeXml(xml, nomeElementoXml, PAC_INVALIDO);
-            pacote = xml;
-            if (!pacote.HasElements)
-                throw new PandoraException(PAC_SEMCABECA);
-
-            cabecalho = pacote.Elements().First();
-            XMLAuxiliar.checarNomeXml(cabecalho, "cabecalho", PAC_SEMCABECA);
-            carregarCabecalho(cabecalho);
-
-            XMLAuxiliar.checarFilhoXML(pacote, "conteudo", PAC_SEMCONTEUDO);
-            conteudo = pacote.Element("conteudo");
-            carregarConteudo(conteudo);
+            Tarefas.Remove(tarefa);
         }
+
         public override XElement gerarXml()
         {
             List<XAttribute> builder = new List<XAttribute>();
@@ -155,8 +164,12 @@ namespace Base
 
             processos = new XElement("processos");
             //adidionar cada processo aqui
+
             tarefas = new XElement("tarefas");
-            //adicionar cada tarefa aqui
+            foreach (Base.Tarefa _tarefa in _tarefas)
+            {
+                tarefas.Add(_tarefa.gerarXml());
+            }
 
             conteudo = new XElement("conteudo");
             conteudo.Add(processos);
@@ -167,6 +180,21 @@ namespace Base
             pacote.Add(conteudo);
 
             return pacote;
+        }
+
+        public void inserirTarefa()
+        {
+            Tarefa novatarefa;
+
+            novatarefa = new Tarefa("NovaTarefa");
+            _tarefas.Add(novatarefa);
+
+            OnTarefaAdded(novatarefa);
+        }
+
+        protected void OnTarefaAdded(Tarefa tarefa)
+        {
+            TarefaAdded?.Invoke(this, tarefa);
         }
 
         void Tarefas_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)

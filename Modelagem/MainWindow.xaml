@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modelagem"
         mc:Ignorable="d"
-        Title="Modelagem de Processos" Height="450" Width="800">
+        Height="450" Width="800"
+        Title="{Binding NomeArquivo, StringFormat= 'Modelagem de Processos - {0}'}">
     <Window.Resources>
         <local:BoolToStringConverter  x:Key="ModificadoConverter" FalseValue="Sem modificações" TrueValue="Modificado" />
     </Window.Resources>
@@ -19,9 +20,9 @@
         <!-- Barra de Ferramentas -->
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button x:Name="BotaoNovoProc" Content="Novo pacote" Click="BtoNovoPacote_Click" />
+                <Button x:Name="btoNovoPacote" Content="Novo pacote" Click="BtoNovoPacote_Click" />
                 <Button x:Name="btoAbrirPacote" Content="Abrir pacote..." Click="BtoAbrirPacote_Click" />
-                <Button Content="Salvar processo..." />
+                <Button x:Name="btoSalvarPacote" Content="Salvar pacote..." Click="BtoSalvarPacote_Click"/>
             </ToolBar>
             <ToolBar>
                 <Button Command="Cut" />
@@ -29,54 +30,7 @@
                 <Button Command="Paste" Content="Paste" />
             </ToolBar>
         </ToolBarTray>
-        <!-- Painel Lateral -->
-        <DockPanel x:Name="PainelExplorador" DockPanel.Dock="Left">
-            <Label DockPanel.Dock="Top" Content="Explorador" FontWeight="Bold"/>
-            <TabControl DockPanel.Dock="Top">
-                <TabItem Header="Processos">
-                    <DockPanel>
-                        <ToolBarTray DockPanel.Dock="Top">
-                            <ToolBar>
-                                <Button Content="Novo processo"/>
-                                <Button Content="Excluir processo" />
-                            </ToolBar>
-                        </ToolBarTray>
-                        <TreeView x:Name="ArvoreProcessos" MinWidth="220" SelectedItemChanged="ArvoreProcessos_SelectedItemChanged">
-                            <TreeViewItem Header="Todos os processos">
-                                <TreeViewItem Header="Processo A">
-
-                                </TreeViewItem>
-                                <TreeViewItem Header="Processo B">
-
-                                </TreeViewItem>
-                            </TreeViewItem>
-                        </TreeView>
-                    </DockPanel>
-                </TabItem>
-                <TabItem Header="Tarefas">
-                    <DockPanel>
-                        <ToolBarTray DockPanel.Dock="Top">
-                            <ToolBar>
-                                <Button Content="Nova tarefa"/>
-                                <Button Content="Excluir tarefa" />
-                            </ToolBar>
-                        </ToolBarTray>
-                        <TreeView x:Name="ArvoreTarefas" MinWidth="220" SelectedItemChanged="ArvoreTarefas_SelectedItemChanged">
-                            <TreeViewItem Header="Todos as tarefas">
-                                <TreeViewItem Header="Tarefa A">
-
-                                </TreeViewItem>
-                                <TreeViewItem Header="Tarefa B">
-
-                                </TreeViewItem>
-                            </TreeViewItem>
-                        </TreeView>
-                    </DockPanel>
-                </TabItem>
-            </TabControl>
-        </DockPanel>
-        <!-- Painel Central -->
-        <ContentControl x:Name="Paginas">
+        <ContentControl x:Name="EditorControle">
         </ContentControl>
     </DockPanel>
 </Window>

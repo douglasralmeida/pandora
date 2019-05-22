@@ -27,25 +27,6 @@ namespace Base
 
         private ObservableCollection<Operacao> _operacoes;
 
-        public Tarefa(string nome)
-        {
-            _nome = nome;
-            _entradas = new List<string>();
-            _operacoes = new ObservableCollection<Operacao>();
-            _operacoes.CollectionChanged += Operacoes_CollectionChanged;
-            _etapa = 0;
-        }
-
-        public Tarefa(XElement xml)
-        {
-            _entradas = new List<string>();
-            _operacoes = new ObservableCollection<Operacao>();
-            _operacoes.CollectionChanged += Operacoes_CollectionChanged;
-            _etapa = 0;
-
-            analisarXml(xml);
-        }
-
         public string Descricao
         {
             get
@@ -84,6 +65,26 @@ namespace Base
             {
                 return _operacoes;
             }
+        }
+        public Tarefa(string nome)
+        {
+            nomeElementoXml = "tarefa";
+            _nome = nome;
+            _entradas = new List<string>();
+            _operacoes = new ObservableCollection<Operacao>();
+            _operacoes.CollectionChanged += Operacoes_CollectionChanged;
+            _etapa = 0;
+        }
+
+        public Tarefa(XElement xml)
+        {
+            nomeElementoXml = "tarefa";
+            _entradas = new List<string>();
+            _operacoes = new ObservableCollection<Operacao>();
+            _operacoes.CollectionChanged += Operacoes_CollectionChanged;
+            _etapa = 0;
+
+            analisarXml(xml);
         }
 
         public void adicionarEntrada(string entrada)

@@ -1,5 +1,6 @@
 ﻿using Base;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
@@ -9,13 +10,17 @@ namespace Modelagem
 {
     class Editor : INotifyPropertyChanged
     {
-        private string nomeArquivo;
+        private const string ARQUIVO_SEMNOME = "sem nome.pandorapac";
+
+        private string _nomeArquivo;
 
         private bool _modificado;
 
         private Pacote _pacote;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public event TarefaAddedEventHandler TarefaAdded;
 
         public bool Modificado
         {
@@ -33,6 +38,27 @@ namespace Modelagem
             }
         }
 
+        public string NomeArquivo
+        {
+            get
+            {
+                return _nomeArquivo;
+            }
+            set
+            {
+                _nomeArquivo = value;
+                OnPropertyChanged("NomeArquivo");
+            }
+        }
+
+        public ObservableCollection<Tarefa> Tarefas
+        {
+            get
+            {
+                return _pacote.Tarefas;
+            }
+        }
+
         public Editor()
         {
             _modificado = false;
@@ -45,12 +71,20 @@ namespace Modelagem
             xml = XElement.Load(nomearquivo);
             if (processarXML(xml))
             {
-                nomeArquivo = nomearquivo;
-                Modificado = false;
+                _nomeArquivo = nomearquivo;
+                _modificado = false;
+                OnPropertyChanged(null);
+                OnPropertyChanged("NomeArquivo");
+                OnPropertyChanged("Modificado");
                 return true;
             }
 
             return false;
+        }
+
+        public void excluirTarefa(Tarefa tarefa)
+        {
+            _pacote.excluirTarefa(tarefa);
         }
 
         private XElement gerarXML()
@@ -85,28 +119,42 @@ namespace Modelagem
             return item;
         }
 
-        public string getNomeArquivo()
+        public void inserirTarefa()
         {
-            return nomeArquivo;
+            _pacote.inserirTarefa();
         }
 
         public void novo(string usuarioGerador)
         {
             _pacote = new Pacote(usuarioGerador);
             _pacote.PropertyChanged += Pacote_PropertyChanged;
-            nomeArquivo = "sem nome.pandorapac";
-            Modificado = true;
+            _pacote.TarefaAdded += Pacote_TarefaAdded;
+            _nomeArquivo = ARQUIVO_SEMNOME;
+            _modificado = true;
+            OnPropertyChanged(null);
+            OnPropertyChanged("NomeArquivo");
+            OnPropertyChanged("Modificado");
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected void OnTarefaAdded(object sender, Base.Tarefa tarefa)
+        {
+            TarefaAdded?.Invoke(this, tarefa);
+        }
+
+        private void Pacote_TarefaAdded(object sender, Base.Tarefa tarefa)
+        {
+            OnTarefaAdded(sender, tarefa);
         }
 
         private void Pacote_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == "Tarefas")
+                OnPropertyChanged(e.PropertyName);
             Modificado = true;
         }
 
@@ -114,10 +162,10 @@ namespace Modelagem
         {
             _pacote = new Pacote(xml);
             _pacote.PropertyChanged += Pacote_PropertyChanged;
+            _pacote.TarefaAdded += Pacote_TarefaAdded;
 
             return true;
         }
-
 
         public void salvar(string nomeArquivo)
         {
@@ -125,7 +173,7 @@ namespace Modelagem
 
             xml = gerarXML();
             xml.Save(nomeArquivo);
-            this.nomeArquivo = nomeArquivo;
+            NomeArquivo = nomeArquivo;
             Modificado = false;
         }
     }

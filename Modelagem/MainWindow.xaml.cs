@@ -24,20 +24,19 @@ namespace Modelagem
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string nomeArquivo;
-
         Config config;
 
-        Editor editor;
+        EditorView _visao;
 
         private const string NOMEAPLICACAO = "Modelagem de Processos do Pandora";
         public MainWindow()
         {
             InitializeComponent();
             config = new Config();
-            editor = new Editor();
-            DataContext = editor;
-            novoPacote();
+            _visao = new EditorView();
+            _visao.novoPacote(config.getNomeUsuario());
+            DataContext = _visao;
+            EditorControle.Content = _visao;
         }
 
         private void BtoAbrirPacote_Click(object sender, RoutedEventArgs e)
@@ -46,105 +45,22 @@ namespace Modelagem
 
             dialogoAbrir.Filter = "Pacote do Pandora|*.pandorapac|Demais arquivos|*.*";
             if (dialogoAbrir.ShowDialog() == true)
-                abrirPacote(dialogoAbrir.FileName);
+                _visao.abrirPacote(dialogoAbrir.FileName);
         }
 
         private void BtoNovoPacote_Click(object sender, RoutedEventArgs e)
         {
-            novoPacote();
+            _visao.novoPacote(config.getNomeUsuario());
         }
 
-        private void abrirPacote(string nomearquivo)
+        private void BtoSalvarPacote_Click(object sender, RoutedEventArgs e)
         {
-            if (editor.abrir(nomearquivo))
-            {
-                limparUI();
-                nomeArquivo = nomearquivo;
-                setJanelaNome(System.IO.Path.GetFileName(nomearquivo));
+            SaveFileDialog dialogoSalvar = new SaveFileDialog();
 
-                processarPacote();
-                exibirPacote();
-            }
-        }
-
-        private void exibirPacote()
-        {
-
-        }
-
-        private void exibirTarefa(Tarefa tarefa)
-        {
-            Paginas.Content = new TarefaView(tarefa);
-        }
-
-        private void limparUI()
-        {
-            ArvoreProcessos.Items.Clear();
-            ArvoreTarefas.Items.Clear();
-        }
-
-        private void novoPacote()
-        {
-            limparUI();
-            editor.novo(config.getNomeUsuario());
-            nomeArquivo = "";
-            setJanelaNome(System.IO.Path.GetFileName(editor.getNomeArquivo()));
-
-            processarPacote();
-            exibirPacote();
-        }
-
-        private void processarPacote()
-        {
-            processarTarefas();
-            processarProcessos();
-        }
-
-        private void processarProcessos()
-        {
-            TreeViewItem processos;
-
-            processos = editor.getArvoreProcessos();
-            ArvoreProcessos.Items.Add(processos);
-        }
-
-        private void processarTarefas()
-        {
-            TreeViewItem tarefas;
-
-            tarefas = editor.getArvoreTarefas();
-            ArvoreTarefas.Items.Add(tarefas);
-        }
-
-        private void setJanelaNome(string nome)
-        {
-            Title = NOMEAPLICACAO + " - " + nome;
-        }
-
-        private void ArvoreProcessos_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            
-        }
-
-        private void ArvoreTarefas_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            if (sender != null)
-            {
-                var treeView = sender as TreeView;
-                if (treeView != null)
-                {
-                    var tarefa = treeView.SelectedItem as Tarefa;
-                    if (tarefa != null)
-                    {
-                        exibirTarefa(tarefa);
-                    }
-                    else
-                    {
-                        if (treeView.SelectedItem != null && treeView.SelectedItem == treeView.Items.GetItemAt(0))
-                            exibirPacote();
-                    }
-                }
-            }
+            dialogoSalvar.FileName = _visao.NomeArquivo;
+            dialogoSalvar.Filter = "Pacote do Pandora|*.pandorapac|Demais arquivos|*.*";
+            if (dialogoSalvar.ShowDialog() == true)
+                _visao.salvarPacote(dialogoSalvar.FileName);
         }
     }
 }
