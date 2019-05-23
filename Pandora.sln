@@ -13,8 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prototipo1", "Prototipo1\Pr
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dialogo", "Dialogo\Dialogo.shproj", "{1C5417F0-6E85-46A5-AB56-850E3103611D}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Execucao", "Execucao\Execucao.shproj", "{04603367-23F5-415C-AC13-A51FF4CDDFBD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Execucao\Execucao.projitems*{04603367-23f5-415c-ac13-a51ff4cddfbd}*SharedItemsImports = 13
 		Dialogo\Dialogo.projitems*{1c5417f0-6e85-46a5-ab56-850e3103611d}*SharedItemsImports = 13
 		Base\Base.projitems*{28fedd2f-91df-4c43-914c-fd754d12f668}*SharedItemsImports = 4
 		Dialogo\Dialogo.projitems*{28fedd2f-91df-4c43-914c-fd754d12f668}*SharedItemsImports = 4

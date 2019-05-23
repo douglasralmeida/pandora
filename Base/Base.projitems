@@ -18,7 +18,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)PandoraException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tarefa.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Comando.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conversor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operacao.cs" />

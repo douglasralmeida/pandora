@@ -15,7 +15,6 @@ namespace Base
         private string _localExecutavel;
 
         private const string arqc = "comandos.txt";
-        Comando comando = null;
         Conversor conversor;
         private IntPtr handlePai = IntPtr.Zero;
         private IntPtr handleTerminal = IntPtr.Zero;
@@ -81,7 +80,7 @@ namespace Base
             handleTerminal = WinAPI.encontrarJanela(handleTerminal, null);
             if (handleTerminal != IntPtr.Zero)
             {
-                comando = new Comando(handlePai);
+                //comando = new Comando(handlePai);
             }
 
             return handleTerminal != IntPtr.Zero;
@@ -91,7 +90,7 @@ namespace Base
         {
             foreach (string s in credencial)
             {
-                comando.enviarTexto(s);
+                //comando.enviarTexto(s);
             }
         }
 
@@ -127,7 +126,7 @@ namespace Base
         }
         public void enviarTexto(string texto)
         {
-            comando.enviarTexto(texto);
+            //comando.enviarTexto(texto);
         }
     }
 }

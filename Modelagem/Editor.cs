@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace Modelagem
 {
-    class Editor : INotifyPropertyChanged
+    public class Editor : INotifyPropertyChanged
     {
         private const string ARQUIVO_SEMNOME = "sem nome.pandorapac";
 

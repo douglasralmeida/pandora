@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modelagem"
         mc:Ignorable="d"
-        Height="450" Width="800"
+        Height="787" Width="864"
         Title="{Binding NomeArquivo, StringFormat= 'Modelagem de Processos - {0}'}">
     <Window.Resources>
         <local:BoolToStringConverter  x:Key="ModificadoConverter" FalseValue="Sem modificações" TrueValue="Modificado" />
@@ -25,7 +25,7 @@
                 <Button x:Name="btoSalvarPacote" Content="Salvar pacote..." Click="BtoSalvarPacote_Click"/>
             </ToolBar>
             <ToolBar>
-                <Button Command="Cut" />
+                <Button x:Name="btoDepurar" Content="Executar" Click="BtoDepurar_Click" />
                 <Button Command="Copy" Content="Copy" />
                 <Button Command="Paste" Content="Paste" />
             </ToolBar>
