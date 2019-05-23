@@ -1,19 +1,10 @@
 ﻿using Base;
+using Execucao;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Modelagem
 {
@@ -24,19 +15,29 @@ namespace Modelagem
     /// </summary>
     public partial class MainWindow : Window
     {
-        Config config;
+        Config _config;
 
-        EditorView _visao;
+        DepuracaoView _depuracao;
+
+        Depuracao _depurador;
+
+        EditorView _edicao;
+
+        Editor _editor;
+
+        List<Variavel> _entradas;
 
         private const string NOMEAPLICACAO = "Modelagem de Processos do Pandora";
         public MainWindow()
         {
             InitializeComponent();
-            config = new Config();
-            _visao = new EditorView();
-            _visao.novoPacote(config.getNomeUsuario());
-            DataContext = _visao;
-            EditorControle.Content = _visao;
+            _config = new Config();
+            _editor = new Editor();
+            _edicao = new EditorView(_editor);
+            _editor.novo(_config.getNomeUsuario());
+            _entradas = new List<Variavel>();
+            DataContext = _edicao;
+            ControlePrincipal.Content = _edicao;
         }
 
         private void BtoAbrirPacote_Click(object sender, RoutedEventArgs e)
@@ -45,22 +46,61 @@ namespace Modelagem
 
             dialogoAbrir.Filter = "Pacote do Pandora|*.pandorapac|Demais arquivos|*.*";
             if (dialogoAbrir.ShowDialog() == true)
-                _visao.abrirPacote(dialogoAbrir.FileName);
+                _editor.abrir(dialogoAbrir.FileName);
         }
 
         private void BtoNovoPacote_Click(object sender, RoutedEventArgs e)
         {
-            _visao.novoPacote(config.getNomeUsuario());
+            _editor.novo(_config.getNomeUsuario());
         }
 
         private void BtoSalvarPacote_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialogoSalvar = new SaveFileDialog();
 
-            dialogoSalvar.FileName = _visao.NomeArquivo;
+            dialogoSalvar.FileName = _editor.NomeArquivo;
             dialogoSalvar.Filter = "Pacote do Pandora|*.pandorapac|Demais arquivos|*.*";
             if (dialogoSalvar.ShowDialog() == true)
-                _visao.salvarPacote(dialogoSalvar.FileName);
+                _editor.salvar(dialogoSalvar.FileName);
+        }
+
+        private void BtoDepurar_Click(object sender, RoutedEventArgs e)
+        {
+            CentralExecucao central = new CentralExecucao();
+            Thread t = new Thread(central.processar);
+
+            central.carregarEntradas(entradas);
+            central.carregar(_edicao.ObjetoAtivo);
+
+            _depurador = new Depuracao(central);
+            _depuracao = new DepuracaoView(_depurador);
+            try
+            {
+                ControlePrincipal.Content = _depurador;
+                t.Start();
+                Thread.Sleep(5000);
+            }
+            finally
+            {
+                t.Join();
+                ControlePrincipal.Content = _edicao;
+            }
+        }
+
+        private void BtoOpcoesEntrada_Click(object sender, RoutedEventArgs e)
+        {
+            EntradasView entradasVisao = new EntradasView();
+
+            entradasVisao.Owner = Application.Current.MainWindow;
+            entradasVisao.Entradas = Config.getEntradasToString();
+            entradasVisao.Dir = Config.DirTrabalho;
+            entradasVisao.ShowDialog();
+
+            if (entradasVisao.DialogResult ?? true)
+            {
+                Config.setEntradasFromString(entradasVisao.Entradas);
+                Config.DirTrabalho = entradasVisao.Dir;
+            }
         }
     }
 }

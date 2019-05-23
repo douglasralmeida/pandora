@@ -25,36 +25,35 @@ namespace Modelagem
     {
         private Editor _editor;
 
+        private Objeto _objetoativo;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string NomeArquivo
+        public Objeto ObjetoAtivo
         {
             get
             {
-                return System.IO.Path.GetFileName(_editor.NomeArquivo);
+                return _objetoativo;
             }
-        }
 
-        public bool Modificado
-        {
-            get
+            set
             {
-                return _editor.Modificado;
+                if (_objetoativo != value)
+                {
+                    _objetoativo = value;
+                    OnPropertyChanged("ObjetoAtivo");
+                }
             }
         }
 
-        public EditorView()
+        public EditorView(Editor editor)
         {
             InitializeComponent();
-            _editor = new Editor();
+            _editor = editor;
             _editor.TarefaAdded += Editor_TarefaAdded;
             _editor.PropertyChanged += Editor_PropertyChanged;
+            _objetoativo = null;
             DataContext = _editor;
-        }
-
-        public void abrirPacote(string nomearquivo)
-        {
-            _editor.abrir(nomearquivo);
         }
 
         public void ArvoreTarefas_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -114,7 +113,8 @@ namespace Modelagem
 
         public void exibirTarefa(Tarefa tarefa)
         {
-            Paginas.Content = new TarefaView(tarefa);            
+            Paginas.Content = new TarefaView(tarefa);
+            ObjetoAtivo = tarefa;
         }
 
         public void exibirTodasTarefas()
@@ -129,14 +129,7 @@ namespace Modelagem
 
         private void Editor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "NomeArquivo")
-                OnPropertyChanged(e.PropertyName);
-            OnPropertyChanged("Modificado");
-        }
-
-        public void novoPacote(string usuarionome)
-        {
-            _editor.novo(usuarionome);
+            //OnPropertyChanged(e.PropertyName);
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -144,11 +137,6 @@ namespace Modelagem
             var handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void salvarPacote(string nomearquivo)
-        {
-            _editor.salvar(nomearquivo);
         }
     }
 }
