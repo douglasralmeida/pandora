@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,17 +14,12 @@ namespace Execucao
             _fluxo = new Fluxo(1);
         }
 
-        private void carregarEntradas(List<Variavel> variaveis)
+        public void carregarEntradas(List<Variavel> variaveis)
         {
 
         }
 
-        public void carregar(Tarefa tarefa)
-        {
-
-        }
-
-        public void carregar(Processo processo)
+        public void carregar(Objeto objeto)
         {
 
         }

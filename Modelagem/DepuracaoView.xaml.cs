@@ -20,9 +20,13 @@ namespace Modelagem
     /// </summary>
     public partial class DepuracaoView : UserControl
     {
-        public DepuracaoView()
+        Depuracao _depurador;
+
+        public DepuracaoView(Depuracao depurador)
         {
             InitializeComponent();
+            _depurador = depurador;
+            DataContext = _depurador;
         }
     }
 }

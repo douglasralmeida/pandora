@@ -108,6 +108,9 @@
     <Compile Include="EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EntradasView.xaml.cs">
+      <DependentUpon>EntradasView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InicioViewModel.cs" />
     <Compile Include="InicioView.xaml.cs">
       <DependentUpon>InicioView.xaml</DependentUpon>
@@ -126,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EntradasView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -210,5 +217,6 @@
   </ItemGroup>
   <Import Project="..\Base\Base.projitems" Label="Shared" />
   <Import Project="..\Dialogo\Dialogo.projitems" Label="Shared" />
+  <Import Project="..\Execucao\Execucao.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

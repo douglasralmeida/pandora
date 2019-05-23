@@ -26,11 +26,11 @@
             </ToolBar>
             <ToolBar>
                 <Button x:Name="btoDepurar" Content="Executar" Click="BtoDepurar_Click" />
-                <Button Command="Copy" Content="Copy" />
+                <Button x:Name="btoOpcoesEntrada" Content="Opções de Execução..." Click="BtoOpcoesEntrada_Click" />
                 <Button Command="Paste" Content="Paste" />
             </ToolBar>
         </ToolBarTray>
-        <ContentControl x:Name="EditorControle">
+        <ContentControl x:Name="ControlePrincipal">
         </ContentControl>
     </DockPanel>
 </Window>
