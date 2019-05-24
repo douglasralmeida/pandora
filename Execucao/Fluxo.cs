@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Execucao
@@ -81,20 +82,20 @@ namespace Execucao
         {
             foreach (Variavel v in entradas)
             {
-                _variaveis.add(v);
+                _variaveis.Add(v);
             }
         }
 
         private void executarProximaInstrucao()
         {
-            _comandoatual.executar(Atraso);
+            _comandoatual.executarAsync(Atraso);
         }
 
         private void processar()
         {
-            while (_posicao < _instrucoes.Count)
+            foreach (Comando c in _instrucoes)
             {
-                _comandoatual = _instrucoes.getItem(_posicao);
+                _comandoatual = c;
                 executarProximaInstrucao();
                 _posicao++;
                 _linha++;

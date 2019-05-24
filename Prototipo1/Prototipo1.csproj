@@ -53,6 +53,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -123,5 +124,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="..\Base\Base.projitems" Label="Shared" />
+  <Import Project="..\Execucao\Execucao.projitems" Label="Shared" />
+  <Import Project="..\Dialogo\Dialogo.projitems" Label="Shared" />
+  <Import Project="..\BibliotecaPadrao\BibliotecaPadrao.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

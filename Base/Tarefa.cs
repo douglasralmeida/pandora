@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Execucao;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -41,6 +42,11 @@ namespace Base
                     OnPropertyChanged("Descricao");
                 }
             }
+        }
+
+        public Modulo Modulo
+        {
+            get; set;
         }
 
         public string Nome

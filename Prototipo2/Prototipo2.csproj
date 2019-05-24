@@ -124,5 +124,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="..\Base\Base.projitems" Label="Shared" />
+  <Import Project="..\Execucao\Execucao.projitems" Label="Shared" />
+  <Import Project="..\Dialogo\Dialogo.projitems" Label="Shared" />
+  <Import Project="..\BibliotecaPadrao\BibliotecaPadrao.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

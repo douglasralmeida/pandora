@@ -34,7 +34,7 @@ namespace Modelagem
             _config = new Config();
             _editor = new Editor();
             _edicao = new EditorView(_editor);
-            _editor.novo(_config.getNomeUsuario());
+            _editor.novo(_config.UsuarioNome);
             _entradas = new List<Variavel>();
             DataContext = _edicao;
             ControlePrincipal.Content = _edicao;
@@ -51,7 +51,7 @@ namespace Modelagem
 
         private void BtoNovoPacote_Click(object sender, RoutedEventArgs e)
         {
-            _editor.novo(_config.getNomeUsuario());
+            _editor.novo(_config.UsuarioNome);
         }
 
         private void BtoSalvarPacote_Click(object sender, RoutedEventArgs e)
@@ -69,14 +69,14 @@ namespace Modelagem
             CentralExecucao central = new CentralExecucao();
             Thread t = new Thread(central.processar);
 
-            central.carregarEntradas(entradas);
-            central.carregar(_edicao.ObjetoAtivo);
-
             _depurador = new Depuracao(central);
             _depuracao = new DepuracaoView(_depurador);
             try
             {
-                ControlePrincipal.Content = _depurador;
+                ControlePrincipal.Content = _depuracao;
+                central.carregarEntradas(_config.Entradas);
+                central.carregar(_edicao.ObjetoAtivo);
+                // chama central.processar() em uma thread separada
                 t.Start();
                 Thread.Sleep(5000);
             }
@@ -89,17 +89,15 @@ namespace Modelagem
 
         private void BtoOpcoesEntrada_Click(object sender, RoutedEventArgs e)
         {
-            EntradasView entradasVisao = new EntradasView();
+            EntradasView entradasVisao = new EntradasView(_config.Entradas.ToString(), _config.DirTrabalho);
 
             entradasVisao.Owner = Application.Current.MainWindow;
-            entradasVisao.Entradas = Config.getEntradasToString();
-            entradasVisao.Dir = Config.DirTrabalho;
             entradasVisao.ShowDialog();
 
             if (entradasVisao.DialogResult ?? true)
             {
-                Config.setEntradasFromString(entradasVisao.Entradas);
-                Config.DirTrabalho = entradasVisao.Dir;
+                _config.setEntradasFromString(entradasVisao.Entradas);
+                _config.DirTrabalho = entradasVisao.Dir;
             }
         }
     }

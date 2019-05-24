@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Comando.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Fluxo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modulo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Teclado.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Variavel.cs" />
   </ItemGroup>
 </Project>

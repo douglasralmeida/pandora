@@ -21,7 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Conversor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operacao.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plenus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WinAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)XMLAuxiliar.cs" />
   </ItemGroup>

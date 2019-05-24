@@ -1,22 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Execucao
 {
-    public delegate string Corpo(ObservableCollection<Variavel> parametros);
+    public delegate (bool, string) Funcao(Dictionary<string, dynamic> constantes, ObservableCollection<Variavel> parametros);
 
-    class Comando
+    public class Comando
     {
-        private ObservableCollection<Variavel> _parametros;
+        private readonly ObservableCollection<Variavel> _parametros;
 
-        private Corpo _corpo;
+        private readonly Dictionary<string, dynamic> _constantes;
+
+        private Funcao _funcao;
 
         private int _espera;
 
-        private var _retorno;
+        private string _retorno;
 
-        public string Espera
+        public Dictionary<string, dynamic> Constantes
+        {
+            get
+            {
+                return _constantes;
+            }
+        }
+
+        public int Espera
         {
             get
             {
@@ -52,7 +64,7 @@ namespace Execucao
             }
         }
 
-        public var Retorno
+        public string Retorno
         {
             get
             {
@@ -60,32 +72,34 @@ namespace Execucao
             }
         }
 
-        public string Comando(string nome, Corpo corpo)
+        public Comando(string nome, Funcao funcao)
         {
             Nome = nome;
-            _corpo = corpo;
+            _constantes = null;
+            _funcao = funcao;
             _espera = 0;
             _parametros = new ObservableCollection<Variavel>();
             _retorno = null;
         }
 
-        public void executar(int atraso)
+        public async void executarAsync(Dictionary<string, dynamic> constantes, int atraso)
         {
             int espera;
+            bool executou;
 
             if (atraso > 0)
                 espera = atraso;
             else
                 espera = _espera;
 
-            _retorno = _corpo(_parametros);
+            (executou, _retorno) = _funcao(constantes, _parametros);
             if (espera > 0)
                 await Task.Delay(espera * 1000);
         }
 
         public override string ToString()
         {
-            return _nome + string.Join(" ", _parametros);
+            return Nome + string.Join(", ", _parametros);
         }
     }
 }
