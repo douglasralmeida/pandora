@@ -82,7 +82,7 @@ namespace Execucao
             _retorno = null;
         }
 
-        public async void executarAsync(Dictionary<string, dynamic> constantes, int atraso)
+        public async Task<bool> executarAsync(Dictionary<string, dynamic> constantes, int atraso)
         {
             int espera;
             bool executou;
@@ -95,6 +95,8 @@ namespace Execucao
             (executou, _retorno) = _funcao(constantes, _parametros);
             if (espera > 0)
                 await Task.Delay(espera * 1000);
+
+            return executou;
         }
 
         public override string ToString()

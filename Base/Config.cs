@@ -11,7 +11,7 @@ namespace Base
     {
         private string _usuarioNome;
 
-        private readonly ObservableCollection<Variavel> _entradas;
+        private readonly Dictionary<string, Variavel> _entradas;
 
         private string _dirtrabalho;
 
@@ -37,7 +37,7 @@ namespace Base
             }
         }
 
-        public ObservableCollection<Variavel> Entradas
+        public Dictionary<string, Variavel> Entradas
         {
             get
             {
@@ -48,18 +48,21 @@ namespace Base
         public Config()
         {
             _dirtrabalho = "%USERPROFILE%\\Desktop\\Pandora";
-            _entradas = new ObservableCollection<Variavel>();
+            _entradas = new Dictionary<string, Variavel>();
             _usuarioNome = "Usuário sem nome";
         }
 
         public void setEntradasFromString(string entradas)
         {
+            string linha;
+            string[] par = { };
+            
             _entradas.Clear();
             using (StringReader sr = new StringReader(entradas))
             {
-                string linha;
                 while ((linha = sr.ReadLine()) != null)
-                    _entradas.Add(new Variavel(linha));
+                    par = linha.Split('=');
+                    _entradas.Add(par[0], new Variavel(par[1]));
             }
         }
     }

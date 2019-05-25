@@ -9,6 +9,7 @@
     <Import_RootNamespace>BibliotecaPadrao</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Biblioteca.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plenus.cs" />
   </ItemGroup>
 </Project>

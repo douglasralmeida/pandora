@@ -9,6 +9,7 @@
             <tarefa>
                 <nome>INFBEN</nome>
                 <descricao>Imprime a tela do INFBEN</descricao>
+                <modulo>Plenus</modulo>
                 <operacoes>
                     <operacao>
                         <comando>Digitar "INFBEN{ENTER}"</comando>

@@ -17,8 +17,6 @@ namespace Execucao
 
         private int _posicao;
 
-        private ObservableCollection<Variavel> _variaveis;
-
         private int _linha;
 
         public int Id
@@ -42,6 +40,11 @@ namespace Execucao
             }
         }
 
+        public Dictionary<string, dynamic> Dados
+        {
+            get; set;
+        }
+
         public ObservableCollection<Fluxo> Desvios
         {
             get
@@ -58,12 +61,9 @@ namespace Execucao
             }
         }
 
-        public ObservableCollection<Variavel> Variaveis
+        public Dictionary<string, Variavel> Variaveis
         {
-            get
-            {
-                return _variaveis;
-            }
+            get; set;
         }
 
         public Fluxo(int id)
@@ -75,28 +75,22 @@ namespace Execucao
             _comandoatual = null;
             _desvios = new ObservableCollection<Fluxo>();
             _instrucoes = new ObservableCollection<Comando>();
-            _variaveis = new ObservableCollection<Variavel>();
         }
 
-        public void definirEntradas(ObservableCollection<Variavel> entradas)
+        private bool executarProximaInstrucao()
         {
-            foreach (Variavel v in entradas)
-            {
-                _variaveis.Add(v);
-            }
+            return _comandoatual.executarAsync(Dados, Atraso).Result;
         }
 
-        private void executarProximaInstrucao()
-        {
-            _comandoatual.executarAsync(Atraso);
-        }
-
-        private void processar()
+        public void processar()
         {
             foreach (Comando c in _instrucoes)
             {
                 _comandoatual = c;
-                executarProximaInstrucao();
+                if (!executarProximaInstrucao())
+                {
+                    break;
+                }
                 _posicao++;
                 _linha++;
             }

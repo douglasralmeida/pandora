@@ -20,6 +20,8 @@ namespace Base
 
         private List<string> _entradas;
 
+        private Modulo _modulo;
+
         private int _proximaEntrada;
 
         private int _etapa;
@@ -46,7 +48,18 @@ namespace Base
 
         public Modulo Modulo
         {
-            get; set;
+            get
+            {
+                return _modulo;
+            }
+            set
+            {
+                if (_modulo != value)
+                {
+                    _modulo = value;
+                    OnPropertyChanged("Modulo");
+                }
+            }
         }
 
         public string Nome
@@ -108,13 +121,16 @@ namespace Base
         protected override void analisarXml(XElement xml)
         {
             int i;
+            string nomemodulo;
             Operacao novaoperacao;
             XElement operacoes;
-            string[] elementosnecessarios = { "nome", "descricao" };
+            string[] elementosnecessarios = { "nome", "descricao", "modulo" };
 
             XMLAuxiliar.checarFilhosXML(xml, elementosnecessarios, TAREFA_INVALIDA);
             _nome = xml.Element("nome").Value;
             _descricao = xml.Element("descricao").Value;
+            nomemodulo = xml.Element("modulo").Value;
+            _modulo = BibliotecaPadrao.Biblioteca.Obter(nomemodulo);
 
             if (xml.Elements("operacoes").Count() > 0)
             {
@@ -152,6 +168,7 @@ namespace Base
             tarefa = new XElement(nomeElementoXml);
             tarefa.Add(new XElement("nome", Nome));
             tarefa.Add(new XElement("descricao", Descricao));
+            tarefa.Add(new XElement("modulo", Modulo));
             operacoes = new XElement("operacoes");
             foreach (Base.Operacao operacao in _operacoes)
             {

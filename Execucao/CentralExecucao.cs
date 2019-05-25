@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -15,7 +16,9 @@ namespace Execucao
     // Parâmetros:
     //   sender:
     //     A fonte do evento.
-    public delegate void ObjetoCarregarAntesEventHandler(object sender);
+    //   objeto:
+    //     O objeto que será carregado
+    public delegate void ObjetoCarregarAntesEventHandler(object sender, Objeto objeto);
 
     //
     // Resumo:
@@ -25,47 +28,50 @@ namespace Execucao
     // Parâmetros:
     //   sender:
     //     A fonte do evento.
-    public delegate void ObjetoCarregarDepoisEventHandler(object sender);
+    //   objeto:
+    //     O objeto que foi carregado
+    public delegate void ObjetoCarregarDepoisEventHandler(object sender, Objeto objeto);
+
+    struct Instancia
+    {
+        public Fluxo fluxo;
+        public Dictionary<string, Variavel> variaveis;
+        public Dictionary<string, dynamic> dados;
+    };
 
     public class CentralExecucao
     {
-        private List<Modulo> _biblioteca;
-
-        private Fluxo _fluxo;
-
-        private Dictionary<string, Variavel> _entradas;
+        private Instancia _instancia;
 
         public event ObjetoCarregarAntesEventHandler ObjetoCarregarAntes;
 
         public event ObjetoCarregarDepoisEventHandler ObjetoCarregarDepois;
 
-        public Dictionary<string, Variavel> Entradas
+        public Dictionary<string, Variavel> Variaveis
         {
             get
             {
-                return _entradas;
+                return _instancia.variaveis;
             }
             set
             {
-                foreach (KeyValuePair<String, Variavel> e in value)
+                foreach (KeyValuePair<String, Variavel> k in value)
                 {
-                    _entradas.Add(e.Key, e.Value);
+                    _instancia.variaveis.Add(k.Key, k.Value);
                 }
             }
         }
 
-        public CentralExecucao(List<Modulo> biblioteca)
+        public CentralExecucao()
         {
-            _fluxo = new Fluxo(1);
-            _biblioteca = biblioteca;
-            _entradas = new Dictionary<string, Variavel>();
+            
         }
 
         public void carregar(Objeto objeto)
         {
             Processo processo;
 
-            OnObjetoCarregarAntes();
+            OnObjetoCarregarAntes(objeto);
             if (objeto is Tarefa)
             {
                 processo = new Processo("Processo Genérico");
@@ -76,8 +82,7 @@ namespace Execucao
                 processo = (Processo)objeto;
             }
             incluirNoFluxo(processo);
-
-            OnObjetoCarregarDepois();
+            OnObjetoCarregarDepois(objeto);
         }
 
         private List<Comando> comandosDeTarefa(Tarefa tarefa)
@@ -93,6 +98,9 @@ namespace Execucao
             {
                 tarefa.Modulo.Funcoes.TryGetValue(op.Comando, out funcao);
                 comando = new Comando(op.Comando, funcao);
+
+                Debug.Write("Parametros antes: " + op.Parametros);
+
                 parametros = op.Parametros.Split(' ');
                 i = 0;
                 foreach (string param in parametros)
@@ -106,12 +114,24 @@ namespace Execucao
                     //substitui pelas variáveis de entrada
                     parseParametros(builder);
                     comando.Parametros.Add(new Variavel(builder.ToString()));
+
+                    Debug.Write("Parametros depois: " + comando.Parametros);
+
                     i++;
                 }
                 comandos.Add(comando);
             }
 
             return comandos;
+        }
+
+        public void gerarInstancia()
+        {
+            _instancia.dados = new Dictionary<string, dynamic>();
+            _instancia.variaveis = new Dictionary<string, Variavel>();
+            _instancia.fluxo = new Fluxo(1);
+            _instancia.fluxo.Dados = _instancia.dados;
+            _instancia.fluxo.Variaveis = _instancia.variaveis;
         }
 
         private void incluirNoFluxo(Processo processo)
@@ -131,19 +151,19 @@ namespace Execucao
                 {
                     tarefa = (Tarefa)o;
                     foreach (Comando c in comandosDeTarefa(tarefa))
-                        _fluxo.Instrucoes.Add(c);
+                        _instancia.fluxo.Instrucoes.Add(c);
                 }
             }
         }
 
-        protected void OnObjetoCarregarAntes()
+        protected void OnObjetoCarregarAntes(Objeto objeto)
         {
-            ObjetoCarregarAntes?.Invoke(this);
+            ObjetoCarregarAntes?.Invoke(this, objeto);
         }
 
-        protected void OnObjetoCarregarDepois()
+        protected void OnObjetoCarregarDepois(Objeto objeto)
         {
-            ObjetoCarregarDepois?.Invoke(this);
+            ObjetoCarregarDepois?.Invoke(this, objeto);
         }
 
         private void parseParametros(StringBuilder builder)
@@ -157,14 +177,14 @@ namespace Execucao
             foreach (Match m in combinacoes)
             {
                 s = string.Format("{{ENTRADA {0}}}", m.Groups[1]);
-                _entradas.TryGetValue(m.Groups[1].ToString(), out v);
+                _instancia.variaveis.TryGetValue(m.Groups[1].ToString(), out v);
                 builder.Replace(s, v.Valor);
             }            
         }
 
         public void processar()
         {
-            
+            _instancia.fluxo.processar();
         }
     }
 }

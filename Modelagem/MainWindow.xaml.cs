@@ -25,8 +25,6 @@ namespace Modelagem
 
         Editor _editor;
 
-        List<Variavel> _entradas;
-
         private const string NOMEAPLICACAO = "Modelagem de Processos do Pandora";
         public MainWindow()
         {
@@ -35,7 +33,6 @@ namespace Modelagem
             _editor = new Editor();
             _edicao = new EditorView(_editor);
             _editor.novo(_config.UsuarioNome);
-            _entradas = new List<Variavel>();
             DataContext = _edicao;
             ControlePrincipal.Content = _edicao;
         }
@@ -74,7 +71,8 @@ namespace Modelagem
             try
             {
                 ControlePrincipal.Content = _depuracao;
-                central.carregarEntradas(_config.Entradas);
+                central.gerarInstancia();
+                central.Variaveis = _config.Entradas;
                 central.carregar(_edicao.ObjetoAtivo);
                 // chama central.processar() em uma thread separada
                 t.Start();

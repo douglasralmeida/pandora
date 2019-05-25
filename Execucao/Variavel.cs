@@ -16,12 +16,12 @@ namespace Execucao
             get; set;
         }
 
-        public string Valor
+        public dynamic Valor
         {
             get; set;
         }
 
-        public Variavel(string valor)
+        public Variavel(dynamic valor)
         {
             Valor = valor;
             Opcional = false;
@@ -33,7 +33,7 @@ namespace Execucao
             StringBuilder builder = new StringBuilder();
 
             builder.Append('"');
-            if (Protegida)
+            if (Valor is string && Protegida)
             {
                 foreach (char _ in Valor)
                 {
