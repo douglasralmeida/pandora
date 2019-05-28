@@ -18,7 +18,7 @@ namespace Base
 
         private string _descricao;
 
-        private List<string> _entradas;
+        private readonly List<string> _entradas;
 
         private Modulo _modulo;
 
@@ -26,9 +26,7 @@ namespace Base
 
         private int _etapa;
 
-        private string _nome;
-
-        private ObservableCollection<Operacao> _operacoes;
+        private readonly ObservableCollection<Operacao> _operacoes;
 
         public string Descricao
         {
@@ -62,22 +60,6 @@ namespace Base
             }
         }
 
-        public string Nome
-        {
-            get
-            {
-                return _nome;
-            }
-            set
-            {
-                if (_nome != value)
-                {
-                    _nome = value;
-                    OnPropertyChanged("Nome");
-                }
-            }
-        }
-
         public ObservableCollection<Operacao> Operacoes
         {
             get
@@ -85,6 +67,7 @@ namespace Base
                 return _operacoes;
             }
         }
+
         public Tarefa(string nome)
         {
             nomeElementoXml = "tarefa";
@@ -199,7 +182,7 @@ namespace Base
         public string proximaOperacao()
         {
             int i;
-            StringBuilder builder = new StringBuilder(_operacoes.ElementAt(_etapa).Comando);
+            StringBuilder builder = new StringBuilder(_operacoes.ElementAt(_etapa).Nome);
 
             while (builder.ToString().IndexOf(ENTRADA) != -1)
             {

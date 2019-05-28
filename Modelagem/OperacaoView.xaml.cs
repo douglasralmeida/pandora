@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace Modelagem
         {
             InitializeComponent();
             _operacao = operacao;
-            _copia = new Base.Operacao(operacao.Id, operacao.Comando, operacao.Parametros);
+            _copia = new Base.Operacao(operacao.Id, operacao.Nome, operacao.Parametros);
             //_copia.colarDe(_operacao);
             DataContext = _operacao;
         }
@@ -39,7 +40,7 @@ namespace Modelagem
 
         private void BtoOk_Click(object sender, RoutedEventArgs e)
         {
-            if (_operacao.Comando.Length > 0)
+            if (_operacao.Nome.Length > 0)
                 this.DialogResult = true;
         }
 
@@ -48,6 +49,5 @@ namespace Modelagem
             editComando.Focus();
             editComando.SelectAll();
         }
-
     }
 }

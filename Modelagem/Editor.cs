@@ -51,6 +51,14 @@ namespace Modelagem
             }
         }
 
+        public ObservableCollection<Processo> Processos
+        {
+            get
+            {
+                return _pacote.Processos;
+            }
+        }
+
         public ObservableCollection<Tarefa> Tarefas
         {
             get
@@ -119,6 +127,11 @@ namespace Modelagem
             return item;
         }
 
+        public void inserirProcesso()
+        {
+            _pacote.inserirProcesso();
+        }
+
         public void inserirTarefa()
         {
             _pacote.inserirTarefa();
@@ -154,6 +167,8 @@ namespace Modelagem
         private void Pacote_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Tarefas")
+                OnPropertyChanged(e.PropertyName);
+            if (e.PropertyName == "Processos")
                 OnPropertyChanged(e.PropertyName);
             Modificado = true;
         }

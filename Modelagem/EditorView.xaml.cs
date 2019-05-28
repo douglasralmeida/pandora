@@ -56,25 +56,54 @@ namespace Modelagem
             DataContext = _editor;
         }
 
+        private void ArvoreProcessos_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (!(Paginas.Content is ProcessoView))
+                ArvoreProcessos_SelectedItemChanged(sender, null);
+        }
+
+        public void ArvoreProcessos_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var treeView = sender as TreeView;
+            var processo = treeView.SelectedItem as Processo;
+            if (processo != null)
+            {
+                exibirProcesso(processo);
+            }
+            else
+            {
+                if (treeView.SelectedItem != null && treeView.SelectedItem == treeView.Items.GetItemAt(0))
+                    exibirTodosProcessos();
+            }
+        }
+
+        private void ArvoreTarefas_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (!(Paginas.Content is TarefaView))
+                ArvoreTarefas_SelectedItemChanged(sender, null);
+        }
+
         public void ArvoreTarefas_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (sender != null)
+            var treeView = sender as TreeView;
+            if (treeView != null)
             {
-                var treeView = sender as TreeView;
-                if (treeView != null)
+                var tarefa = treeView.SelectedItem as Tarefa;
+                if (tarefa != null)
                 {
-                    var tarefa = treeView.SelectedItem as Tarefa;
-                    if (tarefa != null)
-                    {
-                        exibirTarefa(tarefa);
-                    }
-                    else
-                    {
-                        if (treeView.SelectedItem != null && treeView.SelectedItem == treeView.Items.GetItemAt(0))
-                            exibirTodasTarefas();
-                    }
+                    exibirTarefa(tarefa);
+                }
+                else
+                {
+                    if (treeView.SelectedItem != null && treeView.SelectedItem == treeView.Items.GetItemAt(0))
+                        exibirTodasTarefas();
                 }
             }
+        }
+
+        private void BtoInserirProcesso_Click(object sender, RoutedEventArgs e)
+        {
+            _editor.inserirProcesso();
         }
 
         private void BtoInserirTarefa_Click(object sender, RoutedEventArgs e)
@@ -106,9 +135,12 @@ namespace Modelagem
             }
         }
 
-        private void exibirProcesso(Tarefa processo)
+        private void exibirProcesso(Processo processo)
         {
-            //Paginas.Content = new ProcessoView(processo);
+            ProcessoView processoview = new ProcessoView();
+
+            processoview.ObjetoAtivo = processo;
+            Paginas.Content = processoview;
         }
 
         public void exibirTarefa(Tarefa tarefa)
@@ -120,6 +152,11 @@ namespace Modelagem
         public void exibirTodasTarefas()
         {
             Paginas.Content = new TodasTarefasView();
+        }
+
+        public void exibirTodosProcessos()
+        {
+            Paginas.Content = new TodosProcessosView();
         }
 
         public void excluirTarefa(Tarefa tarefa)
@@ -137,6 +174,11 @@ namespace Modelagem
             var handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

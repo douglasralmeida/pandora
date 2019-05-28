@@ -8,6 +8,32 @@ using System.Xml.Linq;
 
 namespace Base
 {
+    //
+    // Resumo:
+    //     Representa o método que manipulará o evento Base.Pacote.ProcessoAdded
+    //     gerado quando um pacote é adicionado no pacote.
+    //
+    // Parâmetros:
+    //   sender:
+    //     A fonte do evento.
+    //
+    //   processo:
+    //     O processo adicionado que gerou o evento.
+    public delegate void ProcessoAddedEventHandler(object sender, Processo processo);
+
+    //
+    // Resumo:
+    //     Representa o método que manipulará o evento Base.Pacote.TarefaAdded
+    //     gerado quando uma tarefa é adicionada no pacote.
+    //
+    // Parâmetros:
+    //   sender:
+    //     A fonte do evento.
+    //
+    //   tarefa:
+    //     A tarefa adicionada que gerou o evento.
+    public delegate void TarefaAddedEventHandler(object sender, Tarefa tarefa);
+
     class Pacote : Objeto
     {
         private const string PAC_INVALIDO = "O arquivo informado não é um pacote de processos do Pandora válido.";
@@ -26,9 +52,19 @@ namespace Base
 
         private readonly ObservableCollection<Tarefa> _tarefas;
 
+        private readonly ObservableCollection<Processo> _processos;
+
+        public event ProcessoAddedEventHandler ProcessoAdded;
+
         public event TarefaAddedEventHandler TarefaAdded;
 
-        private List<Processo> listaProcessos;
+        public ObservableCollection<Processo> Processos
+        {
+            get
+            {
+                return _processos;
+            }
+        }
 
         public ObservableCollection<Tarefa> Tarefas
         {
@@ -44,19 +80,19 @@ namespace Base
             this.nomeElementoXml = "pacote";
             _tarefas = new ObservableCollection<Tarefa>();
             _tarefas.CollectionChanged += Tarefas_CollectionChanged;
-            listaProcessos = new List<Processo>();
+            _processos = new ObservableCollection<Processo>();
+            _processos.CollectionChanged += Processos_CollectionChanged;
         }
 
         public Pacote(XElement xml)
         {
             this.nomeElementoXml = "pacote";
-            listaProcessos = new List<Processo>();
             _tarefas = new ObservableCollection<Tarefa>();
             _tarefas.CollectionChanged += Tarefas_CollectionChanged;
+            _processos = new ObservableCollection<Processo>();
+            _processos.CollectionChanged += Processos_CollectionChanged;
             analisarXml(xml);
         }
-
- 
 
         protected override void analisarXml(XElement xml)
         {
@@ -118,7 +154,7 @@ namespace Base
                 {
                     novoprocesso = carregarProcesso(el);
                     if (novoprocesso != null)
-                        listaProcessos.Add(novoprocesso);
+                        _processos.Add(novoprocesso);
                 }
             }
         }
@@ -127,7 +163,7 @@ namespace Base
         {
             Processo processo;
 
-            processo = new Processo(xml);
+            processo = new Processo(xml, _tarefas, _processos);
 
             return processo;
         }
@@ -182,6 +218,16 @@ namespace Base
             return pacote;
         }
 
+        public void inserirProcesso()
+        {
+            Processo novoprocesso;
+
+            novoprocesso = new Processo("NovoProcesso", _tarefas, _processos);
+            _processos.Add(novoprocesso);
+
+            OnProcessoAdded(novoprocesso);
+        }
+
         public void inserirTarefa()
         {
             Tarefa novatarefa;
@@ -192,9 +238,19 @@ namespace Base
             OnTarefaAdded(novatarefa);
         }
 
+        protected void OnProcessoAdded(Processo processo)
+        {
+            ProcessoAdded?.Invoke(this, processo);
+        }
+
         protected void OnTarefaAdded(Tarefa tarefa)
         {
             TarefaAdded?.Invoke(this, tarefa);
+        }
+
+        void Processos_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
+        {
+            OnPropertyChanged("Processos");
         }
 
         void Tarefas_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)

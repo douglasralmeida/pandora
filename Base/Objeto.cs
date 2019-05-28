@@ -5,9 +5,27 @@ namespace Base
 {
     public class Objeto : INotifyPropertyChanged
     {
+        protected string _nome;
+
         protected string nomeElementoXml;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public string Nome
+        {
+            get
+            {
+                return _nome;
+            }
+            set
+            {
+                if (_nome != value)
+                {
+                    _nome = value;
+                    OnPropertyChanged("Nome");
+                }
+            }
+        }
 
         public Objeto()
         {
@@ -21,7 +39,7 @@ namespace Base
 
         protected virtual void analisarXml(XElement xml)
         {
-        
+            
         }
 
         public virtual void colarDe(Objeto objeto)

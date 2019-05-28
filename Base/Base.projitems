@@ -9,10 +9,7 @@
     <Import_RootNamespace>Base</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Atividade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Config.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Filho.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ModeloComponente.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Objeto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pacote.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PandoraException.cs" />

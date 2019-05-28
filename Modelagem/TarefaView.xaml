@@ -2,8 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Modelagem"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:BP="clr-namespace:BibliotecaPadrao"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -50,7 +49,7 @@
                 <ListView x:Name="listaOperacoes" ItemsSource="{Binding Operacoes}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn HeaderContainerStyle="{StaticResource ListViewStyle}" Header="Comando" Width="120" DisplayMemberBinding="{Binding Comando}" />
+                            <GridViewColumn HeaderContainerStyle="{StaticResource ListViewStyle}" Header="Comando" Width="120" DisplayMemberBinding="{Binding Nome}" />
                             <GridViewColumn HeaderContainerStyle="{StaticResource ListViewStyle}" Header="Parâmetros" Width="320" DisplayMemberBinding="{Binding Parametros}" />
                         </GridView>
                     </ListView.View>

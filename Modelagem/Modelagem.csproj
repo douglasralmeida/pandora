@@ -115,6 +115,7 @@
     <Compile Include="InicioView.xaml.cs">
       <DependentUpon>InicioView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ObjectView.cs" />
     <Compile Include="OperacaoView.xaml.cs">
       <DependentUpon>OperacaoView.xaml</DependentUpon>
     </Compile>
@@ -123,6 +124,9 @@
     </Compile>
     <Compile Include="TodasTarefasView.xaml.cs">
       <DependentUpon>TodasTarefasView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TodosProcessosView.xaml.cs">
+      <DependentUpon>TodosProcessosView.xaml</DependentUpon>
     </Compile>
     <Page Include="DepuracaoView.xaml">
       <SubType>Designer</SubType>
@@ -156,7 +160,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProcessoControl.xaml">
+    <Page Include="ProcessoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -168,10 +172,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TodosProcessosView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProcessoControl.xaml.cs">
-      <DependentUpon>ProcessoControl.xaml</DependentUpon>
+    <Compile Include="ProcessoView.xaml.cs">
+      <DependentUpon>ProcessoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

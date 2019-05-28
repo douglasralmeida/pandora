@@ -30,6 +30,7 @@
                 <Button Command="Paste" Content="Paste" />
             </ToolBar>
         </ToolBarTray>
+        <!-- Controle Principal -->
         <ContentControl x:Name="ControlePrincipal">
         </ContentControl>
     </DockPanel>

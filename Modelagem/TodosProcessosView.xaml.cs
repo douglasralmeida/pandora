@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Modelagem
 {
     /// <summary>
-    /// Interação lógica para ProcessoControl.xam
+    /// Interação lógica para TodosProcessosView.xam
     /// </summary>
-    public partial class ProcessoControl : UserControl
+    public partial class TodosProcessosView : UserControl
     {
-        public ProcessoControl()
+        public TodosProcessosView()
         {
             InitializeComponent();
         }

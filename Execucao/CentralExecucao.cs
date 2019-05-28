@@ -74,7 +74,7 @@ namespace Execucao
             OnObjetoCarregarAntes(objeto);
             if (objeto is Tarefa)
             {
-                processo = new Processo("Processo Genérico");
+                processo = new Processo("Processo Genérico", null, null);
                 processo.Atividades.Add(objeto);
             }
             else
@@ -96,8 +96,8 @@ namespace Execucao
 
             foreach (Operacao op in tarefa.Operacoes)
             {
-                tarefa.Modulo.Funcoes.TryGetValue(op.Comando, out funcao);
-                comando = new Comando(op.Comando, funcao);
+                tarefa.Modulo.Funcoes.TryGetValue(op.Nome, out funcao);
+                comando = new Comando(op.Nome, funcao);
 
                 Debug.Write("Parametros antes: " + op.Parametros);
 

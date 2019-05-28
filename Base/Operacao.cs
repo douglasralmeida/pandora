@@ -13,15 +13,13 @@ namespace Base
 
         private int _id;
 
-        private string _comando;
-
         private string _parametros;
 
         public Operacao(int id, string comando, string parametros)
         {
             nomeElementoXml = "operacao";
             _id = id;
-            _comando = comando;
+            _nome = comando;
             _parametros = parametros;
             
         }
@@ -31,23 +29,6 @@ namespace Base
             nomeElementoXml = "operacao";
             _id = i;
             analisarXml(xml);
-        }
-
-        public string Comando
-        {
-            get
-            {
-                return _comando;
-            }
-
-            set
-            {
-                if (_comando != value)
-                {
-                    _comando = value;
-                    OnPropertyChanged("Comando");
-                }
-            }
         }
 
         public int Id
@@ -89,7 +70,7 @@ namespace Base
             XMLAuxiliar.checarFilhosXML(xml, elementosnecessarios, TAREFA_INVALIDA);
             comandos = xml.Element("comando").Value.Split(separadores, 2);
             if (comandos.Count() > 0)
-                _comando = comandos[0];
+                _nome = comandos[0];
             if (comandos.Count() > 1)
                 _parametros = comandos[1];
         }
@@ -100,7 +81,7 @@ namespace Base
 
             objeto = (Operacao)origem;
             _id = objeto.Id;
-            Comando = objeto.Comando;
+            Nome = objeto.Nome;
             Parametros = objeto.Parametros;
         }
 
@@ -110,7 +91,7 @@ namespace Base
             XElement operacao;
 
             comando = new XElement("comando");
-            comando.Value = _comando + " " + _parametros;
+            comando.Value = _nome + " " + _parametros;
             operacao = new XElement(nomeElementoXml);
             operacao.Add(comando);
 
@@ -119,7 +100,7 @@ namespace Base
 
         public override string ToString()
         {
-            return _comando + " " + _parametros;
+            return _nome + " " + _parametros;
         }
     }
 }

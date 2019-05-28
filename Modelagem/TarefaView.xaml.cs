@@ -30,12 +30,13 @@ namespace Modelagem
             _tarefa = tarefa;
             DataContext = _tarefa;
         }
-        
+
         public bool editarOperacao(Base.Operacao operacao)
         {
-            OperacaoView operacaoView = new OperacaoView(operacao);
-
-            operacaoView.Owner = Application.Current.MainWindow;
+            OperacaoView operacaoView = new OperacaoView(operacao)
+            {
+                Owner = Application.Current.MainWindow
+            };
             operacaoView.ShowDialog();
 
             return operacaoView.DialogResult ?? true;
