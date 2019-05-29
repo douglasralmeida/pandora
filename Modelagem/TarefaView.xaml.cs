@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Base;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -20,15 +21,18 @@ namespace Modelagem
     /// <summary>
     /// Interação lógica para TarefaControl.xaml
     /// </summary>
-    public partial class TarefaView : UserControl
+    public partial class TarefaView : ObjetoView
     {
-        private readonly Base.Tarefa _tarefa;
 
-        public TarefaView(Base.Tarefa tarefa)
+        private Tarefa _tarefaativa
+        {
+            get => (Tarefa)_objetoativo;
+        }
+
+
+        public TarefaView()
         {
             InitializeComponent();
-            _tarefa = tarefa;
-            DataContext = _tarefa;
         }
 
         public bool editarOperacao(Base.Operacao operacao)
@@ -44,7 +48,7 @@ namespace Modelagem
 
         public void excluirOperacao(Base.Operacao operacao)
         {
-            _tarefa.Operacoes.Remove(operacao);
+            _tarefaativa.Operacoes.Remove(operacao);
         }
 
         public void inserirOperacao()
@@ -52,11 +56,11 @@ namespace Modelagem
             int quantidadeOperacoes;
             Base.Operacao novaoperacao;
 
-            quantidadeOperacoes = _tarefa.getOperacoesCount();
+            quantidadeOperacoes = _tarefaativa.getOperacoesCount();
             novaoperacao = new Base.Operacao(quantidadeOperacoes + 1, "NovaOperacao", "");
             if (editarOperacao(novaoperacao))
             {
-                _tarefa.Operacoes.Add(novaoperacao);
+                _tarefaativa.Operacoes.Add(novaoperacao);
             }
         }
 
@@ -80,7 +84,7 @@ namespace Modelagem
                     {
                         excluirOperacao(operacao);
                     }
-                    _tarefa.reprocessarOperacaoIds();
+                    _tarefaativa.reprocessarOperacaoIds();
                 }
             }
         }

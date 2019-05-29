@@ -22,31 +22,16 @@ namespace Modelagem
     /// </summary>
     public partial class ProcessoView : ObjetoView
     {
-        public ProcessoView() : base()
+        public ProcessoView()
         {
-            InitializeComponent();
-            //_processo = processo;
-            
+            InitializeComponent();            
         }
 
         protected void AtividadeDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Base.Objeto objeto = ((ListViewItem)sender).Content as Base.Objeto;
+            Objeto objeto = ((ListViewItem)sender).Content as Objeto;
 
-            if (objeto is Base.Tarefa)
-                editarTarefa(objeto);
-            else if (objeto is Base.Processo)
-                exibirProcesso(objeto);
-        }
-
-        private void exibirProcesso(Objeto objeto)
-        {
             ObjetoAtivo = objeto;
-        }
-
-        private void editarTarefa(Objeto objeto)
-        {
-            throw new NotImplementedException();
         }
     }
 }

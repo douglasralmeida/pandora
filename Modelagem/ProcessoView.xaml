@@ -11,7 +11,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Left" />
         </Style>
     </local:ObjetoView.Resources>
-        <DockPanel x:Name="PainelProcesso">
+    <DockPanel x:Name="PainelProcesso">
         <DockPanel x:Name="PainelProcessoCabecalho" DockPanel.Dock="Top">
             <WrapPanel Orientation="Vertical">
                 <Label Content="Processo" FontSize="18"></Label>

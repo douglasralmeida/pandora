@@ -23,20 +23,24 @@ namespace Modelagem
             {
                 if (value != _objetoativo)
                 {
-                    _objetoativo = value;
-                    OnPropertyChanged("ObjetoAtivo");
+                    if (_objetoativo != null && _objetoativo.GetType() != value.GetType())
+                    {
+                        _objetoativo = value;
+                        OnPropertyChanged("TipoObjeto");
+                    }
+                    else
+                    {
+                        _objetoativo = value;
+                        DataContext = _objetoativo;
+                        OnPropertyChanged("ObjetoAtivo");
+                    }
                 }
             }
         }
 
         public ObjetoView()
         {
-            DataContext = _objetoativo;
-        }
-
-        protected virtual void exibirObjeto()
-        {
-            throw new NotImplementedException();
+            
         }
 
         protected void OnPropertyChanged(string propertyName)

@@ -139,24 +139,32 @@ namespace Modelagem
         {
             ProcessoView processoview = new ProcessoView();
 
+            processoview.PropertyChanged += ObjetoView_PropertyChanged;
             processoview.ObjetoAtivo = processo;
             Paginas.Content = processoview;
+//            ObjetoAtivo = processo;
         }
 
         public void exibirTarefa(Tarefa tarefa)
         {
-            Paginas.Content = new TarefaView(tarefa);
-            ObjetoAtivo = tarefa;
+            TarefaView tarefaview = new TarefaView();
+
+            tarefaview.PropertyChanged += ObjetoView_PropertyChanged;
+            tarefaview.ObjetoAtivo = tarefa;
+            Paginas.Content = tarefaview;
+//            ObjetoAtivo = tarefa;
         }
 
         public void exibirTodasTarefas()
         {
             Paginas.Content = new TodasTarefasView();
+            ObjetoAtivo = null;
         }
 
         public void exibirTodosProcessos()
         {
             Paginas.Content = new TodosProcessosView();
+            ObjetoAtivo = null;
         }
 
         public void excluirTarefa(Tarefa tarefa)
@@ -169,16 +177,30 @@ namespace Modelagem
             //OnPropertyChanged(e.PropertyName);
         }
 
+        private void ObjetoView_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ObjetoAtivo")
+            {
+                var prop = sender.GetType().GetProperty(e.PropertyName);
+                ObjetoAtivo = prop == null ? null : prop.GetValue(sender, null) as Objeto;
+            }
+            else if (e.PropertyName == "TipoObjeto")
+            {
+                var prop = sender.GetType().GetProperty("ObjetoAtivo");
+                Objeto objeto = prop == null ? null : prop.GetValue(sender, null) as Objeto;
+
+                if (objeto is Tarefa)
+                    exibirTarefa((Tarefa)objeto);
+                else if (objeto is Processo)
+                    exibirProcesso((Processo)objeto);
+            }
+        }
+
         protected void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }
