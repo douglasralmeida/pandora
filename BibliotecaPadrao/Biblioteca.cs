@@ -9,19 +9,11 @@ namespace BibliotecaPadrao
 {
     public static class Biblioteca
     {
-        static readonly Modulo[] modulos = new Modulo[] { new Plenus() };
-
-        public static Modulo[] ObterTudo
-        {
-            get
-            {
-                return modulos;
-            }
-        }
+        public static Modulo[] ObterTudo { get; } = new Modulo[] { new Plenus() };
 
         public static Modulo Obter(string Nome)
         {
-            foreach (Modulo m in modulos)
+            foreach (Modulo m in ObterTudo)
             {
                 if (Nome == m.Nome)
                     return m;

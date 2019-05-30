@@ -35,11 +35,12 @@ namespace Modelagem
             InitializeComponent();
         }
 
-        public bool editarOperacao(Base.Operacao operacao)
+        public bool editarOperacao(Operacao operacao)
         {
             OperacaoView operacaoView = new OperacaoView(operacao)
             {
-                Owner = Application.Current.MainWindow
+                Owner = Application.Current.MainWindow,
+                ModuloUtilizado = _tarefaativa.Modulo
             };
             operacaoView.ShowDialog();
 
@@ -54,10 +55,10 @@ namespace Modelagem
         public void inserirOperacao()
         {
             int quantidadeOperacoes;
-            Base.Operacao novaoperacao;
+            Operacao novaoperacao;
 
             quantidadeOperacoes = _tarefaativa.getOperacoesCount();
-            novaoperacao = new Base.Operacao(quantidadeOperacoes + 1, "NovaOperacao", "");
+            novaoperacao = new Operacao(quantidadeOperacoes + 1, "NovaOperacao", "");
             if (editarOperacao(novaoperacao))
             {
                 _tarefaativa.Operacoes.Add(novaoperacao);
@@ -66,7 +67,7 @@ namespace Modelagem
 
         protected void OperacaoDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Base.Operacao operacao = ((ListViewItem)sender).Content as Base.Operacao;
+            Operacao operacao = ((ListViewItem)sender).Content as Base.Operacao;
 
             editarOperacao(operacao);
         }

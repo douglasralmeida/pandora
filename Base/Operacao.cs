@@ -21,7 +21,6 @@ namespace Base
             _id = id;
             _nome = comando;
             _parametros = parametros;
-            
         }
 
         public Operacao(XElement xml, int i)

@@ -6,55 +6,32 @@ using System.Threading.Tasks;
 
 namespace Execucao
 {
+    /* bool -> funcao executou corretamente
+     * string -> parametros da funcao
+     */
     public delegate (bool, string) Funcao(Dictionary<string, dynamic> constantes, ObservableCollection<Variavel> parametros);
 
     public class Comando
     {
-        private readonly ObservableCollection<Variavel> _parametros;
-
-        private readonly Dictionary<string, dynamic> _constantes;
-
         private Funcao _funcao;
 
-        private int _espera;
+        public Dictionary<string, dynamic> Constantes { get; private set; }
 
-        private string _retorno;
-
-        public Dictionary<string, dynamic> Constantes
-        {
-            get
-            {
-                return _constantes;
-            }
-        }
-
-        public int Espera
-        {
-            get
-            {
-                return _espera;
-            }
-        }
+        public int Espera { get; private set; }
 
         public string Nome
         {
             get; set;
         }
 
-        public ObservableCollection<Variavel> Parametros
-        {
-            get
-            {
-                return _parametros;
-            }
-        }
+        public ObservableCollection<Variavel> Parametros { get; private set; }
 
         public int ParamObrigatoriosCont
         {
             get
             {
                 int i = 0;
-                foreach (Variavel v in _parametros)
+                foreach (Variavel v in Parametros)
                 {
                     if (!v.Opcional)
                         i++;
@@ -64,22 +41,16 @@ namespace Execucao
             }
         }
 
-        public string Retorno
-        {
-            get
-            {
-                return _retorno;
-            }
-        }
+        public string Retorno { get; private set; }
 
         public Comando(string nome, Funcao funcao)
         {
             Nome = nome;
-            _constantes = null;
+            Constantes = null;
             _funcao = funcao;
-            _espera = 0;
-            _parametros = new ObservableCollection<Variavel>();
-            _retorno = null;
+            Espera = 0;
+            Parametros = new ObservableCollection<Variavel>();
+            Retorno = null;
         }
 
         public async Task<bool> executarAsync(Dictionary<string, dynamic> constantes, int atraso)
@@ -90,9 +61,9 @@ namespace Execucao
             if (atraso > 0)
                 espera = atraso;
             else
-                espera = _espera;
+                espera = Espera;
 
-            (executou, _retorno) = _funcao(constantes, _parametros);
+            (executou, Retorno) = _funcao(constantes, Parametros);
             if (espera > 0)
                 await Task.Delay(espera * 1000);
 
@@ -101,7 +72,7 @@ namespace Execucao
 
         public override string ToString()
         {
-            return Nome + string.Join(", ", _parametros);
+            return Nome + string.Join(", ", Parametros);
         }
     }
 }

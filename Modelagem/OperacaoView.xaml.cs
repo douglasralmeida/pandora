@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Base;
+using Execucao;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,34 +23,44 @@ namespace Modelagem
     /// </summary>
     public partial class OperacaoView : Window
     {
-        private readonly Base.Operacao _operacao;
-        private readonly Base.Operacao _copia;
+        public Modulo ModuloUtilizado { get; set; }
 
-        public OperacaoView(Base.Operacao operacao)
+        public string ComandoSelecionado { get; set; }
+
+        public int Id { get; }
+
+        public string Parametros { get; set; }
+
+        private Operacao _operacao;
+
+        public OperacaoView(Operacao operacao)
         {
             InitializeComponent();
+            Id = operacao.Id;
+            ComandoSelecionado = operacao.Nome;
+            Parametros = operacao.Parametros;
             _operacao = operacao;
-            _copia = new Base.Operacao(operacao.Id, operacao.Nome, operacao.Parametros);
-            //_copia.colarDe(_operacao);
-            DataContext = _operacao;
+            DataContext = this;
         }
 
         private void BtoCancelar_Click(object sender, RoutedEventArgs e)
         {
-            _operacao.colarDe(_copia);
-            this.DialogResult = false;
+            DialogResult = false;
         }
 
         private void BtoOk_Click(object sender, RoutedEventArgs e)
         {
-            if (_operacao.Nome.Length > 0)
-                this.DialogResult = true;
+            if (comboComando.SelectedIndex >= 0)
+            {
+                _operacao.Nome = ComandoSelecionado;
+                _operacao.Parametros = Parametros;
+                DialogResult = true;
+            }
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            editComando.Focus();
-            editComando.SelectAll();
+            comboComando.Focus();
         }
     }
 }

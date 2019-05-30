@@ -47,15 +47,15 @@ namespace BibliotecaPadrao
             return (false, null);
         };
 
-        public Plenus()
+        public Plenus() : base("Plenus")
         {
-            Nome = "Plenus";
+            
         }
 
         public override void adicionarComandos()
         {
-            //base.adicionarComandos();
-            Funcoes.Add("Autenticar", _funcaoAutenticar);
+            base.adicionarComandos();
+            Funcoes.Add("Autenticar", new FuncaoInfo(_funcaoAutenticar, 3));
         }
     }
 }

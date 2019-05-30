@@ -11,6 +11,17 @@ using System.Threading.Tasks;
 
 namespace Execucao
 {
+    public struct FuncaoInfo {
+        public Funcao funcao;
+        public int numArgumentos;
+
+        public FuncaoInfo(Funcao _func, int numArg)
+        {
+            funcao = _func;
+            numArgumentos = numArg;
+        }
+    }
+
     public class Modulo
     {
         [DllImport("user32.dll")]
@@ -61,38 +72,30 @@ namespace Execucao
             return (false, null);
         };
 
-        private Dictionary<String, Funcao> _funcoes;
-
         public string Nome
         {
             get; set;
         }
 
-        public Dictionary<String, Funcao> Funcoes
-        {
-            get
-            {
-                return _funcoes;
-            }
-        }
+        public Dictionary<string, FuncaoInfo> Funcoes { get; private set; }
 
         protected Modulo()
         {
-            _funcoes = new Dictionary<string, Funcao>();
+            Funcoes = new Dictionary<string, FuncaoInfo>();
             adicionarComandos();
         }
 
         public Modulo(string nome)
         {
-            _funcoes = new Dictionary<string, Funcao>();
+            Funcoes = new Dictionary<string, FuncaoInfo>();
             adicionarComandos();
             Nome = nome;
         }
 
         public virtual void adicionarComandos()
         {
-            _funcoes.Add("AbrirPrograma", _funcaoAbrirPrograma);
-            _funcoes.Add("Digitar", _funcaoDigitar);
+            Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 2));
+            Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
         }
 
         public override string ToString()

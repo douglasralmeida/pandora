@@ -92,11 +92,13 @@ namespace Execucao
             StringBuilder builder = new StringBuilder();
             Comando comando;
             List<Comando> comandos = new List<Comando>();
+            FuncaoInfo funcaoinfo;
             Funcao funcao;
 
             foreach (Operacao op in tarefa.Operacoes)
             {
-                tarefa.Modulo.Funcoes.TryGetValue(op.Nome, out funcao);
+                tarefa.Modulo.Funcoes.TryGetValue(op.Nome, out funcaoinfo);
+                funcao = funcaoinfo.funcao;
                 comando = new Comando(op.Nome, funcao);
 
                 Debug.Write("Parametros antes: " + op.Parametros);

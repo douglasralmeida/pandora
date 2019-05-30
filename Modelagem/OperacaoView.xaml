@@ -34,7 +34,13 @@
                     <Label Grid.Row="1" VerticalAlignment="Center">Comando:</Label>
                     <Label Grid.Row="2" VerticalAlignment="Center">Parâmetros:</Label>
                     <TextBox Name="editId" IsReadOnly="True" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Id, Mode=OneWay}"></TextBox>
-                    <TextBox Name="editComando" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Comando}"></TextBox>
+                    <ComboBox Name="comboComando" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Path=ModuloUtilizado.Funcoes}" SelectedValuePath="Key" SelectedValue="{Binding Path=ComandoSelecionado}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Path=Key}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <TextBox Name="editParam"  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Parametros}"></TextBox>
                 </Grid>
             </WrapPanel>
