@@ -16,8 +16,8 @@
                     <DockPanel>
                         <ToolBarTray DockPanel.Dock="Top">
                             <ToolBar>
-                                <Button Content="Novo processo" Click="BtoInserirProcesso_Click" />
-                                <Button Content="Excluir processo" />
+                                <Button x:Name="BtoInserirProcesso" Content="Novo processo" Click="BtoInserirProcesso_Click" />
+                                <Button x:Name="BtoExcluirProcesso" Content="Excluir processo" Click="BtoExcluirProcesso_Click" />
                             </ToolBar>
                         </ToolBarTray>
                         <TreeView x:Name="ArvoreProcessos" MinWidth="220"  SelectedItemChanged="ArvoreProcessos_SelectedItemChanged" GotFocus="ArvoreProcessos_GotFocus">

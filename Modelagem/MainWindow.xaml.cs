@@ -2,13 +2,13 @@
 using Execucao;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Modelagem
 {
-    public class BoolToStringConverter : BoolToValueConverter<String> { };
+    public class BoolToStringConverter : BoolToValueConverter<string> { };
 
     /// <summary>
     /// Interação lógica para MainWindow.xam
@@ -70,6 +70,7 @@ namespace Modelagem
             _depuracao = new DepuracaoView(_depurador);
             try
             {
+                Mouse.OverrideCursor = Cursors.AppStarting;
                 ControlePrincipal.Content = _depuracao;
                 central.gerarInstancia();
                 central.Variaveis = _config.Entradas;
@@ -82,6 +83,7 @@ namespace Modelagem
             {
                 t.Join();
                 ControlePrincipal.Content = _edicao;
+                Mouse.OverrideCursor = null;
             }
         }
 
