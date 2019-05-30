@@ -50,47 +50,31 @@ namespace Base
 
         private string _nomegerador;
 
-        private readonly ObservableCollection<Tarefa> _tarefas;
-
-        private readonly ObservableCollection<Processo> _processos;
-
         public event ProcessoAddedEventHandler ProcessoAdded;
 
         public event TarefaAddedEventHandler TarefaAdded;
 
-        public ObservableCollection<Processo> Processos
-        {
-            get
-            {
-                return _processos;
-            }
-        }
+        public ObservableCollection<Processo> Processos { get; private set; }
 
-        public ObservableCollection<Tarefa> Tarefas
-        {
-            get
-            {
-                return _tarefas;
-            }
-        }
+        public ObservableCollection<Tarefa> Tarefas { get; private set; }
 
         public Pacote(string nomecriador)
         {
-            this._nomegerador = nomecriador;
-            this.nomeElementoXml = "pacote";
-            _tarefas = new ObservableCollection<Tarefa>();
-            _tarefas.CollectionChanged += Tarefas_CollectionChanged;
-            _processos = new ObservableCollection<Processo>();
-            _processos.CollectionChanged += Processos_CollectionChanged;
+            _nomegerador = nomecriador;
+            nomeElementoXml = "pacote";
+            Tarefas = new ObservableCollection<Tarefa>();
+            Tarefas.CollectionChanged += Tarefas_CollectionChanged;
+            Processos = new ObservableCollection<Processo>();
+            Processos.CollectionChanged += Processos_CollectionChanged;
         }
 
         public Pacote(XElement xml)
         {
-            this.nomeElementoXml = "pacote";
-            _tarefas = new ObservableCollection<Tarefa>();
-            _tarefas.CollectionChanged += Tarefas_CollectionChanged;
-            _processos = new ObservableCollection<Processo>();
-            _processos.CollectionChanged += Processos_CollectionChanged;
+            nomeElementoXml = "pacote";
+            Tarefas = new ObservableCollection<Tarefa>();
+            Tarefas.CollectionChanged += Tarefas_CollectionChanged;
+            Processos = new ObservableCollection<Processo>();
+            Processos.CollectionChanged += Processos_CollectionChanged;
             analisarXml(xml);
         }
 
@@ -145,7 +129,7 @@ namespace Base
                 {
                     novatarefa = carregarTarefa(el);
                     if (novatarefa != null)
-                        _tarefas.Add(novatarefa);
+                        Tarefas.Add(novatarefa);
                 }
             }
             foreach (XElement el in processos.Elements())
@@ -154,7 +138,7 @@ namespace Base
                 {
                     novoprocesso = carregarProcesso(el);
                     if (novoprocesso != null)
-                        _processos.Add(novoprocesso);
+                        Processos.Add(novoprocesso);
                 }
             }
         }
@@ -163,7 +147,7 @@ namespace Base
         {
             Processo processo;
 
-            processo = new Processo(xml, _tarefas, _processos);
+            processo = new Processo(xml, Tarefas, Processos);
 
             return processo;
         }
@@ -199,12 +183,15 @@ namespace Base
             cabecalho.Add(geracao);
 
             processos = new XElement("processos");
-            //adidionar cada processo aqui
+            foreach(Processo processo in Processos)
+            {
+                processos.Add(processo.gerarXml());
+            }
 
             tarefas = new XElement("tarefas");
-            foreach (Base.Tarefa _tarefa in _tarefas)
+            foreach (Tarefa tarefa in Tarefas)
             {
-                tarefas.Add(_tarefa.gerarXml());
+                tarefas.Add(tarefa.gerarXml());
             }
 
             conteudo = new XElement("conteudo");
@@ -222,8 +209,8 @@ namespace Base
         {
             Processo novoprocesso;
 
-            novoprocesso = new Processo("NovoProcesso", _tarefas, _processos);
-            _processos.Add(novoprocesso);
+            novoprocesso = new Processo("NovoProcesso", Tarefas, Processos);
+            Processos.Add(novoprocesso);
 
             OnProcessoAdded(novoprocesso);
         }
@@ -233,7 +220,7 @@ namespace Base
             Tarefa novatarefa;
 
             novatarefa = new Tarefa("NovaTarefa");
-            _tarefas.Add(novatarefa);
+            Tarefas.Add(novatarefa);
 
             OnTarefaAdded(novatarefa);
         }

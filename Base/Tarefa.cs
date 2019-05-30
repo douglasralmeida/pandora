@@ -148,7 +148,7 @@ namespace Base
             XElement tarefa;
             XElement operacoes;
 
-            tarefa = new XElement(nomeElementoXml);
+            tarefa = base.gerarXml();
             tarefa.Add(new XElement("nome", Nome));
             tarefa.Add(new XElement("descricao", Descricao));
             tarefa.Add(new XElement("modulo", Modulo));

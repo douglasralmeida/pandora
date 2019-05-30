@@ -1,6 +1,7 @@
 ﻿using Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,10 @@ namespace Modelagem
     public partial class ObjetoView : UserControl
     {
         protected Objeto _objetoativo = null;
+
+        public ObservableCollection<Processo> TodosProcessos;
+
+        public ObservableCollection<Tarefa> TodasTarefas;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

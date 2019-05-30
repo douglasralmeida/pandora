@@ -139,6 +139,8 @@ namespace Modelagem
         {
             ProcessoView processoview = new ProcessoView();
 
+            processoview.TodosProcessos = _editor.Processos;
+            processoview.TodasTarefas = _editor.Tarefas;
             processoview.PropertyChanged += ObjetoView_PropertyChanged;
             processoview.ObjetoAtivo = processo;
             Paginas.Content = processoview;

@@ -22,9 +22,11 @@ namespace Modelagem
     /// </summary>
     public partial class ProcessoView : ObjetoView
     {
+        private Processo _processoativo => (Processo)_objetoativo;
+
         public ProcessoView()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         protected void AtividadeDoubleClick(object sender, MouseButtonEventArgs e)
@@ -32,6 +34,26 @@ namespace Modelagem
             Objeto objeto = ((ListViewItem)sender).Content as Objeto;
 
             ObjetoAtivo = objeto;
+        }
+
+        private void BtoInserirAtividade_Click(object sender, RoutedEventArgs e)
+        {
+            Objeto objeto;
+
+            AtividadesView atividadesView = new AtividadesView()
+            {
+                Owner = Application.Current.MainWindow
+            };
+            atividadesView.TodasAtividades_Adicionar(TodasTarefas);
+            atividadesView.TodasAtividades_Adicionar(TodosProcessos);
+            atividadesView.ShowDialog();
+
+            if (atividadesView.DialogResult ?? true)
+            {
+                objeto = atividadesView.ObjetoSelecionado;
+                _processoativo.Atividades.Add(objeto);
+            }
+
         }
     }
 }

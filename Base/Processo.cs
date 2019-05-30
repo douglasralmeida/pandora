@@ -105,5 +105,34 @@ namespace Base
         {
             OnPropertyChanged("Atividades");
         }
+
+        public override XElement gerarXml()
+        {
+            XElement processo;
+            XElement atividades;
+            XElement atividade;
+            string tipoatividade = "";
+
+            processo = base.gerarXml();
+            processo.Add(new XElement("nome", Nome));
+            processo.Add(new XElement("descricao", Descricao));
+
+            atividades = new XElement("atividades");
+            foreach (Objeto objeto in _atividades)
+            {
+                if (objeto is Tarefa)
+                    tipoatividade = "tarefa";
+                else if (objeto is Processo)
+                    tipoatividade = "subprocesso";
+                atividade = new XElement("atividade");
+                atividade.Add(new XElement(tipoatividade, objeto.Nome));
+
+                atividades.Add(atividade);
+            }
+
+            processo.Add(atividades);
+
+            return processo;
+        }
     }
 }

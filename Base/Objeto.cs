@@ -48,12 +48,11 @@ namespace Base
         }
         public virtual XElement gerarXml()
         {
-            //XAttribute[] vazio = { };
-            //List<XAttribute> builder = new List<XAttribute>();
-            //builder.Add(new XAttribute("nomeatributo", valor);
-            //return builder.ToArray();
+            XElement objeto;
 
-            return null;
+            objeto = new XElement(nomeElementoXml);
+
+            return objeto;
         }
 
         protected void OnPropertyChanged(string propertyName)

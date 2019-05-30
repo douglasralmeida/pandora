@@ -2,7 +2,7 @@
 <pacote>
     <cabecalho>
         <versao>1</versao>
-        <geracao nome="Douglas Rodrigues de Almeida" data="20/05/2019"></geracao>
+        <geracao nome="Douglas Rodrigues de Almeida" data="2019-05-01T00:00:00.000000-03:00" />
     </cabecalho>
     <conteudo>
         <tarefas>
@@ -13,6 +13,17 @@
                 <operacoes>
                     <operacao>
                         <comando>Digitar "INFBEN{ENTER}"</comando>
+                    </operacao>
+                    <operacao>
+                        <comando>CompararPalavra 0 0 4 "casa"</comando>
+                        <desvio retorno="verdadeiro">
+                            <operacoes>
+                            </operacoes>
+                        </desvio>
+                        <desvio retorno="falso">
+                            <operacoes>
+                            </operacoes>
+                        </desvio>
                     </operacao>
                 </operacoes>
             </tarefa>

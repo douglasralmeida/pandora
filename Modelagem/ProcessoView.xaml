@@ -40,7 +40,7 @@
             <DockPanel DockPanel.Dock="Top">
                 <ToolBarTray x:Name="BarraAtividade" DockPanel.Dock="Top">
                     <ToolBar>
-                        <Button>Inserir Atividade...</Button>
+                        <Button x:Name="btoInserirAtividade" Click="BtoInserirAtividade_Click">Inserir Atividade...</Button>
                         <Button>Excluir Atividade</Button>
                     </ToolBar>
                 </ToolBarTray>

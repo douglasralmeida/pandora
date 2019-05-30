@@ -90,9 +90,10 @@ namespace Base
             XElement comando;
             XElement operacao;
 
+            operacao = base.gerarXml();
             comando = new XElement("comando");
             comando.Value = _nome + " " + _parametros;
-            operacao = new XElement(nomeElementoXml);
+
             operacao.Add(comando);
 
             return operacao;
