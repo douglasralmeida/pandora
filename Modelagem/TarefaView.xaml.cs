@@ -74,9 +74,16 @@ namespace Modelagem
 
         private void BtoExcluirOperacao_Click(object sender, RoutedEventArgs e)
         {
-            const string PERG_EXCLUIROP = "Você tem certeza que deseja excluir a operação selecionada?";
+            const string PERG_EXCLUIROP_1 = "Você tem certeza que deseja excluir a operação selecionada?";
+            const string PERG_EXCLUIROP_MAIS1 = "Você tem certeza que deseja excluir todas as operações selecionadas?";
+            string mensagem;
 
-            if (CaixaDialogo.PerguntaSimples(PERG_EXCLUIROP))
+            if (listaOperacoes.SelectedItems.Count == 1)
+                mensagem = PERG_EXCLUIROP_1;
+            else
+                mensagem = PERG_EXCLUIROP_MAIS1;
+
+            if (CaixaDialogo.PerguntaSimples(mensagem))
             {
                 if (listaOperacoes.SelectedItems.Count > 0)
                 {

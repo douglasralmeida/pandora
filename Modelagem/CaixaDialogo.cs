@@ -17,6 +17,7 @@ namespace Modelagem
             List<Dialogo.TaskDialogButton> botoes = new List<Dialogo.TaskDialogButton>();
 
             pergunta.MainInstruction = mensagem;
+            pergunta.WindowTitle = "Pergunta";
 
             botao = new Dialogo.TaskDialogButton();
             botao.ButtonId = Convert.ToInt32(DialogResult.OK);

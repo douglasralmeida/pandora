@@ -55,5 +55,29 @@ namespace Modelagem
             }
 
         }
+
+        private void BtoExcluirAtividade_Click(object sender, RoutedEventArgs e)
+        {
+            const string PERG_EXCLUIRAT_1 = "Você tem certeza que deseja excluir a atividade selecionada do processo atual?";
+            const string PERG_EXCLUIRAT_MAIS1 = "Você tem certeza que deseja excluir todas as atividades selecionadas do processo atual?";
+            string mensagem;
+
+            if (ListaAtividades.SelectedItems.Count == 1)
+                mensagem = PERG_EXCLUIRAT_1;
+            else
+                mensagem = PERG_EXCLUIRAT_MAIS1;
+
+            if (CaixaDialogo.PerguntaSimples(mensagem))
+            {
+                if (ListaAtividades.SelectedItems.Count > 0)
+                {
+                    var lista = ListaAtividades.SelectedItems.Cast<Objeto>().ToList();
+                    foreach (Objeto objeto in lista)
+                    {
+                        _processoativo.Atividades.Remove(objeto);
+                    }
+                }
+            }
+        }
     }
 }

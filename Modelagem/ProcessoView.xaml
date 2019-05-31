@@ -41,10 +41,10 @@
                 <ToolBarTray x:Name="BarraAtividade" DockPanel.Dock="Top">
                     <ToolBar>
                         <Button x:Name="btoInserirAtividade" Click="BtoInserirAtividade_Click">Inserir Atividade...</Button>
-                        <Button>Excluir Atividade</Button>
+                        <Button x:Name="BtoExcluirAtividade" IsEnabled="{Binding ElementName=ListaAtividades, Path=SelectedItems.Count}" Click="BtoExcluirAtividade_Click">Excluir Atividade</Button>
                     </ToolBar>
                 </ToolBarTray>
-                <ListView x:Name="listaAtividades" ItemsSource="{Binding Atividades}">
+                <ListView x:Name="ListaAtividades" ItemsSource="{Binding Atividades}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn HeaderContainerStyle="{StaticResource ListViewStyle}" Header="Atividade" Width="200" DisplayMemberBinding="{Binding Nome}" />
