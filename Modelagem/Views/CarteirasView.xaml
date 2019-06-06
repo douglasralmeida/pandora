@@ -1,0 +1,22 @@
+﻿<Window x:Class="Modelagem.CarteirasView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Modelagem"
+        mc:Ignorable="d"
+        Title="Carteiras" Height="540" Width="860" ContentRendered="Window_ContentRendered">
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Name="btoNovaCarteira" Click="BtoNovaCarteira_Click">Nova carteira</Button>
+            </ToolBar>
+        </ToolBarTray>
+        <ListBox DockPanel.Dock="Left" MinWidth="232">
+            
+        </ListBox>
+        <ContentControl Name="Pagina">
+            
+        </ContentControl>
+    </DockPanel>
+</Window>

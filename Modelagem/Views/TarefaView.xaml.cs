@@ -23,7 +23,6 @@ namespace Modelagem
     /// </summary>
     public partial class TarefaView : ObjetoView
     {
-
         private Tarefa _tarefaativa
         {
             get => (Tarefa)_objetoativo;

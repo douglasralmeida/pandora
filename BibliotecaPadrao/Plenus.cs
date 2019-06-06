@@ -57,5 +57,12 @@ namespace BibliotecaPadrao
             base.adicionarComandos();
             Funcoes.Add("Autenticar", new FuncaoInfo(_funcaoAutenticar, 3));
         }
+
+        public override void adicionarConstNecessarias()
+        {
+            ConstantesNecessarias.Add("PLENUS_USUARIO", new ConstanteInfo("Usuário de acesso ao Plenus", false));
+            ConstantesNecessarias.Add("PLENUS_MAT", new ConstanteInfo("Matrícula para acesso ao Plenus", false));
+            ConstantesNecessarias.Add("PLENUS_SENHA", new ConstanteInfo("Senha de acesso ao Plenus", true));
+        }
     }
 }

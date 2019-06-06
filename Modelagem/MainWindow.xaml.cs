@@ -1,7 +1,9 @@
 ﻿using Base;
 using Execucao;
 using Microsoft.Win32;
+using Modelagem.Views;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -15,7 +17,7 @@ namespace Modelagem
     /// </summary>
     public partial class MainWindow : Window
     {
-        Config _config;
+        App _app = (Application.Current as App);
 
         DepuracaoView _depuracao;
 
@@ -25,14 +27,12 @@ namespace Modelagem
 
         Editor _editor;
 
-        private const string NOMEAPLICACAO = "Modelagem de Processos do Pandora";
         public MainWindow()
         {
             InitializeComponent();
-            _config = new Config();
             _editor = new Editor();
             _edicao = new EditorView(_editor);
-            _editor.novo(_config.UsuarioNome);
+            _editor.novo(_app.Configuracoes.UsuarioNome);
             DataContext = _edicao;
             ControlePrincipal.Content = _edicao;
         }
@@ -48,7 +48,7 @@ namespace Modelagem
 
         private void BtoNovoPacote_Click(object sender, RoutedEventArgs e)
         {
-            _editor.novo(_config.UsuarioNome);
+            _editor.novo(_app.Configuracoes.UsuarioNome);
         }
 
         private void BtoSalvarPacote_Click(object sender, RoutedEventArgs e)
@@ -73,7 +73,7 @@ namespace Modelagem
                 Mouse.OverrideCursor = Cursors.AppStarting;
                 ControlePrincipal.Content = _depuracao;
                 central.gerarInstancia();
-                central.Variaveis = _config.Entradas;
+                central.Variaveis = _app.Configuracoes.Entradas;
                 central.carregar(_edicao.ObjetoAtivo);
                 // chama central.processar() em uma thread separada
                 t.Start();
@@ -89,15 +89,28 @@ namespace Modelagem
 
         private void BtoOpcoesEntrada_Click(object sender, RoutedEventArgs e)
         {
-            EntradasView entradasVisao = new EntradasView(_config.Entradas.ToString(), _config.DirTrabalho);
+            EntradasView entradasVisao = new EntradasView(_app.Configuracoes.Entradas.ToString(), _app.Configuracoes.DirTrabalho); ;
 
             entradasVisao.Owner = Application.Current.MainWindow;
             entradasVisao.ShowDialog();
 
             if (entradasVisao.DialogResult ?? true)
             {
-                _config.setEntradasFromString(entradasVisao.Entradas);
-                _config.DirTrabalho = entradasVisao.Dir;
+                _app.Configuracoes.setEntradasFromString(entradasVisao.Entradas);
+                _app.Configuracoes.DirTrabalho = entradasVisao.Dir;
+            }
+        }
+
+        private void BtoCarteiras_Click(object sender, RoutedEventArgs e)
+        {
+            CarteirasView carteirasVisao = new CarteirasView(_app.Carteiras);
+
+            carteirasVisao.Owner = Application.Current.MainWindow;
+            carteirasVisao.ShowDialog();
+
+            if (carteirasVisao.DialogResult ?? true)
+            {
+
             }
         }
     }

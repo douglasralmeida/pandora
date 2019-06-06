@@ -11,6 +11,23 @@ using System.Threading.Tasks;
 
 namespace Execucao
 {
+    /* CONSTANTEINFO
+     * descricao = Descrição da constante
+     * oculta    = Trata a constante como senha
+     */
+    public struct ConstanteInfo
+    {
+        public string descricao;
+        public bool oculta;
+
+        public ConstanteInfo(string desc, bool oc)
+        {
+            descricao = desc;
+            oculta = oc;
+        }
+    }
+
+
     public struct FuncaoInfo {
         public Funcao funcao;
         public int numArgumentos;
@@ -79,16 +96,14 @@ namespace Execucao
 
         public Dictionary<string, FuncaoInfo> Funcoes { get; private set; }
 
-        protected Modulo()
-        {
-            Funcoes = new Dictionary<string, FuncaoInfo>();
-            adicionarComandos();
-        }
+        public Dictionary<string, ConstanteInfo> ConstantesNecessarias { get; private set; }
 
         public Modulo(string nome)
         {
+            ConstantesNecessarias = new Dictionary<string, ConstanteInfo>();
             Funcoes = new Dictionary<string, FuncaoInfo>();
             adicionarComandos();
+            adicionarConstNecessarias();
             Nome = nome;
         }
 
@@ -96,6 +111,11 @@ namespace Execucao
         {
             Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 2));
             Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
+        }
+
+        public virtual void adicionarConstNecessarias()
+        {
+
         }
 
         public override string ToString()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dialogo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,33 +10,57 @@ namespace Modelagem
 {
     public static class CaixaDialogo
     {
+        private static TaskDialog criarDialogo(string textoPadrao)
+        {
+            TaskDialog dialogo = new TaskDialog();
+
+            dialogo.MainInstruction = textoPadrao;
+            dialogo.DefaultButton = 0;
+
+            return dialogo;
+        }
+
         public static bool PerguntaSimples(string mensagem)
         {
-            Dialogo.TaskDialogButton botao;
-            Dialogo.TaskDialog pergunta = new Dialogo.TaskDialog();
+            TaskDialogButton botao;
+            TaskDialog pergunta = criarDialogo(mensagem);
             DialogResult resultado;
             List<Dialogo.TaskDialogButton> botoes = new List<Dialogo.TaskDialogButton>();
 
-            pergunta.MainInstruction = mensagem;
+            pergunta.MainIcon = TaskDialogIcon.Information;
             pergunta.WindowTitle = "Pergunta";
+            pergunta.UseCommandLinks = true;
 
-            botao = new Dialogo.TaskDialogButton();
+            botao = new TaskDialogButton();
             botao.ButtonId = Convert.ToInt32(DialogResult.OK);
             botao.ButtonText = "Sim";
             botoes.Add(botao);
-
-            botao = new Dialogo.TaskDialogButton();
+            
+            botao = new TaskDialogButton();
             botao.ButtonId = Convert.ToInt32(DialogResult.Cancel);
             botao.ButtonText = "Não";
             botoes.Add(botao);
 
-            pergunta.MainIcon = Dialogo.TaskDialogIcon.Information;
             pergunta.Buttons = botoes.ToArray();
-            pergunta.UseCommandLinks = true;
-            pergunta.DefaultButton = 0;
+
             resultado = (DialogResult)pergunta.Show();
 
             return resultado == DialogResult.OK;
+        }
+
+        public static void ErroSimples(string mensagem)
+        {
+            TaskDialogCommonButtons botoes = 0;
+            TaskDialog erroMensagem = criarDialogo(mensagem);
+
+            erroMensagem.MainIcon = TaskDialogIcon.Error;
+            erroMensagem.WindowTitle = "Erro";
+            erroMensagem.UseCommandLinks = false;
+
+            botoes |= TaskDialogCommonButtons.Ok;
+            erroMensagem.CommonButtons = botoes;
+
+            erroMensagem.Show();
         }
     }
 }

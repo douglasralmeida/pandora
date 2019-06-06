@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Base
 {
-    class Config
+    public class Config
     {
         private string _usuarioNome;
 

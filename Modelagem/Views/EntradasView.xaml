@@ -30,13 +30,13 @@
                     <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">Entradas da execução:</Label>
                     <Label Grid.Row="1" Grid.Column="0"  VerticalAlignment="Top">Diretório de trabalho:</Label>
                     <TextBox Name="editEntradas" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Text="{Binding Entradas}" TextWrapping="Wrap" AcceptsReturn="True" Height="192" Margin="4"></TextBox>
-                    <TextBox Name="editDir" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Text="{Binding Dir}" Margin="4"></TextBox>
+                    <TextBox Name="editDir" Height="23" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Text="{Binding Dir}" Margin="4"></TextBox>
                 </Grid>
             </WrapPanel>
         </DockPanel>
         <WrapPanel Grid.Row="3" HorizontalAlignment="Right" Margin="0,15,83,0">
-            <Button x:Name="btoOk" IsDefault="True" MinWidth="60" Margin="0,0,10,0" Click="BtoOk_Click">_OK</Button>
-            <Button x:Name="btoCancelar" IsCancel="True" MinWidth="60" Click="BtoCancelar_Click" >_Cancelar</Button>
+            <Button x:Name="btoOk" IsDefault="True" Height="23" MinWidth="75" Margin="0,0,10,0" Click="BtoOk_Click">_OK</Button>
+            <Button x:Name="btoCancelar" IsCancel="True" Height="23" MinWidth="75" Click="BtoCancelar_Click" >_Cancelar</Button>
         </WrapPanel>
     </Grid>
 </Window>

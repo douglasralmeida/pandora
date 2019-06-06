@@ -22,14 +22,15 @@
             <ToolBar BandIndex="0">
                 <Button x:Name="btoNovoPacote" Content="Novo pacote" Click="BtoNovoPacote_Click" />
                 <Button x:Name="btoAbrirPacote" Content="Abrir pacote..." Click="BtoAbrirPacote_Click" />
-                <Button x:Name="btoSalvarPacote" Content="Salvar pacote..." Click="BtoSalvarPacote_Click"/>
+                <Button x:Name="btoSalvarPacote" Content="Salvar pacote..." Click="BtoSalvarPacote_Click" />
             </ToolBar>
             <ToolBar BandIndex="1">
                 <Button x:Name="btoDepurar" Content="Executar" Click="BtoDepurar_Click" />
                 <Button x:Name="btoOpcoesEntrada" Content="Opções de Execução..." Click="BtoOpcoesEntrada_Click" />
             </ToolBar>
             <ToolBar BandIndex="2">
-                <Button x:Name="btoCarteira" Content="Carteiras..." />
+                <Button x:Name="btoCarteiraEscolher" Content="Escolher carteira" />
+                <Button x:Name="btoCarteiras" Content="Carteiras..." VerticalAlignment="Top" Click="BtoCarteiras_Click" />
                 <Button x:Name="btoVariaveis" Content="Variáveis globais..." />
             </ToolBar>
         </ToolBarTray>

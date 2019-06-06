@@ -79,6 +79,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -98,56 +99,86 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AtividadesView.xaml.cs">
+    <Compile Include="CarteiraInicio.xaml.cs">
+      <DependentUpon>CarteiraInicio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CarteiraSenha.xaml.cs">
+      <DependentUpon>CarteiraSenha.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CarteiraView.xaml.cs">
+      <DependentUpon>CarteiraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Entrada.cs" />
+    <Compile Include="Views\AtividadesView.xaml.cs">
       <DependentUpon>AtividadesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BoolToValueConverter.cs" />
     <Compile Include="CaixaDialogo.cs" />
+    <Compile Include="Carteira.cs" />
+    <Compile Include="Views\CarteirasView.xaml.cs">
+      <DependentUpon>CarteirasView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Depuracao.cs" />
-    <Compile Include="DepuracaoView.xaml.cs">
+    <Compile Include="Views\DepuracaoView.xaml.cs">
       <DependentUpon>DepuracaoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor.cs" />
-    <Compile Include="EditorView.xaml.cs">
+    <Compile Include="Views\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EntradasView.xaml.cs">
+    <Compile Include="Views\EntradasView.xaml.cs">
       <DependentUpon>EntradasView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InicioViewModel.cs" />
-    <Compile Include="InicioView.xaml.cs">
+    <Compile Include="Views\InicioViewModel.cs" />
+    <Compile Include="Views\InicioView.xaml.cs">
       <DependentUpon>InicioView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ObjectView.cs" />
-    <Compile Include="OperacaoView.xaml.cs">
+    <Compile Include="Views\ObjectView.cs" />
+    <Compile Include="Views\OperacaoView.xaml.cs">
       <DependentUpon>OperacaoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TarefaView.xaml.cs">
+    <Compile Include="Views\TarefaView.xaml.cs">
       <DependentUpon>TarefaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TodasTarefasView.xaml.cs">
+    <Compile Include="Views\TodasTarefasView.xaml.cs">
       <DependentUpon>TodasTarefasView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TodosProcessosView.xaml.cs">
+    <Compile Include="Views\TodosProcessosView.xaml.cs">
       <DependentUpon>TodosProcessosView.xaml</DependentUpon>
     </Compile>
-    <Page Include="AtividadesView.xaml">
+    <Page Include="CarteiraInicio.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DepuracaoView.xaml">
+    <Page Include="CarteiraSenha.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditorView.xaml">
+    <Page Include="CarteiraView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EntradasView.xaml">
+    <Page Include="Views\AtividadesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="InicioView.xaml">
+    <Page Include="Views\CarteirasView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DepuracaoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EntradasView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InicioView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -163,29 +194,29 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="OperacaoView.xaml">
+    <Page Include="Views\OperacaoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProcessoView.xaml">
+    <Page Include="Views\ProcessoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TarefaView.xaml">
+    <Page Include="Views\TarefaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TodasTarefasView.xaml">
+    <Page Include="Views\TodasTarefasView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TodosProcessosView.xaml">
+    <Page Include="Views\TodosProcessosView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProcessoView.xaml.cs">
+    <Compile Include="Views\ProcessoView.xaml.cs">
       <DependentUpon>ProcessoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
