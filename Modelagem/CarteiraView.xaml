@@ -8,10 +8,10 @@
              d:DesignHeight="500" d:DesignWidth="800">
     <UserControl.Resources>
         <DataTemplate x:Key="senhaTemplate">
-            <PasswordBox Tag="{Binding Id}" PasswordChanged="PasswordBox_PasswordChanged" VerticalContentAlignment="Center" />
+            <PasswordBox Tag="{Binding Id}" PasswordChanged="PasswordBox_PasswordChanged" VerticalContentAlignment="Center" MaxLength="32" />
         </DataTemplate>
         <DataTemplate x:Key="textoTemplate">
-            <TextBox Text="{Binding Valor}" VerticalContentAlignment="Center" />
+            <TextBox Text="{Binding Valor}" VerticalContentAlignment="Center" MaxLength="32"/>
         </DataTemplate>
         <DataTemplate x:Key="senhaVerTemplate">
             <Label Content="(oculto)" VerticalContentAlignment="Center"/>

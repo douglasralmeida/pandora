@@ -52,7 +52,7 @@ namespace Modelagem
 
         public string NomeCarteira
         {
-            get => carteira.ToString();
+            get => carteira.Nome;
         }
 
         public List<CarteiraItem> ItensCarteira
@@ -65,36 +65,37 @@ namespace Modelagem
             get => !carteira.Nova;
         }
 
-        public string Responsavel
-        {
-            get => carteira.Responsavel;
-
-            set => carteira.Responsavel = value;
-        }
+        public string Responsavel { get; set; }
 
         public CarteiraView(Carteira carteira)
         {
-            int i = 0;
-            Modulo[] modulos;
-
             InitializeComponent();
             Exclusao = false;
             this.carteira = carteira;
-            modulos = BibliotecaPadrao.Biblioteca.ObterTudo;
             itens = new List<CarteiraItem>();
-            foreach (Modulo mod in modulos)
+            DataContext = this;
+        }
+
+        public void abrirCarteira(byte[] hash)
+        {
+            CarteiraItem ci;
+            int i = 0;
+            string valor;
+
+            KeyValuePair<string, ConstanteInfo>[] ctes = BibliotecaPadrao.Biblioteca.obterCtesChaves();
+            Responsavel = carteira.Responsavel;
+            itens.Clear();
+            foreach (KeyValuePair<string, ConstanteInfo> c in ctes)
             {
-                foreach (KeyValuePair<string, ConstanteInfo> par in mod.ConstantesNecessarias)
+                if (carteira.Dados.ContainsKey(c.Key))
                 {
-                    CarteiraItem ci = new CarteiraItem(mod.Nome + "." + par.Key, par.Value.descricao, "", par.Value.oculta);
+                    valor = carteira.obterItem(c.Key, hash);
+                    ci = new CarteiraItem(c.Key, c.Value.descricao, valor, c.Value.oculta);
                     ci.Id = i;
                     itens.Add(ci);
                     i++;
                 }
             }
-            //ItensCarteira.Keys
-            //ItensCarteira.Values
-            DataContext = this;
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
@@ -124,13 +125,13 @@ namespace Modelagem
 
         private void BtoSalvarCarteira_Click(object sender, RoutedEventArgs e)
         {
-            if (carteira.Responsavel.Trim().Length == 0)
+            if (Responsavel.Trim().Length == 0)
             {
                 CaixaDialogo.ErroSimples(ERRO_NOMERESPONSAVEL_VAZIO);
                 return;
             }
 
-            if (CaixaSenha1.SecurePassword != CaixaSenha2.SecurePassword)
+            if (CaixaSenha1.Password != CaixaSenha2.Password)
             {
                 CaixaDialogo.ErroSimples(ERRO_SENHAS_DIFERENTES);
                 return;
@@ -140,17 +141,14 @@ namespace Modelagem
 
         private void salvarCarteira()
         {
-            int i;
-            byte[] hash, dados, dadosseguros;
+            byte[] hash;
 
-            dados = Encoding.ASCII.GetBytes(CaixaSenha1.Password);
             SHA512 sha = new SHA512Managed();
-            hash = sha.ComputeHash(dados);
-
+            hash  = sha.ComputeHash(Encoding.ASCII.GetBytes(CaixaSenha1.Password));
             foreach (CarteiraItem item in itens)
-            {
-                dadosseguros = ProtectedData.Protect(info, hash, DataProtectionScope.CurrentUser);
-            }
+                carteira.alterarItem(item.Nome, hash, item.Valor);
+            carteira.Salvar(Responsavel);
+            OnPropertyChanged("Salvamento");
         }
     }
 }

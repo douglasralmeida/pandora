@@ -1,6 +1,7 @@
 ﻿using Modelagem.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 
 namespace Modelagem
@@ -12,14 +13,16 @@ namespace Modelagem
     {
         CarteiraView visaoCarteira;
 
-        private Carteira carteira;
+        private Carteira carteira = null;
 
-        private List<Carteira> carteiras;
+        public List<Carteira> Carteiras { get; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public CarteirasView(List<Carteira> carteiras)
         {
             InitializeComponent();
-            this.carteiras = carteiras;
+            Carteiras = carteiras;
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
@@ -29,20 +32,59 @@ namespace Modelagem
 
         private void BtoNovaCarteira_Click(object sender, RoutedEventArgs e)
         {
-            Carteira carteira = new Carteira();
+            carteira = new Carteira();
+            ExibirCarteira(new byte[1]);
+        }
 
+        private void ExibirCarteira(byte[] hash)
+        {
             visaoCarteira = new CarteiraView(carteira);
             visaoCarteira.PropertyChanged += VisaoCarteira_PropertyChanged;
             Pagina.Content = visaoCarteira;
+            visaoCarteira.abrirCarteira(hash);
+        }
+
+        private void ListaCarteiras_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (ListaCarteiras.SelectedItem != null)
+            {
+                carteira = (ListaCarteiras.SelectedItem as Carteira);
+                SolicitarSenha();
+            }
+            else
+            {
+                carteira = null;
+                irParaPaginaInicial();
+            }
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void SolicitarSenha()
+        {
+            byte[] hash;
+
+            hash = new byte[1];
+
+            ExibirCarteira(hash);
         }
 
         private void VisaoCarteira_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Exclusao")
             {
-                if (visaoCarteira.Exclusao && carteiras.Exists(x => x == carteira))
-                    carteiras.Remove(carteira);
+                if (visaoCarteira.Exclusao && Carteiras.Exists(x => x == carteira))
+                    Carteiras.Remove(carteira);
                 irParaPaginaInicial();
+            }
+            else if (e.PropertyName == "Salvamento")
+            {
+                if (!Carteiras.Exists(x => x == carteira))
+                    Carteiras.Add(carteira);
+                OnPropertyChanged("Carteiras");
             }
         }
 

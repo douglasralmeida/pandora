@@ -12,8 +12,12 @@
                 <Button Name="btoNovaCarteira" Click="BtoNovaCarteira_Click">Nova carteira</Button>
             </ToolBar>
         </ToolBarTray>
-        <ListBox DockPanel.Dock="Left" MinWidth="232">
-            
+        <ListBox  DockPanel.Dock="Left" MinWidth="232" x:Name="ListaCarteiras" ItemsSource="{Binding Carteiras}" SelectionChanged="ListaCarteiras_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Nome}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <ContentControl Name="Pagina">
             

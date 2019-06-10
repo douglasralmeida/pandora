@@ -10,38 +10,72 @@ namespace Modelagem.Views
 {
     public class Carteira
     {
+        private string responsavel;
+
         public String Nome { get; private set; }
 
-        public String Responsavel { get; set; }
+        public String Responsavel
+        {
+            get => responsavel;
 
-        public byte[] Hash { get; private set; }
+            private set
+            {
+                responsavel = value;
+                Nome = "Carteira de " + value;
+            }
+        }
 
-        public ObservableCollection<Entrada> Lista { get; }
+        public Dictionary<string, byte[]> Dados { get; }
 
         public bool Nova { get; set; }
-        public bool Exclusao { get; internal set; }
 
+        public bool Exclusao { get; internal set; }
+        
         public Carteira()
         {
-            Lista = new ObservableCollection<Entrada>();
+            string[] ctes;
+
+            Dados = new Dictionary<string, byte[]>();
+            responsavel = "";
             Nome = "Nova carteira";
-            Responsavel = "";
             Nova = true;
+
+            ctes = BibliotecaPadrao.Biblioteca.obterCtesString();
+            foreach (string s in ctes)
+            {
+                Dados.Add(s, new byte[1]);
+            }
+        }
+
+        public void alterarItem(string nome, byte[] hash, string valor)
+        {
+            byte[] dado = Encoding.ASCII.GetBytes(valor);
+            Dados[nome] = ProtectedData.Protect(dado, hash, DataProtectionScope.CurrentUser);
         }
 
         public bool Carregar(byte[] hash)
         {
-            return false;
+            Nova = false;
+            return true;
         }
 
-        public void Salvar(string value)
+        public string obterItem(string nome, byte[] hash)
         {
+            byte[] valor;
 
+            if (Nova)
+                return "";
+            else
+            {
+                valor = ProtectedData.Unprotect(Dados[nome], hash, DataProtectionScope.CurrentUser);
+                return new string(Encoding.ASCII.GetChars(valor));
+            }
         }
 
-        public void setHash()
+        public void Salvar(string novoresponsavel)
         {
-
+            Nova = false;
+            Responsavel = novoresponsavel;
         }
 
         public override string ToString()

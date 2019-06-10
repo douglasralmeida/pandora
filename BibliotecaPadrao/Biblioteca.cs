@@ -21,5 +21,33 @@ namespace BibliotecaPadrao
 
             return null;
         }
+
+        public static KeyValuePair<string, ConstanteInfo>[] obterCtesChaves()
+        {
+            List<KeyValuePair<string, ConstanteInfo>> resultado = new List<KeyValuePair<string, ConstanteInfo>>();
+            foreach (Modulo m in ObterTudo)
+            {
+                foreach (KeyValuePair<string, ConstanteInfo> par in m.ConstantesNecessarias)
+                {
+                    resultado.Add(par);
+                }
+            }
+
+            return resultado.ToArray();
+        }
+
+        public static string[] obterCtesString()
+        {
+            List<string> resultado = new List<string>();
+            foreach(Modulo m in ObterTudo)
+            {
+                foreach(string s in m.ConstantesNecessarias.Keys)
+                {
+                    resultado.Add(s);
+                }
+            }
+
+            return resultado.ToArray();
+        }
     }
 }
