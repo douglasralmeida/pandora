@@ -43,7 +43,7 @@
             <DockPanel DockPanel.Dock="Top">
                 <ToolBarTray x:Name="BarraOperacao" DockPanel.Dock="Top">
                     <ToolBar>
-                        <Button x:Name="btoIncluirOperacao" Click="BtoIncluirOperacao_Click">Inserir Operação...</Button>
+                        <Button x:Name="btoIncluirOperacao" Click="BtoIncluirOperacao_Click" VerticalAlignment="Stretch">Inserir Operação...</Button>
                         <Button x:Name="btoExcluirOperacao" IsEnabled="{Binding ElementName=listaOperacoes, Path=SelectedItems.Count}" Click="BtoExcluirOperacao_Click">Excluir Operação</Button>
                     </ToolBar>
                 </ToolBarTray>

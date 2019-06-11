@@ -67,8 +67,16 @@ namespace Modelagem.Views
                 return "";
             else
             {
-                valor = ProtectedData.Unprotect(Dados[nome], hash, DataProtectionScope.CurrentUser);
-                return new string(Encoding.ASCII.GetChars(valor));
+                try
+                {
+                    valor = ProtectedData.Unprotect(Dados[nome], hash, DataProtectionScope.CurrentUser);
+                    return new string(Encoding.ASCII.GetChars(valor));
+                }
+                catch
+                {
+                    return "";
+                }
+                
             }
         }
 

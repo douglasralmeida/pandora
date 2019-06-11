@@ -39,10 +39,13 @@ namespace Modelagem
     public partial class CarteiraView : UserControl
     {
         const string EXCLUIR_CATEIRA = "Você tem certeza que deseja excluir esta carteira?";
-        const string ERRO_NOMERESPONSAVEL_VAZIO = "O nome do responsável da carteira atual não foi informado.";
-        const string ERRO_SENHAS_DIFERENTES = "As senhas informadas estão diferentes.";
+        const string ERRO_NOMERESPONSAVEL_VAZIO = "O nome do responsável da carteira atual não foi informado. Informe um nome e tente novamente.";
+        const string ERRO_SENHAS_DIFERENTES = "As senhas informadas estão diferentes. Informe a mesma senha em ambos os campos de senha e tente novamente.";
+        const string ERRO_RESP_JAEXISTE = "Já existe uma carteira onde seu responsável possui o mesmo nome que o nome informado. Escolha um nome diferente e tente novamente.";
 
         public bool Exclusao { get; private set; }
+
+        App _app = (Application.Current as App);
 
         Carteira carteira;
 
@@ -76,7 +79,24 @@ namespace Modelagem
             DataContext = this;
         }
 
-        public void abrirCarteira(byte[] hash)
+        public void criarCarteira()
+        {
+            CarteiraItem ci;
+            int i = 0;
+
+            KeyValuePair<string, ConstanteInfo>[] ctes = BibliotecaPadrao.Biblioteca.obterCtesChaves();
+            Responsavel = "";
+            itens.Clear();
+            foreach (KeyValuePair<string, ConstanteInfo> c in ctes)
+            {
+                ci = new CarteiraItem(c.Key, c.Value.descricao, "", c.Value.oculta);
+                ci.Id = i;
+                itens.Add(ci);
+                i++;
+            }
+        }
+
+        public bool abrirCarteira(byte[] hash)
         {
             CarteiraItem ci;
             int i = 0;
@@ -85,17 +105,26 @@ namespace Modelagem
             KeyValuePair<string, ConstanteInfo>[] ctes = BibliotecaPadrao.Biblioteca.obterCtesChaves();
             Responsavel = carteira.Responsavel;
             itens.Clear();
+            valor = carteira.obterItem("PALAVRA_MAGICA", hash);
+            if (valor != "!abracadabra1")
+                return false;
             foreach (KeyValuePair<string, ConstanteInfo> c in ctes)
             {
                 if (carteira.Dados.ContainsKey(c.Key))
                 {
                     valor = carteira.obterItem(c.Key, hash);
-                    ci = new CarteiraItem(c.Key, c.Value.descricao, valor, c.Value.oculta);
-                    ci.Id = i;
-                    itens.Add(ci);
-                    i++;
                 }
+                else
+                {
+                    valor = "";
+                }
+                ci = new CarteiraItem(c.Key, c.Value.descricao, valor, c.Value.oculta);
+                ci.Id = i;
+                itens.Add(ci);
+                i++;
             }
+
+            return true;
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
@@ -114,7 +143,7 @@ namespace Modelagem
             if (CaixaDialogo.PerguntaSimples(EXCLUIR_CATEIRA))
             {
                 Exclusao = true;
-                OnPropertyChanged("Exclusao");
+                _app.Carteiras.RemoverCarteira(carteira);
             }
         }
 
@@ -130,7 +159,11 @@ namespace Modelagem
                 CaixaDialogo.ErroSimples(ERRO_NOMERESPONSAVEL_VAZIO);
                 return;
             }
-
+            if (_app.Carteiras.ProcurarPorResponsavel(Responsavel))
+            {
+                CaixaDialogo.ErroSimples(ERRO_RESP_JAEXISTE);
+                return;
+            }
             if (CaixaSenha1.Password != CaixaSenha2.Password)
             {
                 CaixaDialogo.ErroSimples(ERRO_SENHAS_DIFERENTES);
@@ -147,8 +180,9 @@ namespace Modelagem
             hash  = sha.ComputeHash(Encoding.ASCII.GetBytes(CaixaSenha1.Password));
             foreach (CarteiraItem item in itens)
                 carteira.alterarItem(item.Nome, hash, item.Valor);
+            carteira.alterarItem("PALAVRA_MAGICA", hash, "!abracadabra1");
             carteira.Salvar(Responsavel);
-            OnPropertyChanged("Salvamento");
+            _app.Carteiras.AdicionarCarteira(carteira);
         }
     }
 }

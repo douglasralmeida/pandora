@@ -103,7 +103,7 @@ namespace Modelagem
 
         private void BtoCarteiras_Click(object sender, RoutedEventArgs e)
         {
-            CarteirasView carteirasVisao = new CarteirasView(_app.Carteiras);
+            CarteirasView carteirasVisao = new CarteirasView();
 
             carteirasVisao.Owner = Application.Current.MainWindow;
             carteirasVisao.ShowDialog();

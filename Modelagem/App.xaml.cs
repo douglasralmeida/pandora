@@ -2,6 +2,7 @@
 using Modelagem.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Modelagem
     /// </summary>
     public partial class App : Application
     {
-        private List<Carteira> _carteiras;
+        private Carteiras _carteiras;
 
         private Config _config;
 
@@ -26,10 +27,7 @@ namespace Modelagem
             get => NOMEAPLICACAO;
         }
 
-        public List<Carteira> Carteiras
-        {
-            get => _carteiras;
-        }
+        public Carteiras Carteiras => _carteiras;
 
         public Config Configuracoes
         {
@@ -38,7 +36,8 @@ namespace Modelagem
 
         public App()
         {
-            _carteiras = new List<Carteira>();
+            _carteiras = new Carteiras();
+            _carteiras.Carregar();
             _config = new Config();
         }
     }

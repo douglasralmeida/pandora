@@ -80,6 +80,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,13 +100,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CarteiraInicio.xaml.cs">
+    <Compile Include="Carteiras.cs" />
+    <Compile Include="Views\CarteiraView\CarteiraInicio.xaml.cs">
       <DependentUpon>CarteiraInicio.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CarteiraSenha.xaml.cs">
+    <Compile Include="Views\CarteiraView\CarteiraSenha.xaml.cs">
       <DependentUpon>CarteiraSenha.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CarteiraView.xaml.cs">
+    <Compile Include="Views\CarteiraView\CarteiraView.xaml.cs">
       <DependentUpon>CarteiraView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entrada.cs" />
@@ -119,6 +121,9 @@
       <DependentUpon>CarteirasView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Depuracao.cs" />
+    <Compile Include="SenhaDialogo.xaml.cs">
+      <DependentUpon>SenhaDialogo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DepuracaoView.xaml.cs">
       <DependentUpon>DepuracaoView.xaml</DependentUpon>
     </Compile>
@@ -146,15 +151,15 @@
     <Compile Include="Views\TodosProcessosView.xaml.cs">
       <DependentUpon>TodosProcessosView.xaml</DependentUpon>
     </Compile>
-    <Page Include="CarteiraInicio.xaml">
+    <Page Include="Views\CarteiraView\CarteiraInicio.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CarteiraSenha.xaml">
+    <Page Include="Views\CarteiraView\CarteiraSenha.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CarteiraView.xaml">
+    <Page Include="Views\CarteiraView\CarteiraView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -163,6 +168,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CarteirasView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SenhaDialogo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -259,6 +268,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\senha.png" />
   </ItemGroup>
   <Import Project="..\Base\Base.projitems" Label="Shared" />
   <Import Project="..\Dialogo\Dialogo.projitems" Label="Shared" />

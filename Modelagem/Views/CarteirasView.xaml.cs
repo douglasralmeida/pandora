@@ -1,6 +1,8 @@
-﻿using Modelagem.Views;
+﻿using Dialogo;
+using Modelagem.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
@@ -15,14 +17,15 @@ namespace Modelagem
 
         private Carteira carteira = null;
 
-        public List<Carteira> Carteiras { get; }
+        public ObservableCollection<Carteira> Carteiras { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public CarteirasView(List<Carteira> carteiras)
+        public CarteirasView()
         {
             InitializeComponent();
-            Carteiras = carteiras;
+            Carteiras = (Application.Current as App).Carteiras.Lista;
+            DataContext = this;
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
@@ -33,15 +36,22 @@ namespace Modelagem
         private void BtoNovaCarteira_Click(object sender, RoutedEventArgs e)
         {
             carteira = new Carteira();
-            ExibirCarteira(new byte[1]);
-        }
-
-        private void ExibirCarteira(byte[] hash)
-        {
             visaoCarteira = new CarteiraView(carteira);
             visaoCarteira.PropertyChanged += VisaoCarteira_PropertyChanged;
+            visaoCarteira.criarCarteira();
             Pagina.Content = visaoCarteira;
-            visaoCarteira.abrirCarteira(hash);
+        }
+
+        private bool ExibirCarteira(byte[] hash)
+        {
+            visaoCarteira = new CarteiraView(carteira);
+            visaoCarteira.PropertyChanged += VisaoCarteira_PropertyChanged;            
+            bool resultado = visaoCarteira.abrirCarteira(hash);
+
+            if (resultado)
+                Pagina.Content = visaoCarteira;
+
+            return resultado;
         }
 
         private void ListaCarteiras_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -65,27 +75,30 @@ namespace Modelagem
 
         private void SolicitarSenha()
         {
+            SenhaDialogo sd;
             byte[] hash;
 
             hash = new byte[1];
 
-            ExibirCarteira(hash);
+            SenhaDialogo.ChecarSenhaProc csp = delegate (byte[] hash2)
+            {
+                return ExibirCarteira(hash2);
+            };
+            sd = new SenhaDialogo()
+            {
+                Owner = Application.Current.MainWindow,
+                checarSenha = csp
+            };
+            sd.ShowDialog();
+            if (!sd.DialogResult ?? true)
+            {
+                ListaCarteiras.SelectedItem = null;
+            }
         }
 
         private void VisaoCarteira_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Exclusao")
-            {
-                if (visaoCarteira.Exclusao && Carteiras.Exists(x => x == carteira))
-                    Carteiras.Remove(carteira);
-                irParaPaginaInicial();
-            }
-            else if (e.PropertyName == "Salvamento")
-            {
-                if (!Carteiras.Exists(x => x == carteira))
-                    Carteiras.Add(carteira);
-                OnPropertyChanged("Carteiras");
-            }
+
         }
 
         private void irParaPaginaInicial()

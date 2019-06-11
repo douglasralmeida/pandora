@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modelagem"
         mc:Ignorable="d"
-        Title="Carteiras" Height="540" Width="860" ContentRendered="Window_ContentRendered">
+        Title="Carteiras" Height="540" Width="860" ContentRendered="Window_ContentRendered"
+        WindowStartupLocation="CenterOwner">
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button Name="btoNovaCarteira" Click="BtoNovaCarteira_Click">Nova carteira</Button>
+                <Button Name="btoNovaCarteira" Click="BtoNovaCarteira_Click" VerticalAlignment="Top">Nova carteira</Button>
             </ToolBar>
         </ToolBarTray>
         <ListBox  DockPanel.Dock="Left" MinWidth="232" x:Name="ListaCarteiras" ItemsSource="{Binding Carteiras}" SelectionChanged="ListaCarteiras_SelectionChanged">

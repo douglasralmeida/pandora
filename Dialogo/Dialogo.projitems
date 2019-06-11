@@ -15,4 +15,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)TaskDialogNotificationArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UnsafeNativeMethods.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="C:\Users\Douglas\Documents\GitHub\pandora\Dialogo\Senha.xaml.cs">
+      <DependentUpon>SenhaDialogo.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
