@@ -29,7 +29,28 @@
                 <Button x:Name="btoOpcoesEntrada" Content="Opções de Execução..." Click="BtoOpcoesEntrada_Click" />
             </ToolBar>
             <ToolBar BandIndex="2">
-                <Button x:Name="btoCarteiraEscolher" Content="Escolher carteira" />
+                <Menu Background="#00000000">
+                    <MenuItem Name="MenuCarteiras" ItemsSource="{Binding Path=ListaCarteiras}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>Escolher carteira</TextBlock>
+                                <Path VerticalAlignment="Center" Margin="8,2,0,0"
+                          Fill="Black" Data="M 0 0 L 3 3 L 6 0 Z"/>
+                            </StackPanel>
+                        </MenuItem.Header>
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Nome}"/>
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="{x:Type MenuItem}">
+                                <EventSetter Event="Click" Handler="Carteira_OnClick" />
+                                <Setter Property="CommandParameter" Value="{Binding}" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                </Menu>
                 <Button x:Name="btoCarteiras" Content="Carteiras..." VerticalAlignment="Top" Click="BtoCarteiras_Click" />
                 <Button x:Name="btoVariaveis" Content="Variáveis globais..." />
             </ToolBar>

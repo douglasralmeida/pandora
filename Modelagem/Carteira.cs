@@ -18,14 +18,14 @@ namespace Modelagem.Views
         {
             get => responsavel;
 
-            private set
+            set
             {
                 responsavel = value;
                 Nome = "Carteira de " + value;
             }
         }
 
-        public Dictionary<string, byte[]> Dados { get; }
+        public Dictionary<string, byte[]> Dados { get; set; }
 
         public bool Nova { get; set; }
 
@@ -33,13 +33,17 @@ namespace Modelagem.Views
         
         public Carteira()
         {
+            Dados = new Dictionary<string, byte[]>();
+            GerarNova();
+        }
+
+        public void GerarNova()
+        {
             string[] ctes;
 
-            Dados = new Dictionary<string, byte[]>();
-            responsavel = "";
             Nome = "Nova carteira";
             Nova = true;
-
+            responsavel = "";
             ctes = BibliotecaPadrao.Biblioteca.obterCtesString();
             foreach (string s in ctes)
             {

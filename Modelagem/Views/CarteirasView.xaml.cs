@@ -36,6 +36,7 @@ namespace Modelagem
         private void BtoNovaCarteira_Click(object sender, RoutedEventArgs e)
         {
             carteira = new Carteira();
+            carteira.GerarNova();
             visaoCarteira = new CarteiraView(carteira);
             visaoCarteira.PropertyChanged += VisaoCarteira_PropertyChanged;
             visaoCarteira.criarCarteira();
@@ -47,7 +48,6 @@ namespace Modelagem
             visaoCarteira = new CarteiraView(carteira);
             visaoCarteira.PropertyChanged += VisaoCarteira_PropertyChanged;            
             bool resultado = visaoCarteira.abrirCarteira(hash);
-
             if (resultado)
                 Pagina.Content = visaoCarteira;
 
@@ -76,18 +76,15 @@ namespace Modelagem
         private void SolicitarSenha()
         {
             SenhaDialogo sd;
-            byte[] hash;
 
-            hash = new byte[1];
-
-            SenhaDialogo.ChecarSenhaProc csp = delegate (byte[] hash2)
+            SenhaDialogo.ChecarSenhaProc csproc = delegate (byte[] hash)
             {
-                return ExibirCarteira(hash2);
+                return ExibirCarteira(hash);
             };
             sd = new SenhaDialogo()
             {
                 Owner = Application.Current.MainWindow,
-                checarSenha = csp
+                checarSenha = csproc
             };
             sd.ShowDialog();
             if (!sd.DialogResult ?? true)

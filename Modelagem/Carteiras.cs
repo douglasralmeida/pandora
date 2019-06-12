@@ -15,13 +15,13 @@ namespace Modelagem
     {
         private const string ARQ_CARTEIRA = "carteira.json";
 
-        private IsolatedStorageFile isoStore;
+        private IsolatedStorageFile storage;
 
         public ObservableCollection<Carteira> Lista { get; private set; } = null;
 
         public Carteiras()
         {
-            isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
+            storage = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
         }
 
         public void AdicionarCarteira(Carteira carteira)
@@ -33,7 +33,7 @@ namespace Modelagem
 
         public void Carregar()
         {
-            if (isoStore.FileExists(ARQ_CARTEIRA))
+            if (storage.FileExists(ARQ_CARTEIRA))
             {
                 processarArquivoCarteira();
             }
@@ -46,7 +46,7 @@ namespace Modelagem
         private void processarArquivoCarteira()
         {
             Type t = (new ObservableCollection<Carteira>()).GetType();
-            using (IsolatedStorageFileStream arquivoJson = new IsolatedStorageFileStream(ARQ_CARTEIRA, FileMode.Open, isoStore))
+            using (IsolatedStorageFileStream arquivoJson = new IsolatedStorageFileStream(ARQ_CARTEIRA, FileMode.Open, storage))
             {
                 using (StreamReader leitor = new StreamReader(arquivoJson))
                 {
@@ -79,7 +79,7 @@ namespace Modelagem
         public void Salvar()
         {
             Type t = Lista.GetType();
-            using (IsolatedStorageFileStream arquivoJson = new IsolatedStorageFileStream(ARQ_CARTEIRA, FileMode.Create, isoStore))
+            using (IsolatedStorageFileStream arquivoJson = new IsolatedStorageFileStream(ARQ_CARTEIRA, FileMode.Create, storage))
             {
                 string json = new JavaScriptSerializer().Serialize(Lista);
                 using (StreamWriter escritor = new StreamWriter(arquivoJson))

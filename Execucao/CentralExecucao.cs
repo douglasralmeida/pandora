@@ -53,18 +53,16 @@ namespace Execucao
             {
                 return _instancia.variaveis;
             }
-            set
-            {
-                foreach (KeyValuePair<String, Variavel> k in value)
-                {
-                    _instancia.variaveis.Add(k.Key, k.Value);
-                }
-            }
         }
 
         public CentralExecucao()
         {
             
+        }
+
+        public void adicionarVariaveis(string nome, Variavel var)
+        {
+            _instancia.variaveis.Add(nome, var);
         }
 
         public void carregar(Objeto objeto)

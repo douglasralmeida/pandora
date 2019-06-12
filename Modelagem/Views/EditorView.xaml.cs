@@ -1,4 +1,5 @@
 ﻿using Base;
+using Modelagem.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,6 +29,11 @@ namespace Modelagem
         private Objeto _objetoativo;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<Carteira> ListaCarteiras
+        {
+            get => (Application.Current as App).Carteiras.Lista;
+        }
 
         public Objeto ObjetoAtivo
         {
