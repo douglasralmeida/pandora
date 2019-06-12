@@ -113,6 +113,19 @@ namespace Modelagem
             }
         }
 
+        private void BtoVariaveisGlobais_Click(object sender, RoutedEventArgs e)
+        {
+            VariaveisGlobaisView varGlobais = new VariaveisGlobaisView();
+
+            varGlobais.Owner = Application.Current.MainWindow;
+            varGlobais.ShowDialog();
+
+            if (varGlobais.DialogResult ?? true)
+            {
+
+            }
+        }
+
         private void BtoCarteiras_Click(object sender, RoutedEventArgs e)
         {
             CarteirasView carteirasVisao = new CarteirasView();

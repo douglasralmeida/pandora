@@ -151,6 +151,9 @@
     <Compile Include="Views\TodosProcessosView.xaml.cs">
       <DependentUpon>TodosProcessosView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\VariaveisGlobaisView.xaml.cs">
+      <DependentUpon>VariaveisGlobaisView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\CarteiraView\CarteiraInicio.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -220,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TodosProcessosView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VariaveisGlobaisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

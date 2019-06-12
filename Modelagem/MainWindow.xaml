@@ -52,7 +52,7 @@
                     </MenuItem>
                 </Menu>
                 <Button x:Name="btoCarteiras" Content="Carteiras..." VerticalAlignment="Top" Click="BtoCarteiras_Click" />
-                <Button x:Name="btoVariaveis" Content="Variáveis globais..." />
+                <Button x:Name="btoVariaveis" Content="Variáveis globais..." Click="BtoVariaveisGlobais_Click"/>
             </ToolBar>
         </ToolBarTray>
         <!-- Controle Principal -->
