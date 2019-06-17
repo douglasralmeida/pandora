@@ -101,6 +101,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Carteiras.cs" />
+    <Compile Include="VarGlobais.cs" />
     <Compile Include="Views\CarteiraView\CarteiraInicio.xaml.cs">
       <DependentUpon>CarteiraInicio.xaml</DependentUpon>
     </Compile>

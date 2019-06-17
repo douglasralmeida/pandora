@@ -118,6 +118,7 @@ namespace Modelagem
             VariaveisGlobaisView varGlobais = new VariaveisGlobaisView();
 
             varGlobais.Owner = Application.Current.MainWindow;
+            varGlobais.abrirVar();
             varGlobais.ShowDialog();
 
             if (varGlobais.DialogResult ?? true)

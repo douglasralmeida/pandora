@@ -1,13 +1,7 @@
-﻿using Modelagem.Views;
-using System;
-using System.Collections.Generic;
+﻿using Base;
+using Modelagem.Views;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
+using System.Windows;
 
 namespace Modelagem
 {
@@ -15,13 +9,13 @@ namespace Modelagem
     {
         private const string ARQ_CARTEIRA = "carteira.json";
 
-        private IsolatedStorageFile storage;
+        private Arquivo _arquivo;
 
         public ObservableCollection<Carteira> Lista { get; private set; } = null;
 
         public Carteiras()
         {
-            storage = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
+            _arquivo = (Application.Current as App).Arquivo;
         }
 
         public void AdicionarCarteira(Carteira carteira)
@@ -33,27 +27,7 @@ namespace Modelagem
 
         public void Carregar()
         {
-            if (storage.FileExists(ARQ_CARTEIRA))
-            {
-                processarArquivoCarteira();
-            }
-            else
-            {
-                Lista = new ObservableCollection<Carteira>();
-            }
-        }
-
-        private void processarArquivoCarteira()
-        {
-            Type t = (new ObservableCollection<Carteira>()).GetType();
-            using (IsolatedStorageFileStream arquivoJson = new IsolatedStorageFileStream(ARQ_CARTEIRA, FileMode.Open, storage))
-            {
-                using (StreamReader leitor = new StreamReader(arquivoJson))
-                {
-                    string json = leitor.ReadToEnd();
-                    Lista = (ObservableCollection<Carteira>)(new JavaScriptSerializer().Deserialize(json, t));
-                }
-            }            
+            Lista = _arquivo.processarLista<Carteira>(ARQ_CARTEIRA);
         }
 
         public bool ProcurarPorResponsavel(string nome)
@@ -78,15 +52,7 @@ namespace Modelagem
 
         public void Salvar()
         {
-            Type t = Lista.GetType();
-            using (IsolatedStorageFileStream arquivoJson = new IsolatedStorageFileStream(ARQ_CARTEIRA, FileMode.Create, storage))
-            {
-                string json = new JavaScriptSerializer().Serialize(Lista);
-                using (StreamWriter escritor = new StreamWriter(arquivoJson))
-                {
-                    escritor.Write(json);
-                }
-            }
+            _arquivo.salvarLista(Lista, ARQ_CARTEIRA);
         }
     }
 }

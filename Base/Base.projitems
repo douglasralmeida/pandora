@@ -9,6 +9,7 @@
     <Import_RootNamespace>Base</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Arquivo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Config.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Objeto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pacote.cs" />

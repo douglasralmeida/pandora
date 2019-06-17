@@ -12,17 +12,20 @@ using System.Threading.Tasks;
 namespace Execucao
 {
     /* CONSTANTEINFO
-     * descricao = Descrição da constante
-     * oculta    = Trata a constante como senha
+     * descricao  = Descrição da constante
+     * oculta     = Trata a constante como senha
+     * individual = Constante dever ser salva numa carteira
      */
     public struct ConstanteInfo
     {
         public string descricao;
+        public bool individual;
         public bool oculta;
 
-        public ConstanteInfo(string desc, bool oc)
+        public ConstanteInfo(string desc, bool indiv, bool oc)
         {
             descricao = desc;
+            individual = indiv;
             oculta = oc;
         }
     }

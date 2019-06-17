@@ -14,11 +14,10 @@
             <RowDefinition Height="69*" />
         </Grid.RowDefinitions>
         <Label Content="Variáveis Globais" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" FontSize="22" Padding="0,5,5,5" Height="45" Width="598" Grid.Row="0" />
-        <DataGrid Name="Grade" HorizontalAlignment="Left" Height="263" Margin="8,8,8,8" VerticalAlignment="Top" Width="572" ItemsSource="{Binding Path=ItensCarteira}" AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="1">
+        <DataGrid Name="Grade" HorizontalAlignment="Left" Height="263" Margin="8,8,8,8" VerticalAlignment="Top" Width="572" ItemsSource="{Binding Path=ItensVariaveis}" AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Descrição" Width="5*" Binding="{Binding Desc}" IsReadOnly="True"/>
-                <DataGridTemplateColumn Header="Valor" Width="5*" >
-                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Valor" Width="5*" Binding="{Binding Valor}" />
             </DataGrid.Columns>
         </DataGrid>
         <WrapPanel Margin="8,8,0,0" FlowDirection="RightToLeft" Grid.Row="2">

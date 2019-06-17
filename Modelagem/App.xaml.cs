@@ -16,9 +16,13 @@ namespace Modelagem
     /// </summary>
     public partial class App : Application
     {
+        private Arquivo _arquivo;
+
         private Carteiras _carteiras;
 
         private Config _config;
+
+        private VarGlobais _varGlobais;
 
         private const string NOMEAPLICACAO = "Modelagem de Processos do Pandora";
 
@@ -27,6 +31,8 @@ namespace Modelagem
             get => NOMEAPLICACAO;
         }
 
+        public Arquivo Arquivo => _arquivo;
+
         public Carteiras Carteiras => _carteiras;
 
         public Config Configuracoes
@@ -34,11 +40,16 @@ namespace Modelagem
             get => _config;
         }
 
+        public VarGlobais VarGlobais => _varGlobais;
+
         public App()
         {
+            _arquivo = new Arquivo();
             _carteiras = new Carteiras();
             _carteiras.Carregar();
             _config = new Config();
+            _varGlobais = new VarGlobais();
+            _varGlobais.Carregar();
         }
     }
 }

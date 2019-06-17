@@ -49,8 +49,6 @@ namespace Modelagem
 
         Carteira carteira;
 
-        List<CarteiraItem> itens;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string NomeCarteira
@@ -58,10 +56,7 @@ namespace Modelagem
             get => carteira.Nome;
         }
 
-        public List<CarteiraItem> ItensCarteira
-        {
-            get => itens;
-        }
+        public List<CarteiraItem> ItensCarteira { get; }
 
         public bool PodeExcluir
         {
@@ -75,7 +70,7 @@ namespace Modelagem
             InitializeComponent();
             Exclusao = false;
             this.carteira = carteira;
-            itens = new List<CarteiraItem>();
+            ItensCarteira = new List<CarteiraItem>();
             DataContext = this;
         }
 
@@ -86,12 +81,14 @@ namespace Modelagem
 
             KeyValuePair<string, ConstanteInfo>[] ctes = BibliotecaPadrao.Biblioteca.obterCtesChaves();
             Responsavel = "";
-            itens.Clear();
+            ItensCarteira.Clear();
             foreach (KeyValuePair<string, ConstanteInfo> c in ctes)
             {
+                if (!c.Value.individual)
+                    continue;
                 ci = new CarteiraItem(c.Key, c.Value.descricao, "", c.Value.oculta);
                 ci.Id = i;
-                itens.Add(ci);
+                ItensCarteira.Add(ci);
                 i++;
             }
         }
@@ -104,12 +101,15 @@ namespace Modelagem
 
             KeyValuePair<string, ConstanteInfo>[] ctes = BibliotecaPadrao.Biblioteca.obterCtesChaves();
             Responsavel = carteira.Responsavel;
-            itens.Clear();
+            ItensCarteira.Clear();
             valor = carteira.obterItem("PALAVRA_MAGICA", hash);
             if (valor != "!abracadabra1")
                 return false;
             foreach (KeyValuePair<string, ConstanteInfo> c in ctes)
             {
+                if (!c.Value.individual)
+                    continue;
+
                 if (carteira.Dados.ContainsKey(c.Key))
                 {
                     valor = carteira.obterItem(c.Key, hash);
@@ -120,7 +120,7 @@ namespace Modelagem
                 }
                 ci = new CarteiraItem(c.Key, c.Value.descricao, valor, c.Value.oculta);
                 ci.Id = i;
-                itens.Add(ci);
+                ItensCarteira.Add(ci);
                 i++;
             }
 
@@ -178,7 +178,7 @@ namespace Modelagem
 
             SHA512 sha = new SHA512Managed();
             hash  = sha.ComputeHash(Encoding.ASCII.GetBytes(CaixaSenha1.Password));
-            foreach (CarteiraItem item in itens)
+            foreach (CarteiraItem item in ItensCarteira)
                 carteira.alterarItem(item.Nome, hash, item.Valor);
             carteira.alterarItem("PALAVRA_MAGICA", hash, "!abracadabra1");
             carteira.Salvar(Responsavel);

@@ -36,7 +36,6 @@ namespace Modelagem
         private void BtoNovaCarteira_Click(object sender, RoutedEventArgs e)
         {
             carteira = new Carteira();
-            carteira.GerarNova();
             visaoCarteira = new CarteiraView(carteira);
             visaoCarteira.PropertyChanged += VisaoCarteira_PropertyChanged;
             visaoCarteira.criarCarteira();
