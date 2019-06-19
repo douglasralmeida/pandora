@@ -27,6 +27,12 @@ namespace Modelagem
 
         public string Valor { get; set; }
 
+        public bool MostrarTexto { get => (!Oculto); }
+
+        public bool MostrarOculto { get => (Valor.Length > 0) && Oculto; }
+
+        public bool MostrarVazio { get => (Valor.Length == 0) && Oculto; }
+
         public CarteiraItem(string nome, string desc, string val, bool ocul)
         {
             Nome = nome;

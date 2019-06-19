@@ -55,6 +55,11 @@ namespace Base
             return objeto;
         }
 
+        public virtual string[] obterEntradas()
+        {
+            return null;
+        }
+
         protected void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;

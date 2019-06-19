@@ -19,6 +19,9 @@
         <DataTemplate x:Key="textoVerTemplate">
             <Label Content="{Binding Valor}" VerticalContentAlignment="Center"/>
         </DataTemplate>
+        <DataTemplate x:Key="vazioTemplate">
+            <Label Content="(vazio)" VerticalContentAlignment="Center"/>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -36,11 +39,14 @@
                                 <ContentControl.Style>
                                     <Style TargetType="ContentControl">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Oculto}" Value="true">
+                                            <DataTrigger Binding="{Binding MostrarTexto}" Value="true">
+                                                <Setter Property="ContentTemplate" Value="{StaticResource textoVerTemplate}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MostrarOculto}" Value="true">
                                                 <Setter Property="ContentTemplate" Value="{StaticResource senhaVerTemplate}" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Oculto}" Value="false">
-                                                <Setter Property="ContentTemplate" Value="{StaticResource textoVerTemplate}" />
+                                            <DataTrigger Binding="{Binding MostrarVazio}" Value="true">
+                                                <Setter Property="ContentTemplate" Value="{StaticResource vazioTemplate}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

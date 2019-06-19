@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Text;
+using System.Windows;
 
 namespace Modelagem
 {
@@ -7,7 +8,7 @@ namespace Modelagem
     /// </summary>
     public partial class EntradasView : Window
     {
-        public string Entradas
+        private string[] EntradasNecessarias
         {
             get; set;
         }
@@ -17,12 +18,13 @@ namespace Modelagem
             get; set;
         }
 
-        public EntradasView(string entradas, string dir)
+        public EntradasView(string[] entradasNecessarias, string dir)
         {
             InitializeComponent();
-            Entradas = entradas;
+            EntradasNecessarias = entradasNecessarias;
+            exibirEntradasNecessarias();
+
             Dir = dir;
-            editEntradas.Text = Entradas;
             editDir.Text = Dir;
         }
 
@@ -33,7 +35,6 @@ namespace Modelagem
 
         private void BtoOk_Click(object sender, RoutedEventArgs e)
         {
-            Entradas = editEntradas.Text;
             Dir = editDir.Text;
 
             DialogResult = true;
@@ -42,6 +43,20 @@ namespace Modelagem
         private void BtoCancelar_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+        }
+
+        private void exibirEntradasNecessarias()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            editEntradas.Clear();
+            foreach(string s in EntradasNecessarias)
+            {
+                sb.Append(s);
+                sb.Append('=');
+                sb.Append('\n');
+            }
+            editEntradas.Text = sb.ToString();
         }
     }
 }

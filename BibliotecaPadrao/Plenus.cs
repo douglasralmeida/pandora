@@ -60,12 +60,12 @@ namespace BibliotecaPadrao
 
         public override void adicionarConstNecessarias()
         {
-            ConstantesNecessarias.Add("PLENUS_USUARIO", new ConstanteInfo("Usuário de acesso ao Plenus", true, false));
-            ConstantesNecessarias.Add("PLENUS_MAT", new ConstanteInfo("Matrícula para acesso ao Plenus", true, false));
-            ConstantesNecessarias.Add("PLENUS_SENHA", new ConstanteInfo("Senha de acesso ao Plenus", true, true));
+            ConstantesNecessarias.Add("PLENUS_USUARIO", new ConstanteInfo("Usuário de acesso ao Plenus", true, false, true));
+            ConstantesNecessarias.Add("PLENUS_MAT", new ConstanteInfo("Matrícula para acesso ao Plenus", true, false, true));
+            ConstantesNecessarias.Add("PLENUS_SENHA", new ConstanteInfo("Senha de acesso ao Plenus", true, true, true));
 
-            ConstantesNecessarias.Add("PLENUS_EXE", new ConstanteInfo("Caminho do arquivo executável do Plenus", false, true));
-            ConstantesNecessarias.Add("PLENUS_CONFIG", new ConstanteInfo("Caminho do arquivo de configuração do Plenus", false, true));
+            ConstantesNecessarias.Add("PLENUS_EXE", new ConstanteInfo("Caminho do arquivo executável do Plenus", false, true, true));
+            ConstantesNecessarias.Add("PLENUS_CONFIG", new ConstanteInfo("Caminho do arquivo de configuração do Plenus", false, true, true));
         }
     }
 }

@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterOwner">
     <WrapPanel Orientation="Vertical" Margin="8">
         <WrapPanel Orientation="Horizontal" Margin="0,16,0,0">
-            <Image Height="32" Width="32" Source="pack://application:,,,/Resources/senha.png"></Image>
+            <Image Height="32" Width="32" Source="pack://application:,,,/Views/Resources/senha.png"></Image>
             <TextBlock Width="300" TextWrapping="Wrap" Margin="16,0,0,0">Este recurso está protegido por senha. Digite a senha de acesso com campo abaixo.</TextBlock>
         </WrapPanel>
         <WrapPanel Margin="48,16,0,0">

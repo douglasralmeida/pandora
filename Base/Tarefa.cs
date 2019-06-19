@@ -174,6 +174,19 @@ namespace Base
             _proximaEntrada = 0;
         }
 
+        public override string[] obterEntradas()
+        {
+            List<string> lista = new List<string>();
+
+            foreach(Operacao o in _operacoes)
+            {
+                if (o.obterEntradas() != null)
+                    lista.AddRange(o.obterEntradas());
+            }
+
+            return lista.ToArray();
+        }
+
         void Operacoes_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
         {
             OnPropertyChanged("Operacoes");

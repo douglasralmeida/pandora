@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -96,6 +97,22 @@ namespace Base
             operacao.Add(comando);
 
             return operacao;
+        }
+
+        public override string[] obterEntradas()
+        {
+            List<string> lista;
+            MatchCollection combinacoes;
+            string padrao = "{ENTRADA (.*?)}";
+            string s;
+
+            combinacoes = Regex.Matches(_parametros, padrao);
+            lista = new List<string>();
+            foreach (Match m in combinacoes)
+            {
+                lista.Add(m.Groups[1].ToString());
+            }
+            return lista.ToArray();
         }
 
         public override string ToString()

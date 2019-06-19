@@ -134,5 +134,18 @@ namespace Base
 
             return processo;
         }
+
+        public override string[] obterEntradas()
+        {
+            List<string> lista = new List<string>();
+
+            foreach (Objeto o in _atividades)
+            {
+                if (o.obterEntradas() != null)
+                    lista.AddRange(o.obterEntradas());
+            }
+
+            return lista.ToArray();
+        }
     }
 }

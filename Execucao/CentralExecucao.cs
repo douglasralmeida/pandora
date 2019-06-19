@@ -102,6 +102,36 @@ namespace Execucao
             OnObjetoCarregarDepois(objeto);
         }
 
+        private void checarCtesNecessarias()
+        {
+            foreach (Modulo m in ModulosUtilizados)
+            {
+                foreach (KeyValuePair<string, ConstanteInfo> c in m.ConstantesNecessarias)
+                {
+                    if (c.Value.obrigatoria)
+                    {
+                        if (!Variaveis.ContainsKey(c.Key))
+                        {
+                            string tipo;
+                            string[] nome = new string[1];
+
+                            nome[0] = c.Key;
+                            if (c.Value.individual)
+                                tipo = "CT0002";
+                            else
+                                tipo = "VG0001";
+                            Erros.Adicionar(tipo, nome);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void checarEntradas()
+        {
+
+        }
+
         private void checarModulos(Processo processo)
         {
             ModulosUtilizados.Clear();
@@ -166,27 +196,8 @@ namespace Execucao
         {
             OnCompilacaoAntes(new EventArgs());
 
-            foreach (Modulo m in ModulosUtilizados)
-            {
-                foreach (KeyValuePair<string, ConstanteInfo> c in m.ConstantesNecessarias)
-                {
-                    if (c.Value.obrigatoria)
-                    {
-                        if (!Variaveis.ContainsKey(c.Key))
-                        {
-                            string tipo;
-                            string[] nome = new string[1];
-
-                            nome[0] = c.Key;
-                            if (c.Value.individual)
-                                tipo = "CT0002";
-                            else
-                                tipo = "VG0001";
-                            Erros.Adicionar(tipo, nome);
-                        }
-                    }
-                }
-            }
+            checarCtesNecessarias();
+            checarEntradas();
             if (Erros.Quantidade > 0)
                 return false;
 

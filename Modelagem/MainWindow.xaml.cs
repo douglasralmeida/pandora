@@ -33,6 +33,8 @@ namespace Modelagem
 
         Editor _editor;
 
+        Entradas _entradas;
+
         Erros _erros;
 
         Dictionary<string, Variavel> _variaveis;
@@ -45,6 +47,7 @@ namespace Modelagem
             _editor = new Editor();
             _edicao = new EditorView(_editor);
             _editor.novo(_app.Configuracoes.UsuarioNome);
+            _entradas = new Entradas();
             _erros = new Erros();
             _editor.Erros = _erros;
             _variaveis = new Dictionary<string, Variavel>();
@@ -118,14 +121,19 @@ namespace Modelagem
 
         private void BtoOpcoesEntrada_Click(object sender, RoutedEventArgs e)
         {
-            EntradasView entradasVisao = new EntradasView(_app.Configuracoes.Entradas.ToString(), _app.Configuracoes.DirTrabalho); ;
+            string[] entradasNecessarias;
+            Objeto objeto = _edicao.ObjetoAtivo;
+            EntradasView entradasVisao;
 
+            entradasNecessarias = objeto.obterEntradas();
+            entradasVisao = new EntradasView(entradasNecessarias, _app.Configuracoes.DirTrabalho);
             entradasVisao.Owner = Application.Current.MainWindow;
             entradasVisao.ShowDialog();
 
             if (entradasVisao.DialogResult ?? true)
             {
-                _app.Configuracoes.setEntradasFromString(entradasVisao.Entradas);
+                _entradas.Limpar();
+                //_app.Configuracoes.setEntradasFromString(entradasVisao.Entradas);
                 _app.Configuracoes.DirTrabalho = entradasVisao.Dir;
             }
         }

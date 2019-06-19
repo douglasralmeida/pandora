@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modelagem"
         mc:Ignorable="d"
-        Title="Opções de Execução" Height="445" Width="347">
+        Title="Opções de Execução" Height="445" Width="347"
+        WindowStartupLocation="CenterOwner">
     <Grid Margin="8,8,0,59" HorizontalAlignment="Left" Width="329">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -29,7 +30,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">Entradas da execução:</Label>
                     <Label Grid.Row="1" Grid.Column="0"  VerticalAlignment="Top">Diretório de trabalho:</Label>
-                    <TextBox Name="editEntradas" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Text="{Binding Entradas}" TextWrapping="Wrap" AcceptsReturn="True" Height="192" Margin="4"></TextBox>
+                    <TextBox Name="editEntradas" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" Height="192" Margin="4"></TextBox>
                     <TextBox Name="editDir" Height="23" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Text="{Binding Dir}" Margin="4"></TextBox>
                 </Grid>
             </WrapPanel>
