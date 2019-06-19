@@ -101,6 +101,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Carteiras.cs" />
+    <Compile Include="IconeConverter.cs" />
     <Compile Include="VarGlobais.cs" />
     <Compile Include="Views\CarteiraView\CarteiraInicio.xaml.cs">
       <DependentUpon>CarteiraInicio.xaml</DependentUpon>
@@ -250,7 +251,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.manifest" />
@@ -278,7 +279,16 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\senha.png" />
+    <Resource Include="Views\Resources\senha.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Resources\aviso.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Resources\erro.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Resources\info.png" />
   </ItemGroup>
   <Import Project="..\Base\Base.projitems" Label="Shared" />
   <Import Project="..\Dialogo\Dialogo.projitems" Label="Shared" />

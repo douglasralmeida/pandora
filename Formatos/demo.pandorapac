@@ -1,40 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <pacote>
-    <cabecalho>
-        <versao>1</versao>
-        <geracao nome="Douglas Rodrigues de Almeida" data="2019-05-01T00:00:00.000000-03:00" />
-    </cabecalho>
-    <conteudo>
-        <tarefas>
-            <tarefa>
-                <nome>INFBEN</nome>
-                <descricao>Imprime a tela do INFBEN</descricao>
-                <modulo>Plenus</modulo>
-                <operacoes>
-                    <operacao>
-                        <comando>Digitar "INFBEN{ENTER}"</comando>
-                    </operacao>
-                    <operacao>
-                        <comando>CompararPalavra 0 0 4 "casa"</comando>
-                        <desvio retorno="verdadeiro">
-                            <operacoes>
-                            </operacoes>
-                        </desvio>
-                        <desvio retorno="falso">
-                            <operacoes>
-                            </operacoes>
-                        </desvio>
-                    </operacao>
-                </operacoes>
-            </tarefa>
-        </tarefas>
-        <processos>
-            <processo>
-                <nome>Gerar cópia do INFBEN</nome>
-                <atividades>
-                    <tarefa>INFBEN</tarefa>
-                </atividades>
-            </processo>
-        </processos>
-    </conteudo>
+  <cabecalho>
+    <versao>1</versao>
+    <geracao nome="Douglas Rodrigues de Almeida" data="2019-06-19T13:11:45.4467316-03:00" />
+  </cabecalho>
+  <conteudo>
+    <processos>
+      <processo>
+        <nome>Gerar cópia do INFBEN</nome>
+        <descricao></descricao>
+        <atividades>
+          <atividade>
+            <tarefa>INFBEN</tarefa>
+          </atividade>
+        </atividades>
+      </processo>
+    </processos>
+    <tarefas>
+      <tarefa>
+        <nome>INFBEN</nome>
+        <descricao>Imprime a tela do INFBEN</descricao>
+        <modulo>Plenus</modulo>
+        <operacoes>
+          <operacao>
+            <comando>Digitar "INFBEN{ENTER}"</comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+    </tarefas>
+  </conteudo>
 </pacote>

@@ -25,7 +25,7 @@
                 <Button x:Name="btoSalvarPacote" Content="Salvar pacote..." Click="BtoSalvarPacote_Click" />
             </ToolBar>
             <ToolBar BandIndex="1">
-                <Button x:Name="btoDepurar" Content="Executar" Click="BtoDepurar_Click" />
+                <Button x:Name="btoDepurar" Content="Executar" Click="BtoDepurar_Click" IsEnabled="{Binding PodeDepurar}"/>
                 <Button x:Name="btoOpcoesEntrada" Content="Opções de Execução..." Click="BtoOpcoesEntrada_Click" />
             </ToolBar>
             <ToolBar BandIndex="2">

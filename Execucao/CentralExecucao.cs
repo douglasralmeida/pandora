@@ -43,9 +43,23 @@ namespace Execucao
     {
         private Instancia _instancia;
 
+        public event EventHandler CompilacaoAntes;
+
+        public event EventHandler CompilacaoDepois;
+
+        public Erros Erros { get; set; }
+
+        public List<Modulo> ModulosUtilizados { get; private set; }
+
+        public Objeto ObjetoCarregado { get; private set; }
+
         public event ObjetoCarregarAntesEventHandler ObjetoCarregarAntes;
 
         public event ObjetoCarregarDepoisEventHandler ObjetoCarregarDepois;
+
+        public int TotalExitos { get; private set; }
+
+        public int TotalFalhas { get; private set; }
 
         public Dictionary<string, Variavel> Variaveis
         {
@@ -57,7 +71,9 @@ namespace Execucao
 
         public CentralExecucao()
         {
-            
+            ModulosUtilizados = new List<Modulo>();
+            TotalExitos = 0;
+            TotalFalhas = 0;
         }
 
         public void adicionarVariaveis(string nome, Variavel var)
@@ -72,6 +88,7 @@ namespace Execucao
             OnObjetoCarregarAntes(objeto);
             if (objeto is Tarefa)
             {
+                //Tarefa tarefa = (Tarefa)objeto;
                 processo = new Processo("Processo Genérico", null, null);
                 processo.Atividades.Add(objeto);
             }
@@ -80,7 +97,27 @@ namespace Execucao
                 processo = (Processo)objeto;
             }
             incluirNoFluxo(processo);
+            checarModulos(processo);
+            ObjetoCarregado = objeto;
             OnObjetoCarregarDepois(objeto);
+        }
+
+        private void checarModulos(Processo processo)
+        {
+            ModulosUtilizados.Clear();
+            foreach (Objeto o in processo.Atividades)
+            {
+                if (o is Tarefa)
+                {
+                    Tarefa t = (Tarefa)o;
+                    if (!ModulosUtilizados.Contains(t.Modulo))
+                        ModulosUtilizados.Add(t.Modulo);
+                } else
+                {
+                    Processo p = (Processo)o;
+                    checarModulos(p);
+                }
+            }
         }
 
         private List<Comando> comandosDeTarefa(Tarefa tarefa)
@@ -125,6 +162,38 @@ namespace Execucao
             return comandos;
         }
 
+        public bool compilar()
+        {
+            OnCompilacaoAntes(new EventArgs());
+
+            foreach (Modulo m in ModulosUtilizados)
+            {
+                foreach (KeyValuePair<string, ConstanteInfo> c in m.ConstantesNecessarias)
+                {
+                    if (c.Value.obrigatoria)
+                    {
+                        if (!Variaveis.ContainsKey(c.Key))
+                        {
+                            string tipo;
+                            string[] nome = new string[1];
+
+                            nome[0] = c.Key;
+                            if (c.Value.individual)
+                                tipo = "CT0002";
+                            else
+                                tipo = "VG0001";
+                            Erros.Adicionar(tipo, nome);
+                        }
+                    }
+                }
+            }
+            if (Erros.Quantidade > 0)
+                return false;
+
+            OnCompilacaoDepois(new EventArgs());
+            return true;
+        }
+
         public void gerarInstancia()
         {
             _instancia.dados = new Dictionary<string, dynamic>();
@@ -156,6 +225,18 @@ namespace Execucao
             }
         }
 
+        protected virtual void OnCompilacaoAntes(EventArgs e)
+        {
+            EventHandler handler = CompilacaoAntes;
+            CompilacaoAntes?.Invoke(this, e);
+        }
+
+        protected virtual void OnCompilacaoDepois(EventArgs e)
+        {
+            EventHandler handler = CompilacaoDepois;
+            CompilacaoDepois?.Invoke(this, e);
+        }
+
         protected void OnObjetoCarregarAntes(Objeto objeto)
         {
             ObjetoCarregarAntes?.Invoke(this, objeto);
@@ -185,6 +266,7 @@ namespace Execucao
         public void processar()
         {
             _instancia.fluxo.processar();
+            TotalExitos++;
         }
     }
 }

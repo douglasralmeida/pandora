@@ -33,6 +33,8 @@ namespace Modelagem
 
         Editor _editor;
 
+        Erros _erros;
+
         Dictionary<string, Variavel> _variaveis;
 
         private Carteira carteiraSelecionada;
@@ -43,7 +45,10 @@ namespace Modelagem
             _editor = new Editor();
             _edicao = new EditorView(_editor);
             _editor.novo(_app.Configuracoes.UsuarioNome);
+            _erros = new Erros();
+            _editor.Erros = _erros;
             _variaveis = new Dictionary<string, Variavel>();
+            carteiraSelecionada = null;
             DataContext = _edicao;
             ControlePrincipal.Content = _edicao;
         }
@@ -77,23 +82,35 @@ namespace Modelagem
             CentralExecucao central = new CentralExecucao();
             Thread t = new Thread(central.processar);
 
+            central.Erros = _erros;
             _depurador = new Depuracao(central);
             _depuracao = new DepuracaoView(_depurador);
+            _erros.Limpar();
             try
             {
                 Mouse.OverrideCursor = Cursors.AppStarting;
                 ControlePrincipal.Content = _depuracao;
                 central.gerarInstancia();
-                //central.adicionarVariaveis(s, v);
-                //central.Variaveis = _app.Configuracoes.Entradas;
                 central.carregar(_edicao.ObjetoAtivo);
-                // chama central.processar() em uma thread separada
-                t.Start();
-                Thread.Sleep(5000);
+                if (checarCarteira())
+                {
+                    addVariaveis(central);
+                    if (central.compilar())
+                    {
+                        // chama central.processar() em uma thread separada
+                        t.Start();
+                        Thread.Sleep(5000);
+                    }
+                }
+                else
+                {
+                    _erros.Adicionar("CT0001", new string[0]);
+                }
             }
             finally
             {
-                t.Join();
+                if (t.IsAlive)
+                    t.Join();
                 ControlePrincipal.Content = _edicao;
                 Mouse.OverrideCursor = null;
             }
@@ -162,10 +179,37 @@ namespace Modelagem
             }
             else
             {
+                carteiraSelecionada = null;
                 menu.IsChecked = false;
                 CaixaDialogo.ErroSimples(SENHA_ERRADA);
             }
         }
+
+        private void addVariaveis(CentralExecucao central)
+        {
+            Variavel variavel;
+            VarGlobais varGlobais = (Application.Current as App).VarGlobais;
+
+            foreach (Dado dado in varGlobais.Lista)
+            {
+                variavel = new Variavel(dado.Valor);
+                variavel.Opcional = false;
+                variavel.Protegida = false;
+                central.adicionarVariaveis(dado.Nome, variavel);
+            }
+            foreach (KeyValuePair<string, Variavel> v in _variaveis)
+            {
+                variavel = new Variavel(v.Value.Valor);
+                variavel.Opcional = v.Value.Opcional;
+                variavel.Protegida = v.Value.Protegida;
+                central.adicionarVariaveis(v.Key, variavel);
+            }
+        }
+
+        private bool checarCarteira()
+        {
+            return (carteiraSelecionada != null);        }
+
 
         private bool selecionarCarteira(byte[] hash)
         {
@@ -179,6 +223,8 @@ namespace Modelagem
                 return false;
             foreach (KeyValuePair<string, ConstanteInfo> c in ctes)
             {
+                if (!c.Value.individual)
+                    continue;
                 if (carteiraSelecionada.Dados.ContainsKey(c.Key))
                 {
                     valor = carteiraSelecionada.obterItem(c.Key, hash);

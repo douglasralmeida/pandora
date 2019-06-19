@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:Modelagem"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:IconeConverter x:Key="ErroIconeConverter" />
+    </UserControl.Resources>
     <DockPanel>
         <!-- Painel Lateral -->
         <DockPanel x:Name="PainelExplorador" DockPanel.Dock="Left">
@@ -62,6 +65,24 @@
                     </DockPanel>
                 </TabItem>
             </TabControl>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+            <Label DockPanel.Dock="Top">Lista de Erros</Label>
+            <ListView Name="ListaErros" ItemsSource="{Binding ListaErros}" MinHeight="120">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="" Width="32">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Height="16" Width="16" Source="{Binding Tipo, Converter={StaticResource ErroIconeConverter}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Código" Width="80" DisplayMemberBinding="{Binding Codigo}" />
+                        <GridViewColumn Header="Descrição" Width="320" DisplayMemberBinding="{Binding Descricao}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </DockPanel>
         <!-- Controle Central -->
         <ContentControl x:Name="Paginas">

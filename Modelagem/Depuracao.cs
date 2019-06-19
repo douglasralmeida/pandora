@@ -12,6 +12,17 @@ namespace Modelagem
     {
         private CentralExecucao _central;
 
+        private StringBuilder _saida;
+
+        private bool iniciou;
+
+        private bool finalizou;
+
+        public string Saida
+        {
+            get => _saida.ToString();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -22,6 +33,28 @@ namespace Modelagem
         public Depuracao(CentralExecucao central)
         {
             _central = central;
+            _saida = new StringBuilder();
+
+            _central.CompilacaoAntes += CompilacaoIniciar;
+            _central.CompilacaoDepois += CompilacaoFinalizar;
+
+            iniciou = false;
+            finalizou = false;
+        }
+
+        private void CompilacaoFinalizar(object sender, EventArgs e)
+        {
+            iniciou = false;
+            finalizou = true;
+
+            _saida.AppendLine(String.Format("========== Depuração finalizada: %d com êxito, %d com falha ==========", _central.TotalExitos, _central.TotalFalhas));
+        }
+
+        private void CompilacaoIniciar(object sender, EventArgs e)
+        {
+            iniciou = true;
+            finalizou = false;
+            _saida.AppendLine(String.Format("========== Depuração iniciada: Objeto: %s ==========", _central.ObjetoCarregado));
         }
     }
 }

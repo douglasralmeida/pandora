@@ -1,4 +1,5 @@
 ﻿using Base;
+using Execucao;
 using Modelagem.Views;
 using System;
 using System.Collections.Generic;
@@ -48,8 +49,14 @@ namespace Modelagem
                 {
                     _objetoativo = value;
                     OnPropertyChanged("ObjetoAtivo");
+                    OnPropertyChanged("PodeDepurar");
                 }
             }
+        }
+
+        public bool PodeDepurar
+        {
+            get => (ObjetoAtivo != null);
         }
 
         public EditorView(Editor editor)

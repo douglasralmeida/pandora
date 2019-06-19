@@ -1,4 +1,5 @@
 ﻿using Base;
+using Execucao;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -21,6 +22,13 @@ namespace Modelagem
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event TarefaAddedEventHandler TarefaAdded;
+
+        public ObservableCollection<Erro> ListaErros
+        {
+            get => Erros.Lista;
+        }
+
+        public Erros Erros { get; set; }
 
         public bool Modificado
         {
@@ -76,6 +84,7 @@ namespace Modelagem
         {
             XElement xml;
 
+            Erros.Limpar();
             xml = XElement.Load(nomearquivo);
             if (processarXML(xml))
             {

@@ -9,10 +9,10 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom">
             <DockPanel DockPanel.Dock="Left">
-                <Label>Variáveis</Label>
+                <Label>Saída</Label>
             </DockPanel>
             <DockPanel>
-                <Label>Saída</Label>
+                <Label>Variáveis</Label>
             </DockPanel>
         </DockPanel>
         <DockPanel>

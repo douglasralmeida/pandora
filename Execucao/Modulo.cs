@@ -20,13 +20,15 @@ namespace Execucao
     {
         public string descricao;
         public bool individual;
+        public bool obrigatoria;
         public bool oculta;
 
-        public ConstanteInfo(string desc, bool indiv, bool oc)
+        public ConstanteInfo(string desc, bool indiv, bool oc, bool ob)
         {
             descricao = desc;
             individual = indiv;
             oculta = oc;
+            obrigatoria = ob;
         }
     }
 
