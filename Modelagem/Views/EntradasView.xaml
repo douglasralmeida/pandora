@@ -10,12 +10,12 @@
     <DockPanel Name="PainelExecucaoCabecalho" >
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button x:Name="btoNovo" Content="Novo conjunto de dados" />
-                <Button x:Name="btoImportar" Content="Importar dados" />
-                <Button x:Name="btoSalvar" Content="Salvar dados" />
+                <Button x:Name="btoNovo" Content="Novo conjunto de dados" Click="BtoNovo_Click" />
+                <Button x:Name="btoImportar" Content="Importar dados" Click="BtoImportar_Click" />
+                <Button x:Name="btoSalvar" Content="Salvar dados" Click="BtoSalvar_Click" />
                 <Button x:Name="btoRecortar" Content="Recortar" />
                 <Button x:Name="btoCopiar" Content="Copiar" />
-                <Button x:Name="btoColar" Content="Colar" />
+                <Button x:Name="btoColar" Content="Colar" VerticalAlignment="Top" Click="BtoColar_Click" />
                 <Button x:Name="btoInserir" Content="Inserir linha" />
                 <Button x:Name="btoRemover" Content="Remover linha" />
             </ToolBar>
@@ -24,6 +24,6 @@
             <Button x:Name="btoOk" IsDefault="True" Height="23" MinWidth="75" Margin="0,0,10,0" Click="BtoOk_Click">_OK</Button>
             <Button x:Name="btoCancelar" IsCancel="True" Height="23" MinWidth="75" Click="BtoCancelar_Click" >_Cancelar</Button>
         </WrapPanel>
-        <DataGrid Name="DadosEntrada" ItemsSource="{Binding DefaultView}" />
+        <DataGrid Name="GradeDados" ItemsSource="{Binding DefaultView}" />
     </DockPanel>
 </Window>
