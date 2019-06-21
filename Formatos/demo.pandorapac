@@ -2,7 +2,7 @@
 <pacote>
   <cabecalho>
     <versao>1</versao>
-    <geracao nome="Douglas Rodrigues de Almeida" data="2019-06-19T13:11:45.4467316-03:00" />
+    <geracao nome="Douglas Rodrigues de Almeida" data="2019-06-21T13:06:38.3310793-03:00" />
   </cabecalho>
   <conteudo>
     <processos>
@@ -24,6 +24,9 @@
         <operacoes>
           <operacao>
             <comando>Digitar "INFBEN{ENTER}"</comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar {ENTRADA NB}</comando>
           </operacao>
         </operacoes>
       </tarefa>

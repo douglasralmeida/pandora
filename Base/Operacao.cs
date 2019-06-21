@@ -104,7 +104,6 @@ namespace Base
             List<string> lista;
             MatchCollection combinacoes;
             string padrao = "{ENTRADA (.*?)}";
-            string s;
 
             combinacoes = Regex.Matches(_parametros, padrao);
             lista = new List<string>();

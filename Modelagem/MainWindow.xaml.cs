@@ -6,6 +6,7 @@ using Modelagem.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
@@ -121,20 +122,32 @@ namespace Modelagem
 
         private void BtoOpcoesEntrada_Click(object sender, RoutedEventArgs e)
         {
-            string[] entradasNecessarias;
-            Objeto objeto = _edicao.ObjetoAtivo;
+            string[] cabecalho;
+            string[,] entradas;
             EntradasView entradasVisao;
+            Objeto objeto = _edicao.ObjetoAtivo;
 
-            entradasNecessarias = objeto.obterEntradas();
-            entradasVisao = new EntradasView(entradasNecessarias, _app.Configuracoes.DirTrabalho);
+            cabecalho = objeto.obterEntradas();
+            entradas = _entradas.Obter(cabecalho);
+            entradasVisao = new EntradasView(cabecalho, entradas);
             entradasVisao.Owner = Application.Current.MainWindow;
             entradasVisao.ShowDialog();
 
             if (entradasVisao.DialogResult ?? true)
             {
                 _entradas.Limpar();
+                foreach (DataRow linha in entradasVisao.Dados.Rows)
+                {
+                    Execucao.Entrada ent = new Execucao.Entrada();
+                    foreach (DataColumn coluna in entradasVisao.Dados.Columns)
+                    {
+                        ent.AdicionarVariavel(coluna.Caption, linha[coluna].ToString());
+                    }
+                    if (!ent.TudoVazio)
+                        _entradas.Adicionar(ent);
+                }              
                 //_app.Configuracoes.setEntradasFromString(entradasVisao.Entradas);
-                _app.Configuracoes.DirTrabalho = entradasVisao.Dir;
+                //_app.Configuracoes.DirTrabalho = entradasVisao.Dir;
             }
         }
 
