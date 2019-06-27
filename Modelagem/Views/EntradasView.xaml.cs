@@ -322,24 +322,147 @@ namespace Modelagem
 
         private void BtoColar_Click(object sender, RoutedEventArgs e)
         {
-            string[] celula;
-            string clipboardados = Clipboard.GetData(DataFormats.Text).ToString();
-            string[] linhas = clipboardados.Split('\n');
-            int linhainicial, colunainicial;
+            string clipboard;
+            string[] linhas;
+            string[] linha;
+            int dadosindice, dadoscolmax, dadoslinmax, linhainicial, linhamaxima, colunainicial, colunamaxima;
+            string[] novalinha = { "\r\n" };
 
-            linhainicial = 0;
-            colunainicial = GradeDados.SelectedCells[0].Column.DisplayIndex;
+            if (!Clipboard.ContainsText())
+                return;
 
-            for (int i = 0; i < linhas.Length; i++)
+            clipboard = Clipboard.GetData(DataFormats.Text).ToString();
+            linhas = clipboard.Split(novalinha, StringSplitOptions.RemoveEmptyEntries);
+
+            dadosindice = 0;
+            dadoslinmax = linhas.Length;
+            linhainicial = GradeDados.Items.IndexOf(GradeDados.CurrentItem);
+            linhamaxima = Dados.Rows.Count;
+            if (linhainicial > linhamaxima)
+                linhainicial = linhamaxima;
+            if (linhainicial == -1)
+                linhainicial = 0;
+            colunainicial = GradeDados.Columns.IndexOf(GradeDados.CurrentColumn);
+            colunamaxima = Dados.Columns.Count;
+            if (colunainicial > colunamaxima)
+                colunainicial = colunamaxima;
+            if (colunainicial == -1)
+                colunainicial = 0;
+
+            for (int lin = linhainicial; lin <= linhamaxima && dadosindice < dadoslinmax; lin++, dadosindice++)
             {
-                celula = linhas[i].Split('\t');
-                for (int j = 0; i < celula.Length; j++)
+                //adiciona nova linha, se necessário
+                if (lin == linhamaxima)
                 {
-                    Dados.Rows[i].SetField(j, celula[j]);
+                    Dados.Rows.Add(Dados.NewRow());
+                    linhamaxima++;
+                }
+                //escolhe uma linha da grade
+                DataRow row = Dados.Rows[lin];
+
+                //escolhe uma linha dos dados da área de transferencia
+                linha = linhas[dadosindice].Split('\t');
+                dadoscolmax = linha.Length;
+
+                //insere os dados nas células
+                int dadoscol = 0;
+                for (int col = colunainicial; col < colunamaxima && dadoscol < dadoscolmax; col++, dadoscol++)
+                {
+                    //Escolhe uma coluna da grade
+                    DataColumn column = Dados.Columns[col];
+
+                    //altera o conteúdo
+                    row[column] = linha[dadoscol];
                 }
             }
-                
-//                GradeDados[GradeDados.SelectedIndex, i] = celulas[i];
+
+            Modificado = true;
+        }
+
+        private void BtoInserir_Click(object sender, RoutedEventArgs e)
+        {
+            int pos;
+
+            if (GradeDados.CurrentItem != null)
+                pos = GradeDados.Items.IndexOf(GradeDados.CurrentItem);
+            else
+                pos = GradeDados.Items.Count - 1;
+            Dados.Rows.InsertAt(Dados.NewRow(), pos);
+            Modificado = true;
+        }
+
+        private void BtoRemover_Click(object sender, RoutedEventArgs e)
+        {
+            int pos;
+
+            if (GradeDados.CurrentItem != null)
+                pos = GradeDados.Items.IndexOf(GradeDados.CurrentItem);
+            else
+                pos = GradeDados.Items.Count - 1;
+            if (pos == -1)
+                pos = Dados.Rows.Count - 1;
+            if (pos < Dados.Rows.Count)
+                Dados.Rows.RemoveAt(pos);
+            Modificado = true;
+        }
+
+        private void BtoCopiar_Click(object sender, RoutedEventArgs e)
+        {
+            int x;
+            int linhainicial, linhamaxima, colunainicial, colunamaxima;
+            StringBuilder sb = new StringBuilder();
+
+            linhainicial = GradeDados.Items.IndexOf(GradeDados.SelectedItems[0]);
+            x = GradeDados.SelectedItems.Count - 1;
+            linhamaxima = GradeDados.Items.IndexOf(GradeDados.SelectedItems[x]);
+            colunainicial = GradeDados.Columns.IndexOf(GradeDados.SelectedCells[0].Column);
+            colunamaxima = GradeDados.Columns.IndexOf(GradeDados.SelectedCells[x].Column) + 1;
+
+            for (int lin = linhainicial; lin <= linhamaxima; lin++)
+            {
+                //escolhe uma linha da grade
+                DataRow row = Dados.Rows[lin];
+                for (int col = colunainicial; col < colunamaxima; col++)
+                {
+                    //Escolhe uma coluna da grade
+                    DataColumn column = Dados.Columns[col];
+                    sb.Append(row[column]);
+                    sb.Append('\t');
+                }
+                sb.Append("\r\n");
+            }
+
+            Clipboard.SetData(DataFormats.Text, sb.ToString());
+        }
+
+        private void BtoRecortar_Click(object sender, RoutedEventArgs e)
+        {
+            int x;
+            int linhainicial, linhamaxima, colunainicial, colunamaxima;
+            StringBuilder sb = new StringBuilder();
+
+            linhainicial = GradeDados.Items.IndexOf(GradeDados.SelectedItems[0]);
+            x = GradeDados.SelectedItems.Count - 1;
+            linhamaxima = GradeDados.Items.IndexOf(GradeDados.SelectedItems[x]);
+            colunainicial = GradeDados.Columns.IndexOf(GradeDados.SelectedCells[0].Column);
+            colunamaxima = GradeDados.Columns.IndexOf(GradeDados.SelectedCells[x].Column) + 1;
+
+            for (int lin = linhainicial; lin <= linhamaxima; lin++)
+            {
+                //escolhe uma linha da grade
+                DataRow row = Dados.Rows[lin];
+                for (int col = colunainicial; col < colunamaxima; col++)
+                {
+                    //Escolhe uma coluna da grade
+                    DataColumn column = Dados.Columns[col];
+                    sb.Append(row[column]);
+                    sb.Append('\t');
+                    row[column] = "";
+                }
+                sb.Append("\r\n");
+            }
+
+            Clipboard.SetData(DataFormats.Text, sb.ToString());
         }
     }
 }

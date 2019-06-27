@@ -13,11 +13,11 @@
                 <Button x:Name="btoNovo" Content="Novo conjunto de dados" Click="BtoNovo_Click" />
                 <Button x:Name="btoImportar" Content="Importar dados" Click="BtoImportar_Click" />
                 <Button x:Name="btoSalvar" Content="Salvar dados" Click="BtoSalvar_Click" />
-                <Button x:Name="btoRecortar" Content="Recortar" />
-                <Button x:Name="btoCopiar" Content="Copiar" />
+                <Button x:Name="btoRecortar" Content="Recortar" Click="BtoRecortar_Click" />
+                <Button x:Name="btoCopiar" Content="Copiar" Click="BtoCopiar_Click" />
                 <Button x:Name="btoColar" Content="Colar" VerticalAlignment="Top" Click="BtoColar_Click" />
-                <Button x:Name="btoInserir" Content="Inserir linha" />
-                <Button x:Name="btoRemover" Content="Remover linha" />
+                <Button x:Name="btoInserir" Content="Inserir linha" VerticalAlignment="Bottom" Click="BtoInserir_Click" />
+                <Button x:Name="btoRemover" Content="Remover linha" Click="BtoRemover_Click" />
             </ToolBar>
         </ToolBarTray>
         <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="0,8,8,8">
