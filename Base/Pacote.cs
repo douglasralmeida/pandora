@@ -123,6 +123,7 @@ namespace Base
             XMLAuxiliar.checarFilhoXML(conteudo, "processos", PAC_SEMCONTEUDO);
             processos = conteudo.Element("processos");
 
+            // Primeiro carrega as tarefas
             foreach (XElement el in tarefas.Elements())
             {
                 if (el.Name == "tarefa")
@@ -132,6 +133,8 @@ namespace Base
                         Tarefas.Add(novatarefa);
                 }
             }
+
+            // Segundo carrega os processos
             foreach (XElement el in processos.Elements())
             {
                 if (el.Name == "processo")
@@ -141,6 +144,10 @@ namespace Base
                         Processos.Add(novoprocesso);
                 }
             }
+
+            // Terceiro, adicionar tarefas e processos em outros processos como subprocessos
+            foreach (Processo p in Processos)
+                p.gerarAtividades();
         }
 
         private Processo carregarProcesso(XElement xml)

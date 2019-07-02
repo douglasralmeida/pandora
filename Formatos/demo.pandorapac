@@ -26,7 +26,7 @@
             <comando>Digitar "INFBEN{ENTER}"</comando>
           </operacao>
           <operacao>
-            <comando>Digitar {ENTRADA NB}</comando>
+            <comando>Digitar "{ENTRADA NB}"</comando>
           </operacao>
         </operacoes>
       </tarefa>

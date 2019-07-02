@@ -21,6 +21,8 @@ namespace Base
 
         private readonly ObservableCollection<Processo> _processos;
 
+        private XElement _xmlFilhos;
+
         public ObservableCollection<Objeto> Atividades
         {
             get
@@ -68,7 +70,6 @@ namespace Base
 
         protected override void analisarXml(XElement xml)
         {
-            XElement atividades;
             string[] elementosnecessarios = { "nome" };
 
             XMLAuxiliar.checarFilhosXML(xml, elementosnecessarios, PROCESSO_INVALIDO);
@@ -77,22 +78,32 @@ namespace Base
                 _descricao = xml.Element("descricao").Value;
             if (xml.Elements("atividades").Count() > 0)
             {
-                atividades = xml.Element("atividades");
+                _xmlFilhos = xml.Element("atividades"); ;
+            }
+        }
 
-                foreach (XElement el in atividades.Elements())
+        public void gerarAtividades()
+        {
+            if (_xmlFilhos == null)
+                return;
+
+            foreach (XElement el in _xmlFilhos.Elements())
+            {
+                if (el.Name == "atividade" && el.HasElements)
                 {
-                    if (el.Name == "tarefa")
+                    XElement subel = el.Elements().First();
+                    if (subel.Name == "tarefa")
                     {
                         var consultatarefa = from tarefa in _tarefas
-                                             where tarefa.Nome == el.Value
+                                             where tarefa.Nome == subel.Value
                                              select tarefa;
 
                         _atividades.Add(consultatarefa.First());
                     }
-                    else if (el.Name == "subprocesso")
+                    else if (subel.Name == "subprocesso")
                     {
                         var consultaprocesso = from processo in _processos
-                                               where processo.Nome == el.Value
+                                               where processo.Nome == subel.Value
                                                select processo;
 
                         _atividades.Add(consultaprocesso.First());
