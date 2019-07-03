@@ -260,18 +260,15 @@ namespace Execucao
 
         private void parseParametros(StringBuilder builder)
         {
-            MatchCollection combinacoes;
-            string padrao = "{ENTRADA (.*?)}";
-            string s;
+            string[] lista;
             Variavel v;
 
-            combinacoes = Regex.Matches(builder.ToString(), padrao);
-            foreach (Match m in combinacoes)
+            lista = Parser.analisarVarEntrada(builder.ToString(), true);
+            foreach (string s in lista)
             {
-                s = string.Format("{{ENTRADA {0}}}", m.Groups[1]);
-                _instancia.variaveis.TryGetValue(m.Groups[1].ToString(), out v);
+                _instancia.variaveis.TryGetValue(s, out v);
                 builder.Replace(s, v.Valor);
-            }            
+            }
         }
 
         public void processar()

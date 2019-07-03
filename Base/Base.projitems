@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Objeto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pacote.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PandoraException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tarefa.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Conversor.cs" />

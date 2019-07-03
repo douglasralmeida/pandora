@@ -101,16 +101,10 @@ namespace Base
 
         public override string[] obterEntradas()
         {
-            List<string> lista;
-            MatchCollection combinacoes;
-            string padrao = "{ENTRADA (.*?)}";
+            string[] lista;
 
-            combinacoes = Regex.Matches(_parametros, padrao);
-            lista = new List<string>();
-            foreach (Match m in combinacoes)
-            {
-                lista.Add(m.Groups[1].ToString());
-            }
+            lista = Parser.analisarVarEntrada(_parametros, false);
+
             return lista.ToArray();
         }
 
