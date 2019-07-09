@@ -159,6 +159,9 @@ namespace Execucao
             List<Comando> comandos = new List<Comando>();
             FuncaoInfo funcaoinfo;
             Funcao funcao;
+            string parametroProcessado;
+
+            Debug.WriteLine("Tarefa: " + tarefa);
 
             foreach (Operacao op in tarefa.Operacoes)
             {
@@ -166,26 +169,18 @@ namespace Execucao
                 funcao = funcaoinfo.funcao;
                 comando = new Comando(op.Nome, funcao);
 
-                Debug.Write("Parametros antes: " + op.Parametros);
+                Debug.WriteLine("Parametros antes: " + op.Parametros);
 
-                parametros = op.Parametros.Split(' ');
-                i = 0;
-                foreach (string param in parametros)
+                // listaParametros[0] é o nome do comando
+                for (i = 1; i < op.ListaParametros.Length; i++)
                 {
-                    //remove as aspas
-                    builder.Clear();
-                    builder.Append(param);
-                    builder.Remove(0, 1);
-                    builder.Remove(parametros.Length - 1, 1);
-
                     //substitui pelas variáveis de entrada
-                    parseParametros(builder);
-                    comando.Parametros.Add(new Variavel(builder.ToString()));
-
-                    Debug.Write("Parametros depois: " + comando.Parametros);
-
-                    i++;
+                    parametroProcessado = parseParametro(op.ListaParametros[i]);
+                    comando.Parametros.Add(new Variavel(parametroProcessado));
                 }
+
+                Debug.WriteLine("Parametros depois: " + comando.Parametros);
+
                 comandos.Add(comando);
             }
 
@@ -258,17 +253,37 @@ namespace Execucao
             ObjetoCarregarDepois?.Invoke(this, objeto);
         }
 
-        private void parseParametros(StringBuilder builder)
+        private string parseParametro(string param)
         {
             string[] lista;
             Variavel v;
+            StringBuilder builder = new StringBuilder();
 
-            lista = Parser.analisarVarEntrada(builder.ToString(), true);
+            lista = Parser.analisarVarEntrada(param, true);
+            if (lista.Length == 0)
+            {
+                lista = new string[1];
+                if (param[0] == '"' && param[param.Length - 1] == '"')
+                {
+                    lista[0] = param.Remove(param.Length - 1).Remove(0);
+                }
+                else
+                    lista[0] = param;
+            }
             foreach (string s in lista)
             {
                 _instancia.variaveis.TryGetValue(s, out v);
-                builder.Replace(s, v.Valor);
+                if (v == null)
+                    builder.Append(s);
+                else
+                    builder.Replace(s, v.Valor);
+                builder.Append(' ');
             }
+            // remove o espaço extra
+            if (builder.Length > 0)
+                builder.Remove(builder.Length - 1, 1);
+
+            return builder.ToString();
         }
 
         public void processar()

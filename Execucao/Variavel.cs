@@ -39,7 +39,6 @@ namespace Execucao
                 {
                     builder.Append("■");
                 }
-
             }
             else
             {

@@ -50,10 +50,18 @@ namespace Modelagem
 
         private void BtoOk_Click(object sender, RoutedEventArgs e)
         {
+            int l;
+            string param;
+
             if (comboComando.SelectedIndex >= 0)
             {
                 _operacao.Nome = ComandoSelecionado;
-                _operacao.Parametros = Parametros;
+                param = Parametros.Trim();
+                l = param.Length - 1;
+                if (param[0] != '"' || param[l] != '"')
+                    _operacao.Parametros = _operacao.Nome + " \"" + Parametros + "\"";
+                else
+                    _operacao.Parametros = _operacao.Nome + " " + Parametros;
                 DialogResult = true;
             }
         }

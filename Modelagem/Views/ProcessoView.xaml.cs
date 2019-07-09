@@ -27,6 +27,17 @@ namespace Modelagem
         public ProcessoView()
         {
             InitializeComponent();
+            processarAtividades();
+        }
+
+        private void processarAtividades()
+        {
+            Processo processoativo = ObjetoAtivo as Processo;
+
+            ICollectionView view = CollectionViewSource.GetDefaultView(processoativo.Atividades.Pre);
+            view.GroupDescriptions.Add(new PropertyGroupDescription("Fase"));
+            view.SortDescriptions.Add(new SortDescription("Nome", ListSortDirection.Ascending));
+            ListaAtividades.ItemsSource = view;
         }
 
         protected void AtividadeDoubleClick(object sender, MouseButtonEventArgs e)

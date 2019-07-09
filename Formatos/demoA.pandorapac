@@ -2,14 +2,14 @@
 <pacote>
   <cabecalho>
     <versao>1</versao>
-    <geracao nome="Douglas Rodrigues de Almeida" data="2019-06-21T13:06:38.3310793-03:00" />
+    <geracao nome="Douglas Rodrigues de Almeida" data="2019-07-03T16:12:54.2819214-03:00" />
   </cabecalho>
   <conteudo>
     <processos>
       <processo>
         <nome>Gerar cópia do INFBEN</nome>
         <descricao></descricao>
-        <atividades fase="normal">
+        <atividades>
           <atividade>
             <tarefa>INFBEN</tarefa>
           </atividade>
@@ -27,6 +27,9 @@
           </operacao>
           <operacao>
             <comando>Digitar "(ENTRADA NB)"</comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "(ENTRADA CPF)"</comando>
           </operacao>
         </operacoes>
       </tarefa>

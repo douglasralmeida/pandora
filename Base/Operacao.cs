@@ -14,9 +14,9 @@ namespace Base
 
         private int _id;
 
-        private string _parametros;
+        private string[] _parametros;
 
-        public Operacao(int id, string comando, string parametros)
+        public Operacao(int id, string comando, string[] parametros)
         {
             nomeElementoXml = "operacao";
             _id = id;
@@ -44,35 +44,52 @@ namespace Base
             }
         }
 
+        public string[] ListaParametros
+        {
+            get => _parametros;
+
+            set => _parametros = value;
+        }
+
         public string Parametros
         {
             get
             {
-                return _parametros;
+                StringBuilder builder = new StringBuilder();
+
+                for (int i = 1; i < _parametros.Length; i++)
+                {
+                    builder.Append('"');
+                    builder.Append(_parametros[i]);
+                    builder.Append('"');
+                    builder.Append(' ');
+                }
+                if (builder.Length > 0 && builder[builder.Length-1] == ' ')
+                    builder.Remove(builder.Length - 1, 1);
+
+                return builder.ToString();
             }
 
             set
             {
-                if (_parametros != value)
-                {
-                    _parametros = value;
-                    OnPropertyChanged("Parametros");
-                }
+                char separador = ' ';
+                char escape = '"';
+
+                _parametros = Parser.dividirString(value, separador, escape);
+                if (_parametros.Count() > 0)
+                    _nome = _parametros[0];
+                else
+                    _nome = "";
+                OnPropertyChanged("Parametros");
             }
         }
 
         protected override void analisarXml(XElement xml)
         {
-            char[] separadores = { ' ' };
-            string[] comandos;
             string[] elementosnecessarios = { "comando" };
 
             XMLAuxiliar.checarFilhosXML(xml, elementosnecessarios, TAREFA_INVALIDA);
-            comandos = xml.Element("comando").Value.Split(separadores, 2);
-            if (comandos.Count() > 0)
-                _nome = comandos[0];
-            if (comandos.Count() > 1)
-                _parametros = comandos[1];
+            Parametros = xml.Element("comando").Value;
         }
 
         public override void colarDe(Objeto origem)
@@ -92,7 +109,7 @@ namespace Base
 
             operacao = base.gerarXml();
             comando = new XElement("comando");
-            comando.Value = _nome + " " + _parametros;
+            comando.Value = _nome + " " + Parametros;
 
             operacao.Add(comando);
 
@@ -101,16 +118,22 @@ namespace Base
 
         public override string[] obterEntradas()
         {
-            string[] lista;
+            string[] parametros;
+            List<string> lista = new List<string>();
 
-            lista = Parser.analisarVarEntrada(_parametros, false);
+            for (int i = 1; i < _parametros.Length; i++)
+            {
+                parametros = Parser.analisarVarEntrada(_parametros[i], true);
+                foreach (string p in parametros)
+                    lista.Add(p);
+            }
 
             return lista.ToArray();
         }
 
         public override string ToString()
         {
-            return _nome + " " + _parametros;
+            return _nome + " " + Parametros;
         }
     }
 }

@@ -44,7 +44,10 @@
                         <Button x:Name="BtoExcluirAtividade" IsEnabled="{Binding ElementName=ListaAtividades, Path=SelectedItems.Count}" Click="BtoExcluirAtividade_Click">Excluir Atividade</Button>
                     </ToolBar>
                 </ToolBarTray>
-                <ListView x:Name="ListaAtividades" ItemsSource="{Binding Atividades}">
+                <ListView x:Name="ListaAtividades">
+                    <ListView.GroupStyle>
+                        <GroupStyle />
+                    </ListView.GroupStyle>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn HeaderContainerStyle="{StaticResource ListViewStyle}" Header="Atividade" Width="200" DisplayMemberBinding="{Binding Nome}" />

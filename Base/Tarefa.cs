@@ -101,6 +101,7 @@ namespace Base
                 _entradas.Add(e);
             }
         }
+
         protected override void analisarXml(XElement xml)
         {
             int i;

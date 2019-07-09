@@ -57,7 +57,7 @@ namespace Modelagem
             Operacao novaoperacao;
 
             quantidadeOperacoes = _tarefaativa.getOperacoesCount();
-            novaoperacao = new Operacao(quantidadeOperacoes + 1, "NovaOperacao", "");
+            novaoperacao = new Operacao(quantidadeOperacoes + 1, "NovaOperacao", new string[0]);
             if (editarOperacao(novaoperacao))
             {
                 _tarefaativa.Operacoes.Add(novaoperacao);

@@ -117,13 +117,13 @@ namespace Base
             Processo novoprocesso;
             Tarefa novatarefa;
 
+            // Mudar a ordem de carregamento pode causar 
+            // erros.
+
+            // Primeiro carrega as tarefas
             XMLAuxiliar.checarFilhoXML(conteudo, "tarefas", PAC_SEMCONTEUDO);
             tarefas = conteudo.Element("tarefas");
 
-            XMLAuxiliar.checarFilhoXML(conteudo, "processos", PAC_SEMCONTEUDO);
-            processos = conteudo.Element("processos");
-
-            // Primeiro carrega as tarefas
             foreach (XElement el in tarefas.Elements())
             {
                 if (el.Name == "tarefa")
@@ -135,6 +135,9 @@ namespace Base
             }
 
             // Segundo carrega os processos
+            XMLAuxiliar.checarFilhoXML(conteudo, "processos", PAC_SEMCONTEUDO);
+            processos = conteudo.Element("processos");
+
             foreach (XElement el in processos.Elements())
             {
                 if (el.Name == "processo")
