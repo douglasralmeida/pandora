@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Base
 {
     public enum AtividadeFase
     {
+        [Description("Execução")]
         FaseNormal,
+        [Description("Pré-execução")]
         FasePre,
+        [Description("Pós-execução")]
         FasePos
     }
 
