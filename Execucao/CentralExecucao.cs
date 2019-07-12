@@ -90,7 +90,7 @@ namespace Execucao
             {
                 //Tarefa tarefa = (Tarefa)objeto;
                 processo = new Processo("Processo Genérico", null, null);
-                processo.Atividades.Add(objeto);
+                processo.Atividades.Add(new Atividade(objeto));
             }
             else
             {
@@ -135,16 +135,16 @@ namespace Execucao
         private void checarModulos(Processo processo)
         {
             ModulosUtilizados.Clear();
-            foreach (Objeto o in processo.Atividades)
+            foreach (Atividade a in processo.Atividades)
             {
-                if (o is Tarefa)
+                if (a.ObjetoRelacionado is Tarefa)
                 {
-                    Tarefa t = (Tarefa)o;
+                    Tarefa t = (Tarefa)a.ObjetoRelacionado;
                     if (!ModulosUtilizados.Contains(t.Modulo))
                         ModulosUtilizados.Add(t.Modulo);
                 } else
                 {
-                    Processo p = (Processo)o;
+                    Processo p = (Processo)a.ObjetoRelacionado;
                     checarModulos(p);
                 }
             }
@@ -213,18 +213,18 @@ namespace Execucao
         {
             Tarefa tarefa;
 
-            foreach (Objeto o in processo.Atividades)
+            foreach (Atividade a in processo.Atividades)
             {
                 // Quando for implementado o suporte a desvios condicionais,
                 // deverá ser adicionado um novo fluxo dentro do fluxo atual
                 // e as operações pertencentes ao desvio deverão ser adicionados
                 // dentro do novo fluxo adicionado.
                 // Também será adicionado um novo comando IrParaFluxo(numero);
-                if (o is Processo)
-                    incluirNoFluxo((Processo)o);
+                if (a.ObjetoRelacionado is Processo)
+                    incluirNoFluxo((Processo)a.ObjetoRelacionado);
                 else
                 {
-                    tarefa = (Tarefa)o;
+                    tarefa = (Tarefa)a.ObjetoRelacionado;
                     foreach (Comando c in comandosDeTarefa(tarefa))
                         _instancia.fluxo.Instrucoes.Add(c);
                 }

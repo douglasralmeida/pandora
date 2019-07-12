@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Modelagem"
-             mc:Ignorable="d" 
+                  xmlns:componentmodel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+                  mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <local:ObjetoView.Resources>
         <Style x:Key="ListViewStyle" TargetType="{x:Type GridViewColumnHeader}">
@@ -44,9 +45,15 @@
                         <Button x:Name="BtoExcluirAtividade" IsEnabled="{Binding ElementName=ListaAtividades, Path=SelectedItems.Count}" Click="BtoExcluirAtividade_Click">Excluir Atividade</Button>
                     </ToolBar>
                 </ToolBarTray>
-                <ListView x:Name="ListaAtividades">
+                <ListView x:Name="ListaAtividades" ItemsSource="{Binding Source={StaticResource AtividadesAgrupadas}}">
                     <ListView.GroupStyle>
-                        <GroupStyle />
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Fase}"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
                     </ListView.GroupStyle>
                     <ListView.View>
                         <GridView>
@@ -57,6 +64,11 @@
                         <Style TargetType="{x:Type ListViewItem}">
                             <EventSetter Event="MouseDoubleClick" Handler="AtividadeDoubleClick" />
                         </Style>
+                        <CollectionViewSource Source="{Binding}" x:Key="AtividadesAgrupadas">
+                            <CollectionViewSource.SortDescriptions>
+                                <componentmodel:SortDescription PropertyName="Fase" />
+                            </CollectionViewSource.SortDescriptions>
+                        </CollectionViewSource>
                     </ListView.Resources>
                 </ListView>
             </DockPanel>

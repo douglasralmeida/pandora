@@ -24,31 +24,50 @@ namespace Modelagem
     {
         private Processo _processoativo => (Processo)_objetoativo;
 
+        public ICollectionView Atividades
+        {
+            get
+            {
+                Processo processoativo = ObjetoAtivo as Processo;
+                return CollectionViewSource.GetDefaultView(processoativo.Atividades);
+            }
+        }
+        
+
         public ProcessoView()
         {
             InitializeComponent();
-            processarAtividades();
+
+            //PropertyChanged += ProcessoView_PropertyChanged;
+        }
+
+        private void ProcessoView_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ObjetoAtivo")
+                processarAtividades();
         }
 
         private void processarAtividades()
         {
             Processo processoativo = ObjetoAtivo as Processo;
 
-            ICollectionView view = CollectionViewSource.GetDefaultView(processoativo.Atividades.Pre);
-            view.GroupDescriptions.Add(new PropertyGroupDescription("Fase"));
-            view.SortDescriptions.Add(new SortDescription("Nome", ListSortDirection.Ascending));
-            ListaAtividades.ItemsSource = view;
+            if (processoativo == null)
+                return;
+            //;
+            //view.GroupDescriptions.Add(new PropertyGroupDescription("Fase"));
+            //view.SortDescriptions.Add(new SortDescription("Nome", ListSortDirection.Ascending));
+            //ListaAtividades.ItemsSource = view;
         }
 
         protected void AtividadeDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Objeto objeto = ((ListViewItem)sender).Content as Objeto;
-
-            ObjetoAtivo = objeto;
+            Atividade atividade = ((ListViewItem)sender).Content as Atividade;
+            ObjetoAtivo = atividade.ObjetoRelacionado;
         }
 
         private void BtoInserirAtividade_Click(object sender, RoutedEventArgs e)
         {
+            Atividade atividade;
             Objeto objeto;
 
             AtividadesView atividadesView = new AtividadesView()
@@ -62,7 +81,9 @@ namespace Modelagem
             if (atividadesView.DialogResult ?? true)
             {
                 objeto = atividadesView.ObjetoSelecionado;
-                _processoativo.Atividades.Add(objeto);
+                atividade = new Atividade(objeto);
+                atividade.Fase = atividadesView.FaseEscolhida;
+                _processoativo.Atividades.Add(atividade);
             }
 
         }
@@ -82,10 +103,10 @@ namespace Modelagem
             {
                 if (ListaAtividades.SelectedItems.Count > 0)
                 {
-                    var lista = ListaAtividades.SelectedItems.Cast<Objeto>().ToList();
-                    foreach (Objeto objeto in lista)
+                    var lista = ListaAtividades.SelectedItems.Cast<Atividade>().ToList();
+                    foreach (Atividade atividade in lista)
                     {
-                        _processoativo.Atividades.Remove(objeto);
+                        _processoativo.Atividades.Remove(atividade);
                     }
                 }
             }

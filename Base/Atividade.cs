@@ -22,6 +22,8 @@ namespace Base
 
         public AtividadeFase Fase { get; set; }
 
+        public string Nome { get => ObjetoRelacionado.Nome; }
+
         public Objeto ObjetoRelacionado { get; private set; }
     }
 }

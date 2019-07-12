@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Data;
 using System.Xml.Linq;
 
 namespace Base
@@ -22,6 +23,10 @@ namespace Base
         private Dictionary<string, List<XElement>> xmlAtividades;
 
         public ObservableCollection<Atividade> Atividades { get; private set; }
+
+        public ICollectionView AtividadesAgrupadas => CollectionViewSource.GetDefaultView(Atividades);
+
+        public ObservableCollection<string> Fases { get; private set; }
 
         public string Descricao
         {
@@ -44,6 +49,10 @@ namespace Base
             nomeElementoXml = "processo";
             Atividades = new ObservableCollection<Atividade>();
             Atividades.CollectionChanged += Atividades_CollectionChanged;
+            Fases = new ObservableCollection<string>();
+            Fases.Add("Pré-execução");
+            Fases.Add("Execução");
+            Fases.Add("Pós-execução");
             _nome = nome;
             _tarefas = tarefas;
             _processos = processos;
@@ -56,6 +65,10 @@ namespace Base
             nomeElementoXml = "processo";
             Atividades = new ObservableCollection<Atividade>();
             Atividades.CollectionChanged += Atividades_CollectionChanged;
+            Fases = new ObservableCollection<string>();
+            Fases.Add("Pré-execução");
+            Fases.Add("Execução");
+            Fases.Add("Pós-execução");
             _tarefas = tarefas;
             _processos = processos;
 
@@ -77,11 +90,10 @@ namespace Base
             {
                 if (el.Name != "atividades")
                     continue;
+                fase = "normal";
 
                 if (el.Attributes("fase").Count() > 0)
                     fase = el.Attribute("fase").Value;
-                else
-                    fase = "normal";
                 if (xmlAtividades.ContainsKey(fase))
                     xmlAtividades.TryGetValue(fase, out lista);
                 else
@@ -151,38 +163,61 @@ namespace Base
         {
             string[] xmlFases = { "normal", "pre", "pos" };
             string tipoatividade = "";
-            XElement atividade;
-            XElement atividades;
-            XElement processo;
+            XElement xatividade;
+            XElement xatividades;
+            XElement xprocesso;
+            XElement xlistapre;
+            XElement xlistanormal;
+            XElement xlistapos;
 
-            processo = base.gerarXml();
-            processo.Add(new XElement("nome", Nome));
-            processo.Add(new XElement("descricao", Descricao));
-            atividades = new XElement("atividades");
-            atividades.SetAttributeValue("fase", xmlFases[(int)Fase]);
-            foreach (Objeto objeto in Atividades)
+            XElement xlista;
+
+            xprocesso = base.gerarXml();
+            xprocesso.Add(new XElement("nome", Nome));
+            xprocesso.Add(new XElement("descricao", Descricao));
+            xatividades = new XElement("atividades");
+            xlistapre = new XElement("atividades");
+            xlistanormal = new XElement("atividades");
+            xlistapos = new XElement("atividades");
+            foreach (Atividade atividade in Atividades)
             {
-                if (objeto is Tarefa)
+                if (atividade.ObjetoRelacionado is Tarefa)
                     tipoatividade = "tarefa";
-                else if (objeto is Processo)
+                else if (atividade.ObjetoRelacionado is Processo)
                     tipoatividade = "subprocesso";
-                atividade = new XElement("atividade");
-                atividade.Add(new XElement(tipoatividade, objeto.Nome));
-
-                atividades.Add(atividade);
+                xatividade = new XElement("atividade");
+                switch (atividade.Fase)
+                {
+                    case AtividadeFase.FasePre:
+                        xlista = xlistapre;
+                        break;
+                    case AtividadeFase.FasePos:
+                        xlista = xlistapos;
+                        break;
+                    default:
+                        xlista = xlistanormal;
+                        break;
+                }
+                xatividade.Add(new XElement(tipoatividade, atividade.ObjetoRelacionado.Nome));
+                xatividade.SetAttributeValue("fase", xmlFases[(int)atividade.Fase]);
+                xlista.Add(xatividade);
             }
+            xatividades.Add(xlistapre.Elements());
+            xatividades.Add(xlistanormal.Elements());
+            xatividades.Add(xlistapos.Elements());
+            xprocesso.Add(xatividades);
 
-            return processo;
+            return xprocesso;
         }
 
         public override string[] obterEntradas()
         {
             List<string> lista = new List<string>();
 
-            foreach (Objeto o in Atividades)
+            foreach (Atividade a in Atividades)
             {
-                if (o.obterEntradas() != null)
-                    lista.AddRange(o.obterEntradas());
+                if (a.ObjetoRelacionado.obterEntradas() != null)
+                    lista.AddRange(a.ObjetoRelacionado.obterEntradas());
             }
 
             return lista.ToArray();

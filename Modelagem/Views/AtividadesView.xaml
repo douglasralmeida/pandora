@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modelagem"
+        xmlns:base="clr-namespace:Base"
         mc:Ignorable="d"
-        Title="Escolher atividade" Height="386" Width="308"
+        Title="Escolher atividade" Height="426" Width="368"
         ContentRendered="Window_ContentRendered"
         WindowStartupLocation="CenterOwner">
     <DockPanel Margin="8">
@@ -16,9 +17,10 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="248" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -44,6 +46,19 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+            </Border>
+            <Border Grid.Row="2" Grid.Column="0">
+                <Label>Fase:</Label>
+            </Border>
+            <Border Grid.Row="2" Grid.Column="1">
+                <WrapPanel VerticalAlignment="Center">
+                    <WrapPanel.Resources>
+                        <local:ComparacaoConverter x:Key="ComparacaoConverter" />
+                    </WrapPanel.Resources>
+                    <RadioButton IsChecked="{Binding Path=FaseEscolhida, Converter={StaticResource ComparacaoConverter}, ConverterParameter={x:Static base:AtividadeFase.FaseNormal}}">Normal</RadioButton>
+                    <RadioButton IsChecked="{Binding Path=FaseEscolhida, Converter={StaticResource ComparacaoConverter}, ConverterParameter={x:Static base:AtividadeFase.FasePre}}">Pré-execução</RadioButton>
+                    <RadioButton IsChecked="{Binding Path=FaseEscolhida, Converter={StaticResource ComparacaoConverter}, ConverterParameter={x:Static base:AtividadeFase.FasePos}}">Pós-execução</RadioButton>
+                </WrapPanel>
             </Border>
         </Grid>
     </DockPanel>
