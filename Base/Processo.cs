@@ -24,7 +24,7 @@ namespace Base
 
         public ObservableCollection<Atividade> Atividades { get; private set; }
 
-        public ICollectionView AtividadesAgrupadas => CollectionViewSource.GetDefaultView(Atividades);
+        public ICollectionView Visao => CollectionViewSource.GetDefaultView(Atividades);
 
         public ObservableCollection<string> Fases { get; private set; }
 
@@ -56,6 +56,7 @@ namespace Base
             _nome = nome;
             _tarefas = tarefas;
             _processos = processos;
+            Visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase", new AtividadeFaseConverter()));
 
             xmlAtividades = new Dictionary<string, List<XElement>>();
         }
@@ -71,9 +72,16 @@ namespace Base
             Fases.Add("Pós-execução");
             _tarefas = tarefas;
             _processos = processos;
+            Visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase"));
 
             xmlAtividades = new Dictionary<string, List<XElement>>();
             analisarXml(xml);
+        }
+
+        public void adicionarAtividade(Atividade atividade)
+        {
+            Atividades.Add(atividade);
+            Visao.Refresh();
         }
 
         protected override void analisarXml(XElement xml)

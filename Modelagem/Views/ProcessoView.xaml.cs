@@ -24,12 +24,13 @@ namespace Modelagem
     {
         private Processo _processoativo => (Processo)_objetoativo;
 
+        private ICollectionView _visao;
+
         public ICollectionView Atividades
         {
             get
             {
-                Processo processoativo = ObjetoAtivo as Processo;
-                return CollectionViewSource.GetDefaultView(processoativo.Atividades);
+                return _visao;
             }
         }
         
@@ -49,14 +50,14 @@ namespace Modelagem
 
         private void processarAtividades()
         {
-            Processo processoativo = ObjetoAtivo as Processo;
+            Processo processoativo = _processoativo;
 
             if (processoativo == null)
                 return;
-            //;
-            //view.GroupDescriptions.Add(new PropertyGroupDescription("Fase"));
-            //view.SortDescriptions.Add(new SortDescription("Nome", ListSortDirection.Ascending));
-            //ListaAtividades.ItemsSource = view;
+
+            _visao = CollectionViewSource.GetDefaultView(_processoativo.Atividades);
+            _visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase"));
+            _visao.SortDescriptions.Add(new SortDescription("Nome", ListSortDirection.Ascending));
         }
 
         protected void AtividadeDoubleClick(object sender, MouseButtonEventArgs e)
@@ -83,7 +84,7 @@ namespace Modelagem
                 objeto = atividadesView.ObjetoSelecionado;
                 atividade = new Atividade(objeto);
                 atividade.Fase = atividadesView.FaseEscolhida;
-                _processoativo.Atividades.Add(atividade);
+                _processoativo.adicionarAtividade(atividade);
             }
 
         }

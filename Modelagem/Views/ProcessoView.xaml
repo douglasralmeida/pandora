@@ -12,12 +12,7 @@
         <Style x:Key="ListViewStyle" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Left" />
         </Style>
-        <CollectionViewSource Source="{Binding Atividades}" x:Key="AtividadesAgrupadas">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="@Fase">
-                </PropertyGroupDescription>
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
+        <Base:AtividadeFaseConverter x:Key="AtividadeFaseConverter"/>
     </local:ObjetoView.Resources>
     <DockPanel x:Name="PainelProcesso">
         <DockPanel x:Name="PainelProcessoCabecalho" DockPanel.Dock="Top">
@@ -52,23 +47,14 @@
                         <Button x:Name="BtoExcluirAtividade" IsEnabled="{Binding SelectedItems.Count, ElementName=ListaAtividades}" Click="BtoExcluirAtividade_Click" Content="Excluir Atividade"/>
                     </ToolBar>
                 </ToolBarTray>
-                <ListView x:Name="ListaAtividades">
+                <ListView x:Name="ListaAtividades" ItemsSource="{Binding Visao}">
                     <ListView.Resources>
                         <Style TargetType="{x:Type ListViewItem}">
                             <EventSetter Event="Control.MouseDoubleClick" Handler="AtividadeDoubleClick" />
                         </Style>
                     </ListView.Resources>
-                    <ListView.ItemsSource>
-                        <Binding Source="{StaticResource AtividadesAgrupadas}"/>
-                    </ListView.ItemsSource>
                     <ListView.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Fase}"/>
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
+                        <GroupStyle />
                     </ListView.GroupStyle>
                     <ListView.View>
                         <GridView>
