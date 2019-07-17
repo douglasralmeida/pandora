@@ -16,17 +16,15 @@ namespace Base
 
         private string _descricao;
 
-        private readonly ObservableCollection<Tarefa> _tarefas;
+        private ObservableCollection<Tarefa> _tarefas;
 
-        private readonly ObservableCollection<Processo> _processos;
+        private ObservableCollection<Processo> _processos;
 
         private Dictionary<string, List<XElement>> xmlAtividades;
 
         public ObservableCollection<Atividade> Atividades { get; private set; }
 
         public ICollectionView Visao => CollectionViewSource.GetDefaultView(Atividades);
-
-        public ObservableCollection<string> Fases { get; private set; }
 
         public string Descricao
         {
@@ -46,36 +44,25 @@ namespace Base
 
         public Processo(string nome, ObservableCollection<Tarefa> tarefas, ObservableCollection<Processo> processos)
         {
-            nomeElementoXml = "processo";
-            Atividades = new ObservableCollection<Atividade>();
-            Atividades.CollectionChanged += Atividades_CollectionChanged;
-            Fases = new ObservableCollection<string>();
-            Fases.Add("Pré-execução");
-            Fases.Add("Execução");
-            Fases.Add("Pós-execução");
             _nome = nome;
-            _tarefas = tarefas;
-            _processos = processos;
-            Visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase", new AtividadeFaseConverter()));
-
-            xmlAtividades = new Dictionary<string, List<XElement>>();
+            prepararProcesso(tarefas, processos);
         }
 
         public Processo(XElement xml, ObservableCollection<Tarefa> tarefas, ObservableCollection<Processo> processos)
         {
+            prepararProcesso(tarefas, processos);
+            analisarXml(xml);
+        }
+
+        private void prepararProcesso(ObservableCollection<Tarefa> tarefas, ObservableCollection<Processo> processos)
+        {
             nomeElementoXml = "processo";
-            Atividades = new ObservableCollection<Atividade>();
-            Atividades.CollectionChanged += Atividades_CollectionChanged;
-            Fases = new ObservableCollection<string>();
-            Fases.Add("Pré-execução");
-            Fases.Add("Execução");
-            Fases.Add("Pós-execução");
             _tarefas = tarefas;
             _processos = processos;
-            Visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase"));
-
             xmlAtividades = new Dictionary<string, List<XElement>>();
-            analisarXml(xml);
+            Atividades = new ObservableCollection<Atividade>();
+            Atividades.CollectionChanged += Atividades_CollectionChanged;
+            Visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase", new AtividadeFaseConverter()));
         }
 
         public void adicionarAtividade(Atividade atividade)

@@ -34,8 +34,22 @@ namespace Execucao
 
     struct Instancia
     {
+        /// <summary>
+        /// Resumo:
+        ///   Fluxo contem a lista de tarefas a serem executadas
+        /// </summary>
         public Fluxo fluxo;
+
+        /// <summary>
+        /// Resumo:
+        ///   Variáveis são determinadas em tempo de execução, na carteira e na lista de variáveis globais.
+        /// </summary>
         public Dictionary<string, Variavel> variaveis;
+
+        /// <summary>
+        /// Resumo:
+        ///   Dados contém as entradas da execução.
+        /// </summary>
         public Dictionary<string, dynamic> dados;
     };
 
@@ -219,14 +233,32 @@ namespace Execucao
                 // deverá ser adicionado um novo fluxo dentro do fluxo atual
                 // e as operações pertencentes ao desvio deverão ser adicionados
                 // dentro do novo fluxo adicionado.
-                // Também será adicionado um novo comando IrParaFluxo(numero);
+                // Também será adicionado um novo comando IrParaFluxo(numero, posicao);
                 if (a.ObjetoRelacionado is Processo)
                     incluirNoFluxo((Processo)a.ObjetoRelacionado);
                 else
                 {
+                    int fase;
+                    switch (a.Fase)
+                    {
+                        case AtividadeFase.FasePre:
+                            fase = 0;
+                            break;
+
+                        case AtividadeFase.FasePos:
+                            fase = 2;
+                            break;
+
+                        default:
+                            fase = 1;
+                            break;
+                    }
+
                     tarefa = (Tarefa)a.ObjetoRelacionado;
                     foreach (Comando c in comandosDeTarefa(tarefa))
-                        _instancia.fluxo.Instrucoes.Add(c);
+                    {
+                        _instancia.fluxo.adicionarComando(c, fase);
+                    }
                 }
             }
         }

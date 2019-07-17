@@ -108,6 +108,7 @@ namespace Modelagem
                 }
                 else
                 {
+                    //Gerar erro: Nenhuma carteira aberta.
                     _erros.Adicionar("CT0001", new string[0]);
                 }
             }
