@@ -104,5 +104,10 @@ namespace Execucao
 
             return matriz;
         }
+
+        public int Quantidade()
+        {
+            return Lista.Count();
+        }
     }
 }

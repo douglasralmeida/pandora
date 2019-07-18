@@ -56,7 +56,7 @@ namespace BibliotecaPadrao
             dynamic handle;
 
             if (args.Count < 2)
-                return (false, "A função Auntenticar esperava 2 argumentos, mas eles não foram encontrados.");
+                return (false, "A operação Auntenticar esperava 2 argumentos, mas eles não foram encontrados.");
 
             using (var iter = args.GetEnumerator())
             {

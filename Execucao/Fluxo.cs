@@ -49,7 +49,7 @@ namespace Execucao
         }
 
         //Entradas
-        public Dictionary<string, dynamic> Dados
+        public Dictionary<string, dynamic> Entradas
         {
             get; set;
         }
@@ -80,7 +80,7 @@ namespace Execucao
         {
             _fase = 0;
             _id = id;
-            Atraso = 0;
+            Atraso = 0;            
             _posicao = 0;
             _linha = 0;
             _comandoatual = null;

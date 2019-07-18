@@ -94,7 +94,7 @@ namespace Modelagem
             {
                 Mouse.OverrideCursor = Cursors.AppStarting;
                 ControlePrincipal.Content = _depuracao;
-                central.gerarInstancia();
+                central.gerarInstancia(_entradas.Quantidade());
                 central.carregar(_edicao.ObjetoAtivo);
                 if (checarCarteira())
                 {
@@ -111,6 +111,7 @@ namespace Modelagem
                     //Gerar erro: Nenhuma carteira aberta.
                     _erros.Adicionar("CT0001", new string[0]);
                 }
+                addEntradas(central);
             }
             finally
             {
@@ -207,7 +208,19 @@ namespace Modelagem
             }
         }
 
-        private void addVariaveis(CentralExecucao central)
+        private void addEntradas(CentralExecucao central)
+        {
+            foreach (Execucao.Entrada e in _entradas.Lista)
+            {
+                foreach (EntradaVariavel ev in e.Variaveis)
+                {
+                    ev.Nome;
+                    ev.Valor;
+                }
+            }
+        }
+
+            private void addVariaveis(CentralExecucao central)
         {
             Variavel variavel;
             VarGlobais varGlobais = (Application.Current as App).VarGlobais;

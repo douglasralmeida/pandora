@@ -50,7 +50,7 @@ namespace Execucao
         /// Resumo:
         ///   Dados contém as entradas da execução.
         /// </summary>
-        public Dictionary<string, dynamic> dados;
+        public Dictionary<string, dynamic>[] entradas;
     };
 
     public class CentralExecucao
@@ -220,12 +220,12 @@ namespace Execucao
             return true;
         }
 
-        public void gerarInstancia()
+        public void gerarInstancia(int numEntradas)
         {
-            _instancia.dados = new Dictionary<string, dynamic>();
+            _instancia.entradas = new Dictionary<string, dynamic>[numEntradas];
             _instancia.variaveis = new Variaveis();
             _instancia.fluxo = new Fluxo(1);
-            _instancia.fluxo.Dados = _instancia.dados;
+            _instancia.fluxo.Entradas = null;
             _instancia.fluxo.VariaveisFluxo = _instancia.variaveis;
         }
 
