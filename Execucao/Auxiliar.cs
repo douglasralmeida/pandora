@@ -10,17 +10,19 @@ namespace Execucao
 {
     public class Auxiliar
     {
-        public static (IntPtr, int) executarPrograma(string nomexe, string args, int sleep)
+        public static (IntPtr, int) executarPrograma(string nomeexe, string args, string workdir, int sleep)
         {
             IntPtr handle;
             int id;
-            string localExe;
             Process proc;
+            ProcessStartInfo startinfo;
                         
-            if (!File.Exists(nomexe))
+            if (!File.Exists(workdir + nomeexe))
                 return (IntPtr.Zero, 0);
 
-            proc = Process.Start(nomexe, args);
+            startinfo = new ProcessStartInfo(nomeexe, args);
+            startinfo.WorkingDirectory = workdir;
+            proc = Process.Start(startinfo);
             Thread.Sleep(sleep);
             if (!Process.GetProcessesByName(proc.ProcessName).Any())
                 return (IntPtr.Zero, 0);

@@ -48,6 +48,7 @@ namespace Execucao
             }
         }
 
+        //Entradas
         public Dictionary<string, dynamic> Dados
         {
             get; set;
@@ -69,7 +70,8 @@ namespace Execucao
             }
         }
 
-        public Dictionary<string, Variavel> Variaveis
+        //variáveis globais e carteira
+        public Variaveis VariaveisFluxo
         {
             get; set;
         }
@@ -95,7 +97,7 @@ namespace Execucao
 
         private bool executarProximaInstrucao()
         {
-            return _comandoatual.executarAsync(Dados, Atraso).Result;
+            return _comandoatual.executarAsync(VariaveisFluxo, Atraso).Result;
         }
 
         public void processar()

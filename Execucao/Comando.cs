@@ -9,13 +9,13 @@ namespace Execucao
     /* bool -> funcao executou corretamente
      * string -> parametros da funcao
      */
-    public delegate (bool, string) Funcao(Dictionary<string, dynamic> constantes, ObservableCollection<Variavel> parametros);
+    public delegate (bool, string) Funcao(Variaveis variaveis, ObservableCollection<Variavel> parametros);
 
     public class Comando
     {
         private Funcao _funcao;
 
-        public Dictionary<string, dynamic> Constantes { get; private set; }
+        public Variaveis Dados { get; set; }
 
         public int Espera { get; private set; }
 
@@ -46,14 +46,14 @@ namespace Execucao
         public Comando(string nome, Funcao funcao)
         {
             Nome = nome;
-            Constantes = null;
+            Dados = null;
             _funcao = funcao;
             Espera = 0;
             Parametros = new ObservableCollection<Variavel>();
             Retorno = null;
         }
 
-        public async Task<bool> executarAsync(Dictionary<string, dynamic> constantes, int atraso)
+        public async Task<bool> executarAsync(Variaveis variaveis, int atraso)
         {
             int espera;
             bool executou;
@@ -63,7 +63,9 @@ namespace Execucao
             else
                 espera = Espera;
 
-            (executou, Retorno) = _funcao(constantes, Parametros);
+            //constantes = variáveis globais e carteira
+            //Parametros = argumentos da execução
+            (executou, Retorno) = _funcao(variaveis, Parametros);
             if (espera > 0)
                 await Task.Delay(espera * 1000);
 

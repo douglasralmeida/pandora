@@ -4,6 +4,37 @@ using System.Text;
 
 namespace Execucao
 {
+    public class Variaveis
+    {
+        public Dictionary<string, Variavel> Lista { get; private set; }
+
+        public Variaveis()
+        {
+            Lista = new Dictionary<string, Variavel>();
+        }
+
+        public void adicionar(string nome, Variavel var)
+        {
+            Lista.Add(nome, var);
+        }
+
+        public bool contemVar(string chave)
+        {
+            return Lista.ContainsKey(chave);
+        }
+
+        public dynamic obterVar(string chave)
+        {
+            Variavel var;
+
+            Lista.TryGetValue(chave, out var);
+            if (var != null)
+                return var.Valor;
+            else
+                return null;
+        }
+    }
+
     public class Variavel
     {
         public bool Opcional

@@ -212,6 +212,7 @@ namespace Modelagem
             Variavel variavel;
             VarGlobais varGlobais = (Application.Current as App).VarGlobais;
 
+            //variáveis globais
             foreach (Dado dado in varGlobais.Lista)
             {
                 variavel = new Variavel(dado.Valor);
@@ -219,6 +220,8 @@ namespace Modelagem
                 variavel.Protegida = false;
                 central.adicionarVariaveis(dado.Nome, variavel);
             }
+
+            //variáveis da carteira
             foreach (KeyValuePair<string, Variavel> v in _variaveis)
             {
                 variavel = new Variavel(v.Value.Valor);

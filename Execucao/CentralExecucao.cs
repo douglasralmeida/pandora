@@ -44,7 +44,7 @@ namespace Execucao
         /// Resumo:
         ///   Variáveis são determinadas em tempo de execução, na carteira e na lista de variáveis globais.
         /// </summary>
-        public Dictionary<string, Variavel> variaveis;
+        public Variaveis variaveis;
 
         /// <summary>
         /// Resumo:
@@ -75,7 +75,7 @@ namespace Execucao
 
         public int TotalFalhas { get; private set; }
 
-        public Dictionary<string, Variavel> Variaveis
+        public Variaveis ListaVariaveis
         {
             get
             {
@@ -92,7 +92,7 @@ namespace Execucao
 
         public void adicionarVariaveis(string nome, Variavel var)
         {
-            _instancia.variaveis.Add(nome, var);
+            _instancia.variaveis.adicionar(nome, var);
         }
 
         public void carregar(Objeto objeto)
@@ -124,7 +124,7 @@ namespace Execucao
                 {
                     if (c.Value.obrigatoria)
                     {
-                        if (!Variaveis.ContainsKey(c.Key))
+                        if (!ListaVariaveis.contemVar(c.Key))
                         {
                             string tipo;
                             string[] nome = new string[1];
@@ -167,7 +167,6 @@ namespace Execucao
         private List<Comando> comandosDeTarefa(Tarefa tarefa)
         {
             int i;
-            string[] parametros;
             StringBuilder builder = new StringBuilder();
             Comando comando;
             List<Comando> comandos = new List<Comando>();
@@ -182,6 +181,7 @@ namespace Execucao
                 tarefa.Modulo.Funcoes.TryGetValue(op.Nome, out funcaoinfo);
                 funcao = funcaoinfo.funcao;
                 comando = new Comando(op.Nome, funcao);
+                comando.Dados = _instancia.variaveis;
 
                 Debug.WriteLine("Parametros antes: " + op.Parametros);
 
@@ -193,7 +193,13 @@ namespace Execucao
                     comando.Parametros.Add(new Variavel(parametroProcessado));
                 }
 
-                Debug.WriteLine("Parametros depois: " + comando.Parametros);
+                Debug.Write("Parametros depois: ");
+                foreach (Variavel v in comando.Parametros)
+                {
+                    Debug.Write(v.ToString());
+                    Debug.Write("; ");
+                }
+                Debug.Write("\n");
 
                 comandos.Add(comando);
             }
@@ -217,10 +223,10 @@ namespace Execucao
         public void gerarInstancia()
         {
             _instancia.dados = new Dictionary<string, dynamic>();
-            _instancia.variaveis = new Dictionary<string, Variavel>();
+            _instancia.variaveis = new Variaveis();
             _instancia.fluxo = new Fluxo(1);
             _instancia.fluxo.Dados = _instancia.dados;
-            _instancia.fluxo.Variaveis = _instancia.variaveis;
+            _instancia.fluxo.VariaveisFluxo = _instancia.variaveis;
         }
 
         private void incluirNoFluxo(Processo processo)
@@ -288,8 +294,9 @@ namespace Execucao
         private string parseParametro(string param)
         {
             string[] lista;
-            Variavel v;
             StringBuilder builder = new StringBuilder();
+            dynamic valor;
+
 
             lista = Parser.analisarVarEntrada(param, true);
             if (lista.Length == 0)
@@ -304,11 +311,11 @@ namespace Execucao
             }
             foreach (string s in lista)
             {
-                _instancia.variaveis.TryGetValue(s, out v);
-                if (v == null)
+                valor = _instancia.variaveis.obterVar(s);
+                if (valor == null)
                     builder.Append(s);
                 else
-                    builder.Replace(s, v.Valor);
+                    builder.Replace(s, valor);
                 builder.Append(' ');
             }
             // remove o espaço extra

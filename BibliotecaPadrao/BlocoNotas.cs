@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace BibliotecaPadrao
@@ -10,7 +11,9 @@ namespace BibliotecaPadrao
     {
         const string exenome = "notepad.exe";
 
-        private Funcao _funcaoAbrirPrograma = (ctes, args) =>
+        // sem argumentos
+        // sem uso de constantes
+        private Funcao _funcaoAbrirPrograma = (vars, args) =>
         {
             IntPtr handle;
             int pid;
@@ -19,17 +22,55 @@ namespace BibliotecaPadrao
             localExe = Auxiliar.obterDirSistema() + "\\" + exenome;
 
             //** Incluir uma configuração para este número
-            (handle, pid) = Auxiliar.executarPrograma(localExe, "", 3000);
+            (handle, pid) = Auxiliar.executarPrograma(localExe, "", "", 3000);
             if (handle != IntPtr.Zero)
             {
-                ctes.Add("handle", handle);
-                ctes.Add("pid", pid);
+                vars.adicionar("bloconotas.handle", new Variavel(handle));
+                vars.adicionar("bloconotas.pid", new Variavel(pid));
                 return (true, null);
             }
             else
             {
                 return (false, "Bloco de Notas não foi aberto corretamente.");
             }
+        };
+
+        // arg1 = texto a digitar na tela
+        // usa a constante bloconotas.handle
+        private Funcao _funcaoDigitar = (vars, args) =>
+        {
+            string texto = args.FirstOrDefault().Valor;
+            dynamic handle;
+
+            handle = vars.obterVar("bloconotas.handle");
+            if (handle != null)
+            {
+                IntPtr p = handle;
+                SetForegroundWindow(p);
+                System.Windows.Forms.SendKeys.SendWait(texto);
+                return (true, null);
+            }
+
+            return (false, "Era esperado uma janela para enviar dados.");
+        };
+
+        // sem argumentos
+        // usa a constante bloconotas.pid
+        private Funcao _funcaoEncerrarPrograma = (vars, args) =>
+        {
+            dynamic pid;
+
+            pid = vars.obterVar("bloconotas.pid");
+            if (pid != null)
+            {
+                int id = pid;
+                if (id == 0)
+                    return (false, "Era esperado um PID válido de um programa para fechar.");
+                Auxiliar.encerrarPrograma(id);
+                return (true, null);
+            }
+
+            return (false, "Era esperado um programa para fechar.");
         };
 
         public BlocoNotas() : base("BlocoNotas")
@@ -41,6 +82,8 @@ namespace BibliotecaPadrao
         {
             base.adicionarComandos();
             Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 0));
+            Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
+            Funcoes.Add("FecharPrograma", new FuncaoInfo(_funcaoEncerrarPrograma, 0));
         }
 
         public override void adicionarConstNecessarias()
