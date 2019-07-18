@@ -28,7 +28,6 @@ namespace Modelagem
             get => (Tarefa)_objetoativo;
         }
 
-
         public TarefaView()
         {
             InitializeComponent();

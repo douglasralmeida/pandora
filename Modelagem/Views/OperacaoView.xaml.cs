@@ -57,11 +57,16 @@ namespace Modelagem
             {
                 _operacao.Nome = ComandoSelecionado;
                 param = Parametros.Trim();
-                l = param.Length - 1;
-                if (param[0] != '"' || param[l] != '"')
-                    _operacao.Parametros = _operacao.Nome + " \"" + Parametros + "\"";
+                if (param.Length > 0)
+                {
+                    l = param.Length - 1;
+                    if (param[0] != '"' || param[l] != '"')
+                        _operacao.Parametros = _operacao.Nome + " \"" + Parametros + "\"";
+                    else
+                        _operacao.Parametros = _operacao.Nome + " " + Parametros;
+                }
                 else
-                    _operacao.Parametros = _operacao.Nome + " " + Parametros;
+                    _operacao.Parametros = _operacao.Nome;
                 DialogResult = true;
             }
         }

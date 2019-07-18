@@ -9,7 +9,7 @@ namespace BibliotecaPadrao
 {
     public static class Biblioteca
     {
-        public static Modulo[] ObterTudo { get; } = new Modulo[] { new Plenus() };
+        public static Modulo[] ObterTudo { get; } = new Modulo[] { new BlocoNotas(), new Plenus() };
 
         public static Modulo Obter(string Nome)
         {

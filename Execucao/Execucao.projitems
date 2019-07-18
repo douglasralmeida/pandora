@@ -9,6 +9,7 @@
     <Import_RootNamespace>Execucao</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Auxiliar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CentralExecucao.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Comando.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entradas.cs" />

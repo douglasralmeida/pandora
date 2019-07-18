@@ -49,6 +49,8 @@ namespace Execucao
         [DllImport("user32.dll")]
         protected static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        // arg1: Local do Executavel
+        // arg2: Argumentos de execução
         private Funcao _funcaoAbrirPrograma = (ctes, args) =>
         {
             string argsChamada = "";
@@ -91,7 +93,24 @@ namespace Execucao
                 return (true, null);
             }
 
-            return (false, null);
+            return (false, "Era esperado uma janela para enviar dados.");
+        };
+
+        // sem argumentos
+        private Funcao _funcaoEncerrarPrograma = (ctes, args) =>
+        {
+            dynamic pid;
+
+            if (ctes.TryGetValue("pid", out pid))
+            {
+                int id = pid;
+                if (id == 0)
+                    return (false, "Era esperado um programa para encerrar.");
+                Auxiliar.encerrarPrograma(id);
+                return (true, null);
+            }
+
+            return (false, "Era esperado um programa para fechar.");
         };
 
         public string Nome
@@ -114,8 +133,9 @@ namespace Execucao
 
         public virtual void adicionarComandos()
         {
-            Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 2));
+            //Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 2));
             Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
+            Funcoes.Add("FecharPrograma", new FuncaoInfo(_funcaoEncerrarPrograma, 0));
         }
 
         public virtual void adicionarConstNecessarias()
