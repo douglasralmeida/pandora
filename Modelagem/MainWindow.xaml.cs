@@ -99,6 +99,7 @@ namespace Modelagem
                 if (checarCarteira())
                 {
                     addVariaveis(central);
+                    addEntradas(central);
                     if (central.compilar())
                     {
                         // chama central.processar() em uma thread separada
@@ -111,7 +112,6 @@ namespace Modelagem
                     //Gerar erro: Nenhuma carteira aberta.
                     _erros.Adicionar("CT0001", new string[0]);
                 }
-                addEntradas(central);
             }
             finally
             {
@@ -125,12 +125,12 @@ namespace Modelagem
         private void BtoOpcoesEntrada_Click(object sender, RoutedEventArgs e)
         {
             string[] cabecalho;
-            string[,] entradas;
+            string[][] entradas;
             EntradasView entradasVisao;
             Objeto objeto = _edicao.ObjetoAtivo;
 
             cabecalho = objeto.obterEntradas();
-            entradas = _entradas.Obter(cabecalho);
+            entradas = _entradas.ObterDados(cabecalho);
             entradasVisao = new EntradasView(cabecalho, entradas);
             entradasVisao.Owner = Application.Current.MainWindow;
             entradasVisao.ShowDialog();
@@ -138,6 +138,7 @@ namespace Modelagem
             if (entradasVisao.DialogResult ?? true)
             {
                 _entradas.Limpar();
+                _entradas.DefinirCabecalho(cabecalho);
                 foreach (DataRow linha in entradasVisao.Dados.Rows)
                 {
                     Execucao.Entrada ent = new Execucao.Entrada();
@@ -210,14 +211,7 @@ namespace Modelagem
 
         private void addEntradas(CentralExecucao central)
         {
-            foreach (Execucao.Entrada e in _entradas.Lista)
-            {
-                foreach (EntradaVariavel ev in e.Variaveis)
-                {
-                    ev.Nome;
-                    ev.Valor;
-                }
-            }
+            central.definirEntradas(_entradas);
         }
 
             private void addVariaveis(CentralExecucao central)

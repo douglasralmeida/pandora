@@ -36,9 +36,22 @@ namespace Execucao
     {
         /// <summary>
         /// Resumo:
-        ///   Fluxo contem a lista de tarefas a serem executadas
+        ///   Fluxos que contem listas de tarefas a serem executadas
         /// </summary>
-        public Fluxo fluxo;
+        public List<Fluxo> execucao;
+        /* 1. cada condicional gera dois fluxos na lista */
+
+        /// <summary>
+        /// Resumo:
+        ///   Fluxo contem a lista de tarefas a serem executadas na fase preliminar
+        /// </summary>
+        public Fluxo preexecucao;
+
+        /// <summary>
+        /// Resumo:
+        ///   Fluxo contem a lista de tarefas a serem executadas na fase final
+        /// </summary>
+        public Fluxo posexecucao;
 
         /// <summary>
         /// Resumo:
@@ -50,7 +63,7 @@ namespace Execucao
         /// Resumo:
         ///   Dados contém as entradas da execução.
         /// </summary>
-        public Dictionary<string, dynamic>[] entradas;
+        public Entradas entradas;
     };
 
     public class CentralExecucao
@@ -95,7 +108,7 @@ namespace Execucao
             _instancia.variaveis.adicionar(nome, var);
         }
 
-        public void carregar(Objeto objeto)
+        public bool carregar(Objeto objeto)
         {
             Processo processo;
 
@@ -110,10 +123,28 @@ namespace Execucao
             {
                 processo = (Processo)objeto;
             }
-            incluirNoFluxo(processo);
+
+            // verifica quais módulos são utilizados pelas tarefas e subprocessos
             checarModulos(processo);
+
+            // verifica quais variáveis globais são necessárias para cada módulo utilizado
+            // e marca aquelas que não estão disponíveis
+            checarCtesNecessarias();
+
+            // se houve erros na checagem, cancela o carregamento
+            if (Erros.Quantidade > 0)
+                return false;
+
+            // gera os fluxos de execução de acordo com a quantidade de entradas
+            prepararFluxos();
+
+            // inclui as atividades do processo no fluxo de execução
+            incluirNosFluxos(processo);
+
             ObjetoCarregado = objeto;
             OnObjetoCarregarDepois(objeto);
+
+            return true;
         }
 
         private void checarCtesNecessarias()
@@ -139,11 +170,6 @@ namespace Execucao
                     }
                 }
             }
-        }
-
-        private void checarEntradas()
-        {
-
         }
 
         private void checarModulos(Processo processo)
@@ -207,63 +233,87 @@ namespace Execucao
             return comandos;
         }
 
-        public bool compilar()
+        public void prepararFluxos()
         {
-            OnCompilacaoAntes(new EventArgs());
+            Fluxo fluxo;            
+            int fluxoatual;
 
-            checarCtesNecessarias();
-            checarEntradas();
-            if (Erros.Quantidade > 0)
-                return false;
+            //cria um fluxo de execução para cada entrada de dados
+            fluxoatual = 1;
+            foreach (string[] entrada in dadosEntradas)
+            {
+                fluxo = new Fluxo(fluxoatual);
+                fluxo.Entradas = new Dictionary<string, dynamic>();
+                for (int j = 0; j < entrada.Length; j++)
+                    fluxo.Entradas.Add(cabecalhoEntradas[j], entrada[j]);
+                fluxo.VariaveisFluxo = _instancia.variaveis;
+                _instancia.execucao.Add(fluxo);
+                fluxoatual++;
+            }
 
-            OnCompilacaoDepois(new EventArgs());
-            return true;
+            // se não tem entradas, cria pelo menos um fluxo mesmo assim
+            if (_instancia.execucao.Count == 0)
+            {
+                fluxo = new Fluxo(fluxoatual);
+                fluxo.Entradas = new Dictionary<string, dynamic>();
+                fluxo.VariaveisFluxo = _instancia.variaveis;
+                _instancia.execucao.Add(fluxo);
+            }
+        }
+
+        public void definirEntradas(Entradas entradas)
+        {
+            _instancia.entradas = entradas;
         }
 
         public void gerarInstancia(int numEntradas)
         {
-            _instancia.entradas = new Dictionary<string, dynamic>[numEntradas];
+            _instancia.entradas = null;
             _instancia.variaveis = new Variaveis();
-            _instancia.fluxo = new Fluxo(1);
-            _instancia.fluxo.Entradas = null;
-            _instancia.fluxo.VariaveisFluxo = _instancia.variaveis;
+            _instancia.preexecucao = new Fluxo(0);
+            _instancia.preexecucao.Entradas = null;
+            _instancia.preexecucao.VariaveisFluxo = _instancia.variaveis;
+            _instancia.execucao = new List<Fluxo>();
+            _instancia.posexecucao = new Fluxo(0);
+            _instancia.posexecucao.Entradas = null;
+            _instancia.posexecucao.VariaveisFluxo = _instancia.variaveis;
         }
 
-        private void incluirNoFluxo(Processo processo)
+        private void incluirNosFluxos(Processo processo)
         {
+            string[] cabecalhoEntradas;
+            string[][] dadosEntradas;
             Tarefa tarefa;
 
+            cabecalhoEntradas = _instancia.entradas.ObterCabecalhos();
+            dadosEntradas = _instancia.entradas.ObterDados(cabecalhoEntradas);
             foreach (Atividade a in processo.Atividades)
             {
-                // Quando for implementado o suporte a desvios condicionais,
-                // deverá ser adicionado um novo fluxo dentro do fluxo atual
-                // e as operações pertencentes ao desvio deverão ser adicionados
-                // dentro do novo fluxo adicionado.
-                // Também será adicionado um novo comando IrParaFluxo(numero, posicao);
                 if (a.ObjetoRelacionado is Processo)
-                    incluirNoFluxo((Processo)a.ObjetoRelacionado);
+                    incluirNosFluxos((Processo)a.ObjetoRelacionado);
                 else
                 {
-                    int fase;
+                    tarefa = (Tarefa)a.ObjetoRelacionado;
+
                     switch (a.Fase)
                     {
                         case AtividadeFase.FasePre:
-                            fase = 0;
+                            foreach (Comando c in comandosDeTarefa(tarefa))
+                                _instancia.preexecucao.adicionarComando(c);
                             break;
 
                         case AtividadeFase.FasePos:
-                            fase = 2;
+                            foreach (Comando c in comandosDeTarefa(tarefa))
+                                _instancia.posexecucao.adicionarComando(c);
                             break;
 
                         default:
-                            fase = 1;
+                            foreach (Fluxo f in _instancia.execucao)
+                            {
+                                foreach (Comando c in comandosDeTarefa(tarefa))
+                                    f.adicionarComando(c);
+                            }
                             break;
-                    }
-
-                    tarefa = (Tarefa)a.ObjetoRelacionado;
-                    foreach (Comando c in comandosDeTarefa(tarefa))
-                    {
-                        _instancia.fluxo.adicionarComando(c, fase);
                     }
                 }
             }
@@ -297,7 +347,6 @@ namespace Execucao
             StringBuilder builder = new StringBuilder();
             dynamic valor;
 
-
             lista = Parser.analisarVarEntrada(param, true);
             if (lista.Length == 0)
             {
@@ -327,7 +376,21 @@ namespace Execucao
 
         public void processar()
         {
-            _instancia.fluxo.processar();
+            // primeiro, executa os comandos da fase pré-execução
+            _instancia.preexecucao.processar();
+            TotalExitos++;
+
+            // segundo, executa os comandos da fase principal
+            // um processamento para cada entrada disponível
+
+            foreach (Fluxo f in _instancia.execucao)
+            {
+                f.processar();
+                TotalExitos++;
+            }
+
+            // terceiro, executa os comandos da fase pos-execução
+            _instancia.posexecucao.processar();
             TotalExitos++;
         }
     }

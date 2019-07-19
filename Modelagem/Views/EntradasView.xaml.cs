@@ -70,7 +70,7 @@ namespace Modelagem
             }
         }
 
-        public EntradasView(string[] cabecalho, string[,] dados)
+        public EntradasView(string[] cabecalho, string[][] dados)
         {
             int j;
             int numlinhas = dados.GetLength(0);
@@ -85,7 +85,7 @@ namespace Modelagem
                 j = 0;
                 foreach(DataColumn coluna in Dados.Columns)
                 {
-                    linha[coluna] = dados[i, j];
+                    linha[coluna] = dados[i][j];
                     j++;
                 }
                 Dados.Rows.Add(linha);

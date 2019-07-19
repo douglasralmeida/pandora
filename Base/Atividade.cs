@@ -24,8 +24,8 @@ namespace Base
             var enumVal = (AtividadeFase)value;
             switch (enumVal)
             {
-                case AtividadeFase.FasePos: return "Pré-execução";
-                case AtividadeFase.FasePre: return "Pós-execução";
+                case AtividadeFase.FasePos: return "Pós-execução";
+                case AtividadeFase.FasePre: return "Pré-execução";
                 default: return "Execução";
             }
         }

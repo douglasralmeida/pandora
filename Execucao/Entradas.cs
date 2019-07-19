@@ -28,6 +28,7 @@ namespace Execucao
     public class Entrada
     {
         public ObservableCollection<EntradaVariavel> Variaveis { get; set; }
+
         public bool TudoVazio
         {
             get
@@ -63,13 +64,16 @@ namespace Execucao
         }
     }
 
-    class Entradas
+    public class Entradas
     {
+        private string[] cabecalho;
+
         public ObservableCollection<Entrada> Lista { get; private set; }
 
         public Entradas()
         {
             Lista = new ObservableCollection<Entrada>();
+            cabecalho = new string[0];
         }
 
         public void Adicionar(Entrada e)
@@ -77,26 +81,37 @@ namespace Execucao
             Lista.Add(e);
         }
 
+        public void DefinirCabecalho(string[] novocabecalho)
+        {
+            cabecalho = novocabecalho;
+        }
+
         public void Limpar()
         {
             Lista.Clear();
         }
 
-        public string[,] Obter(string[] cabecalho)
+        public string[] ObterCabecalhos()
+        {
+            return cabecalho;
+        }
+
+        public string[][] ObterDados(string[] cabecalho)
         {
             int i = 0;
             int j;
-            string[,] matriz = new string[Lista.Count, cabecalho.Length];
+            string[][] matriz = new string[Lista.Count][];
 
             foreach (Entrada entrada in Lista)
             {
+                matriz[i] = new string[cabecalho.Length];
                 j = 0;
                 foreach (EntradaVariavel v in entrada.Variaveis)
                 {
                     if (v.Nome == cabecalho[j])
-                        matriz[i, j] = v.Valor;
+                        matriz[i][j] = v.Valor;
                     else
-                        matriz[i, j] = "";
+                        matriz[i][j] = "";
                     j++;
                 }
                 i++;
