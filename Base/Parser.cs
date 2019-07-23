@@ -8,13 +8,18 @@ namespace Base
 {
     public static class Parser
     {
-        //const string padraoEntrada = "{ENTRADA (.*?)}";
-
         const string padraoEntrada = @"\(ENTRADA (.*?)\)";
+
+        const string padraoVar = @"\(VAR (.*?)\)";
 
         const string padraoEntradaGen = "(ENTRADA {0})";
 
-        public static string[] analisarVarEntrada(string texto, bool textoPuro)
+        const string padraoVarGen = "(VAR {0})";
+
+        //Transforma uma string no formato (ENTRADA ABC) na própra entrada ABC.
+        // textoPuro: Se true, retorna o texto da entrada puro.
+        //            Se false, retorna no formato '(ENTRADA X)'.
+        public static string[] analisarEntrada(string texto, bool textoPuro)
         {
             string s;
             List<string> lista;
@@ -25,13 +30,31 @@ namespace Base
             foreach (Match m in combinacoes)
             {
                 if (textoPuro)
-                {
                     s = m.Groups[1].ToString();
-                }
                 else
-                {
                     s = string.Format(padraoEntradaGen, m.Groups[1]);
-                }
+                lista.Add(s);
+            }
+            return lista.ToArray();
+        }
+
+        //Transforma uma string no formato (VAR ABC) na própra entrada ABC.
+        // textoPuro: Se true, retorna o texto da entrada puro.
+        //            Se false, retorna no formato '(VAR X)'.
+        public static string[] analisarVar(string texto, bool textoPuro)
+        {
+            string s;
+            List<string> lista;
+            MatchCollection combinacoes;
+
+            combinacoes = Regex.Matches(texto, padraoVar);
+            lista = new List<string>();
+            foreach (Match m in combinacoes)
+            {
+                if (textoPuro)
+                    s = m.Groups[1].ToString();
+                else
+                    s = string.Format(padraoVarGen, m.Groups[1]);
                 lista.Add(s);
             }
             return lista.ToArray();

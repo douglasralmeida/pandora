@@ -190,7 +190,7 @@ namespace Execucao
             }
         }
 
-        private List<Comando> comandosDeTarefa(Tarefa tarefa)
+        private List<Comando> comandosDeTarefa(Tarefa tarefa, int entrada)
         {
             int i;
             StringBuilder builder = new StringBuilder();
@@ -200,8 +200,13 @@ namespace Execucao
             Funcao funcao;
             string parametroProcessado;
 
+            string[] cabecalhoEntradas;
+            string[] dadosEntradas;
+
             Debug.WriteLine("Tarefa: " + tarefa);
 
+            cabecalhoEntradas = _instancia.entradas.ObterCabecalhos();
+            dadosEntradas = _instancia.entradas.ObterDados(cabecalhoEntradas)[entrada];
             foreach (Operacao op in tarefa.Operacoes)
             {
                 tarefa.Modulo.Funcoes.TryGetValue(op.Nome, out funcaoinfo);
@@ -214,8 +219,10 @@ namespace Execucao
                 // listaParametros[0] é o nome do comando
                 for (i = 1; i < op.ListaParametros.Length; i++)
                 {
-                    //substitui pelas variáveis de entrada
+                    //substitui pelas variáveis globais
                     parametroProcessado = parseParametro(op.ListaParametros[i]);
+                    //substitui pela entrada, se hover
+                    parametroProcessado = parseEntrada(parametroProcessado, entrada);
                     comando.Parametros.Add(new Variavel(parametroProcessado));
                 }
 
@@ -281,12 +288,9 @@ namespace Execucao
 
         private void incluirNosFluxos(Processo processo)
         {
-            string[] cabecalhoEntradas;
-            string[][] dadosEntradas;
+            int i;
             Tarefa tarefa;
-
-            cabecalhoEntradas = _instancia.entradas.ObterCabecalhos();
-            dadosEntradas = _instancia.entradas.ObterDados(cabecalhoEntradas);
+            
             foreach (Atividade a in processo.Atividades)
             {
                 if (a.ObjetoRelacionado is Processo)
@@ -294,24 +298,25 @@ namespace Execucao
                 else
                 {
                     tarefa = (Tarefa)a.ObjetoRelacionado;
-
+                    i = 0;
                     switch (a.Fase)
                     {
                         case AtividadeFase.FasePre:
-                            foreach (Comando c in comandosDeTarefa(tarefa))
+                            foreach (Comando c in comandosDeTarefa(tarefa, i))
                                 _instancia.preexecucao.adicionarComando(c);
                             break;
 
                         case AtividadeFase.FasePos:
-                            foreach (Comando c in comandosDeTarefa(tarefa))
+                            foreach (Comando c in comandosDeTarefa(tarefa, i))
                                 _instancia.posexecucao.adicionarComando(c);
                             break;
 
                         default:
                             foreach (Fluxo f in _instancia.execucao)
                             {
-                                foreach (Comando c in comandosDeTarefa(tarefa))
+                                foreach (Comando c in comandosDeTarefa(tarefa, i))
                                     f.adicionarComando(c);
+                                i++;
                             }
                             break;
                     }
@@ -347,7 +352,8 @@ namespace Execucao
             StringBuilder builder = new StringBuilder();
             dynamic valor;
 
-            lista = Parser.analisarVarEntrada(param, true);
+            lista = Parser.analisarEntrada(param, true);
+            lista.
             if (lista.Length == 0)
             {
                 lista = new string[1];
