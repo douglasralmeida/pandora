@@ -8,60 +8,34 @@ namespace Base
 {
     public static class Parser
     {
-        const string padraoEntrada = @"\(ENTRADA (.*?)\)";
+        const string padrao = @"\((.*?) (.*?)\)";
 
-        const string padraoVar = @"\(VAR (.*?)\)";
+        const string formato = "({0} {1})";
 
-        const string padraoEntradaGen = "(ENTRADA {0})";
-
-        const string padraoVarGen = "(VAR {0})";
-
-        //Transforma uma string no formato (ENTRADA ABC) na própra entrada ABC.
+        //Transforma uma string no formato (ABC DEF) na própra em uma tupla ABC, DEF.
         // textoPuro: Se true, retorna o texto da entrada puro.
-        //            Se false, retorna no formato '(ENTRADA X)'.
-        public static string[] analisarEntrada(string texto, bool textoPuro)
+        //            Se false, retorna no formato '(AGF DEF)'.
+        public static (string, string)[] analisar(string texto, bool textoPuro)
         {
-            string s;
-            List<string> lista;
+            string chave, variavel;
+            List<(string, string)> lista;
             MatchCollection combinacoes;
 
-            combinacoes = Regex.Matches(texto, padraoEntrada);
-            lista = new List<string>();
+            combinacoes = Regex.Matches(texto, padrao);
+            lista = new List<(string, string)>();
             foreach (Match m in combinacoes)
             {
-                if (textoPuro)
-                    s = m.Groups[1].ToString();
+                chave = m.Groups[1].ToString();
+                if (textoPuro)                   
+                    variavel = m.Groups[2].ToString();
                 else
-                    s = string.Format(padraoEntradaGen, m.Groups[1]);
-                lista.Add(s);
-            }
-            return lista.ToArray();
-        }
-
-        //Transforma uma string no formato (VAR ABC) na própra entrada ABC.
-        // textoPuro: Se true, retorna o texto da entrada puro.
-        //            Se false, retorna no formato '(VAR X)'.
-        public static string[] analisarVar(string texto, bool textoPuro)
-        {
-            string s;
-            List<string> lista;
-            MatchCollection combinacoes;
-
-            combinacoes = Regex.Matches(texto, padraoVar);
-            lista = new List<string>();
-            foreach (Match m in combinacoes)
-            {
-                if (textoPuro)
-                    s = m.Groups[1].ToString();
-                else
-                    s = string.Format(padraoVarGen, m.Groups[1]);
-                lista.Add(s);
+                    variavel = string.Format(formato, chave, m.Groups[2]);
+                lista.Add((chave, variavel));
             }
             return lista.ToArray();
         }
 
         // usar sep = SPACE e escape = "
-
         public static string[] dividirString(string texto, char sep, char escape)
         {
             int quantidade = texto.Count(c => c == escape);

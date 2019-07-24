@@ -58,12 +58,6 @@ namespace Execucao
         ///   Variáveis são determinadas em tempo de execução, na carteira e na lista de variáveis globais.
         /// </summary>
         public Variaveis variaveis;
-
-        /// <summary>
-        /// Resumo:
-        ///   Dados contém as entradas da execução.
-        /// </summary>
-        public Entradas entradas;
     };
 
     public class CentralExecucao
@@ -200,13 +194,9 @@ namespace Execucao
             Funcao funcao;
             string parametroProcessado;
 
-            string[] cabecalhoEntradas;
-            string[] dadosEntradas;
-
             Debug.WriteLine("Tarefa: " + tarefa);
 
-            cabecalhoEntradas = _instancia.entradas.ObterCabecalhos();
-            dadosEntradas = _instancia.entradas.ObterDados(cabecalhoEntradas)[entrada];
+
             foreach (Operacao op in tarefa.Operacoes)
             {
                 tarefa.Modulo.Funcoes.TryGetValue(op.Nome, out funcaoinfo);
@@ -219,11 +209,8 @@ namespace Execucao
                 // listaParametros[0] é o nome do comando
                 for (i = 1; i < op.ListaParametros.Length; i++)
                 {
-                    //substitui pelas variáveis globais
-                    parametroProcessado = parseParametro(op.ListaParametros[i]);
-                    //substitui pela entrada, se hover
-                    parametroProcessado = parseEntrada(parametroProcessado, entrada);
-                    comando.Parametros.Add(new Variavel(parametroProcessado));
+                    //substitui o parâmetro por uma variável ou um valor da entrada
+                    parametroProcessado = parseParametro(op.ListaParametros[i], entrada);
                 }
 
                 Debug.Write("Parametros depois: ");
@@ -250,9 +237,6 @@ namespace Execucao
             foreach (string[] entrada in dadosEntradas)
             {
                 fluxo = new Fluxo(fluxoatual);
-                fluxo.Entradas = new Dictionary<string, dynamic>();
-                for (int j = 0; j < entrada.Length; j++)
-                    fluxo.Entradas.Add(cabecalhoEntradas[j], entrada[j]);
                 fluxo.VariaveisFluxo = _instancia.variaveis;
                 _instancia.execucao.Add(fluxo);
                 fluxoatual++;
@@ -268,14 +252,8 @@ namespace Execucao
             }
         }
 
-        public void definirEntradas(Entradas entradas)
-        {
-            _instancia.entradas = entradas;
-        }
-
         public void gerarInstancia(int numEntradas)
         {
-            _instancia.entradas = null;
             _instancia.variaveis = new Variaveis();
             _instancia.preexecucao = new Fluxo(0);
             _instancia.preexecucao.Entradas = null;
@@ -345,32 +323,51 @@ namespace Execucao
         {
             ObjetoCarregarDepois?.Invoke(this, objeto);
         }
-
-        private string parseParametro(string param)
+        
+        private string parseParametro(string param, int entrada)
         {
-            string[] lista;
+            string[] cabecalhoEntradas;
+            string[] dadosEntradas;
+            (string, string)[] pares;
             StringBuilder builder = new StringBuilder();
             dynamic valor;
+            int i;
 
-            lista = Parser.analisarEntrada(param, true);
-            lista.
-            if (lista.Length == 0)
+            cabecalhoEntradas = _instancia.entradas.ObterCabecalhos();
+            dadosEntradas = _instancia.entradas.ObterDados(cabecalhoEntradas)[entrada];
+            pares = Parser.analisar(param, true);
+            if (pares.Length == 0)
             {
-                lista = new string[1];
+                pares = new (string, string)[1];
                 if (param[0] == '"' && param[param.Length - 1] == '"')
-                {
-                    lista[0] = param.Remove(param.Length - 1).Remove(0);
-                }
+                    pares[0] = ("", param.Remove(param.Length - 1).Remove(0));
                 else
-                    lista[0] = param;
+                    pares[0] = ("", param);
             }
-            foreach (string s in lista)
+            foreach ((string, string) p in pares)
             {
-                valor = _instancia.variaveis.obterVar(s);
-                if (valor == null)
-                    builder.Append(s);
-                else
-                    builder.Replace(s, valor);
+                valor = "";
+                if (p.Item1 == "ENTRADA")
+                {
+                    i = 0;
+                    valor = p.Item2;
+                    foreach(string s in cabecalhoEntradas)
+                    {
+                        if (s == p.Item2)
+                        {
+                            valor = dadosEntradas[i];
+                            break;
+                        }
+                        i++;
+                    }
+                }
+                else if (p.Item1 == "VAR")
+                {
+                    valor = _instancia.variaveis.obterVar(p.Item2);
+                    if (valor == null)
+                        valor = p.Item2;
+                }
+                builder.Append(valor);
                 builder.Append(' ');
             }
             // remove o espaço extra

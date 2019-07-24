@@ -38,12 +38,6 @@ namespace Execucao
             }
         }
 
-        //Entradas
-        public Dictionary<string, dynamic> Entradas
-        {
-            get; set;
-        }
-
         public ObservableCollection<Comando> Instrucoes
         {
             get
