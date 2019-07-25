@@ -58,6 +58,11 @@ namespace Execucao
         ///   Variáveis são determinadas em tempo de execução, na carteira e na lista de variáveis globais.
         /// </summary>
         public Variaveis variaveis;
+
+        /// Resumo:
+        ///   Dados contém as entradas da execução.
+        /// </summary>
+        public Entradas entradas;
     };
 
     public class CentralExecucao
@@ -196,7 +201,6 @@ namespace Execucao
 
             Debug.WriteLine("Tarefa: " + tarefa);
 
-
             foreach (Operacao op in tarefa.Operacoes)
             {
                 tarefa.Modulo.Funcoes.TryGetValue(op.Nome, out funcaoinfo);
@@ -211,6 +215,7 @@ namespace Execucao
                 {
                     //substitui o parâmetro por uma variável ou um valor da entrada
                     parametroProcessado = parseParametro(op.ListaParametros[i], entrada);
+                    comando.Parametros.Add(new Variavel(parametroProcessado));
                 }
 
                 Debug.Write("Parametros depois: ");
@@ -227,40 +232,41 @@ namespace Execucao
             return comandos;
         }
 
+        public void definirEntradas(Entradas entradas)
+        {
+            _instancia.entradas = entradas;
+        }
+
         public void prepararFluxos()
         {
             Fluxo fluxo;            
-            int fluxoatual;
+            int quantidadeentradas;
 
+            quantidadeentradas = _instancia.entradas.Quantidade();
             //cria um fluxo de execução para cada entrada de dados
-            fluxoatual = 1;
-            foreach (string[] entrada in dadosEntradas)
+            for (int i = 0; i < quantidadeentradas; i++)
             {
-                fluxo = new Fluxo(fluxoatual);
+                fluxo = new Fluxo(i+1);
                 fluxo.VariaveisFluxo = _instancia.variaveis;
                 _instancia.execucao.Add(fluxo);
-                fluxoatual++;
             }
 
             // se não tem entradas, cria pelo menos um fluxo mesmo assim
             if (_instancia.execucao.Count == 0)
             {
-                fluxo = new Fluxo(fluxoatual);
-                fluxo.Entradas = new Dictionary<string, dynamic>();
+                fluxo = new Fluxo(1);
                 fluxo.VariaveisFluxo = _instancia.variaveis;
                 _instancia.execucao.Add(fluxo);
             }
         }
 
-        public void gerarInstancia(int numEntradas)
+        public void gerarInstancia()
         {
             _instancia.variaveis = new Variaveis();
             _instancia.preexecucao = new Fluxo(0);
-            _instancia.preexecucao.Entradas = null;
             _instancia.preexecucao.VariaveisFluxo = _instancia.variaveis;
             _instancia.execucao = new List<Fluxo>();
             _instancia.posexecucao = new Fluxo(0);
-            _instancia.posexecucao.Entradas = null;
             _instancia.posexecucao.VariaveisFluxo = _instancia.variaveis;
         }
 

@@ -94,18 +94,15 @@ namespace Modelagem
             {
                 Mouse.OverrideCursor = Cursors.AppStarting;
                 ControlePrincipal.Content = _depuracao;
-                central.gerarInstancia(_entradas.Quantidade());
+                central.gerarInstancia();
+                addEntradas(central);
+                addVariaveis(central);
                 central.carregar(_edicao.ObjetoAtivo);
                 if (checarCarteira())
                 {
-                    addVariaveis(central);
-                    addEntradas(central);
-                    if (central.compilar())
-                    {
-                        // chama central.processar() em uma thread separada
-                        t.Start();
-                        Thread.Sleep(5000);
-                    }
+                     // chama central.processar() em uma thread separada
+                     t.Start();
+                     Thread.Sleep(5000);
                 }
                 else
                 {

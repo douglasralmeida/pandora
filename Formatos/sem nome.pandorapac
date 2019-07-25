@@ -2,28 +2,41 @@
 <pacote>
   <cabecalho>
     <versao>1</versao>
-    <geracao nome="Usuário sem nome" data="2019-05-30T18:55:56.9439466-03:00" />
+    <geracao nome="Usuário sem nome" data="2019-07-25T00:06:57.14345-03:00" />
   </cabecalho>
   <conteudo>
     <processos>
       <processo>
-        <nome>NovoProcesso</nome>
+        <nome>Processar Bloco de Notas</nome>
         <descricao>Processo de teste</descricao>
         <atividades>
-          <atividade>
-            <tarefa>NovaTarefa</tarefa>
+          <atividade fase="pre">
+            <tarefa>Abrir o bloco de notas</tarefa>
+          </atividade>
+          <atividade fase="normal">
+            <tarefa>Digitar no bloco de notas</tarefa>
           </atividade>
         </atividades>
       </processo>
     </processos>
     <tarefas>
       <tarefa>
-        <nome>NovaTarefa</nome>
-        <descricao>Tarefa de teste</descricao>
-        <modulo>Plenus</modulo>
+        <nome>Abrir o bloco de notas</nome>
+        <descricao></descricao>
+        <modulo>BlocoNotas</modulo>
         <operacoes>
           <operacao>
-            <comando>NovaOperacao Argumento1</comando>
+            <comando>AbrirPrograma </comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+      <tarefa>
+        <nome>Digitar no bloco de notas</nome>
+        <descricao></descricao>
+        <modulo>BlocoNotas</modulo>
+        <operacoes>
+          <operacao>
+            <comando>Digitar "Entrada (ENTRADA valor){ENTER}"</comando>
           </operacao>
         </operacoes>
       </tarefa>

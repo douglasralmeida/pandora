@@ -123,6 +123,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modelagem\Modelagem.csproj">
+      <Project>{28FEDD2F-91DF-4C43-914C-FD754D12F668}</Project>
+      <Name>Modelagem</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Base\Base.projitems" Label="Shared" />
   <Import Project="..\Execucao\Execucao.projitems" Label="Shared" />
   <Import Project="..\Dialogo\Dialogo.projitems" Label="Shared" />
