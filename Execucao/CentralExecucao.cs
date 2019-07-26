@@ -237,29 +237,6 @@ namespace Execucao
             _instancia.entradas = entradas;
         }
 
-        public void prepararFluxos()
-        {
-            Fluxo fluxo;            
-            int quantidadeentradas;
-
-            quantidadeentradas = _instancia.entradas.Quantidade();
-            //cria um fluxo de execução para cada entrada de dados
-            for (int i = 0; i < quantidadeentradas; i++)
-            {
-                fluxo = new Fluxo(i+1);
-                fluxo.VariaveisFluxo = _instancia.variaveis;
-                _instancia.execucao.Add(fluxo);
-            }
-
-            // se não tem entradas, cria pelo menos um fluxo mesmo assim
-            if (_instancia.execucao.Count == 0)
-            {
-                fluxo = new Fluxo(1);
-                fluxo.VariaveisFluxo = _instancia.variaveis;
-                _instancia.execucao.Add(fluxo);
-            }
-        }
-
         public void gerarInstancia()
         {
             _instancia.variaveis = new Variaveis();
@@ -381,6 +358,30 @@ namespace Execucao
                 builder.Remove(builder.Length - 1, 1);
 
             return builder.ToString();
+        }
+
+        public void prepararFluxos()
+        {
+            Fluxo fluxo;            
+            int quantidadeentradas;
+
+            quantidadeentradas = _instancia.entradas.Quantidade();
+
+            //cria um fluxo de execução para cada entrada de dados
+            for (int i = 0; i < quantidadeentradas; i++)
+            {
+                fluxo = new Fluxo(i+1);
+                fluxo.VariaveisFluxo = _instancia.variaveis.gerarCopia();
+                _instancia.execucao.Add(fluxo);
+            }
+
+            // se não tem entradas, cria pelo menos um fluxo mesmo assim
+            if (_instancia.execucao.Count == 0)
+            {
+                fluxo = new Fluxo(1);
+                fluxo.VariaveisFluxo = _instancia.variaveis.gerarCopia();
+                _instancia.execucao.Add(fluxo);
+            }
         }
 
         public void processar()

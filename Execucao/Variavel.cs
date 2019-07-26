@@ -23,6 +23,17 @@ namespace Execucao
             return Lista.ContainsKey(chave);
         }
 
+        public Variaveis gerarCopia()
+        {
+            Variaveis copia;
+
+            copia = new Variaveis();
+            foreach(KeyValuePair<string, Variavel> entrada in Lista)
+                copia.adicionar(entrada.Key, entrada.Value.gerarCopia());
+            
+            return copia;
+        }
+
         public dynamic obterVar(string chave)
         {
             Variavel var;
@@ -57,6 +68,17 @@ namespace Execucao
             Valor = valor;
             Opcional = false;
             Protegida = false;
+        }
+
+        public Variavel gerarCopia()
+        {
+            Variavel copia;
+
+            copia = new Variavel(Valor);
+            copia.Opcional = Opcional;
+            copia.Protegida = Protegida;
+
+            return copia;
         }
 
         public override string ToString()

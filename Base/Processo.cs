@@ -77,26 +77,39 @@ namespace Base
             string fase;
             List<XElement> lista;
 
+            //checa se o nó XML contém os elementos obrigatórios e os carrega
             XMLAuxiliar.checarFilhosXML(xml, elementosnecessarios, PROCESSO_INVALIDO);
             _nome = xml.Element("nome").Value;
             if (xml.Elements("descricao").Count() > 0)
                 _descricao = xml.Element("descricao").Value;
+
+            //verifica o nó filho 'atividades'
             foreach (XElement el in xml.Elements())
             {
                 if (el.Name != "atividades")
                     continue;
-                fase = "normal";
-
-                if (el.Attributes("fase").Count() > 0)
-                    fase = el.Attribute("fase").Value;
-                if (xmlAtividades.ContainsKey(fase))
-                    xmlAtividades.TryGetValue(fase, out lista);
-                else
+                
+                //varre todos os filhos do nó 'atividades'
+                foreach (XElement ativ in el.Element())
                 {
-                    lista = new List<XElement>();
-                    xmlAtividades.Add(fase, lista);
+                    if (ativ.Name != "atividade")
+                    continue;
+                    fase = "normal"; //se não tiver fase informada, será normal
+
+                    //carrega a fase da atividade
+                    if (ativ.Attributes("fase").Count() > 0)
+                        fase = ativ.Attribute("fase").Value;
+
+                    //carrega a tarefa ou o subproceso correspondente a atividade numa lista apropriada
+                    if (xmlAtividades.ContainsKey(fase))
+                        xmlAtividades.TryGetValue(fase, out lista);
+                    else
+                    {
+                        lista = new List<XElement>();
+                        xmlAtividades.Add(fase, lista);
+                    }
+                    lista.Add(ativ.Elements().First());
                 }
-                lista.AddRange(el.Elements("atividade"));
             }
         }
 
@@ -127,29 +140,25 @@ namespace Base
 
             foreach (XElement el in lista)
             {
-                if (el.Name == "atividade" && el.HasElements)
+                if (el.Name == "tarefa")
                 {
-                    XElement subel = el.Elements().First();
-                    if (subel.Name == "tarefa")
-                    {
-                        var consultatarefa = from tarefa in _tarefas
-                                             where tarefa.Nome == subel.Value
-                                             select tarefa;
+                    var consultatarefa = from tarefa in _tarefas
+                                         where tarefa.Nome == el.Value
+                                         select tarefa;
 
-                        atividade = new Atividade(consultatarefa.First());
-                        atividade.Fase = fase;
-                        Atividades.Add(atividade);
-                    }
-                    else if (subel.Name == "subprocesso")
-                    {
-                        var consultaprocesso = from processo in _processos
-                                               where processo.Nome == subel.Value
-                                               select processo;
+                    atividade = new Atividade(consultatarefa.First());
+                    atividade.Fase = fase;
+                    Atividades.Add(atividade);
+                }
+                else if (el.Name == "subprocesso")
+                {
+                    var consultaprocesso = from processo in _processos
+                                           where processo.Nome == subel.Value
+                                           select processo;
 
-                        atividade = new Atividade(consultaprocesso.First());
-                        atividade.Fase = fase;
-                        Atividades.Add(atividade);
-                    }
+                    atividade = new Atividade(consultaprocesso.First());
+                    atividade.Fase = fase;
+                    Atividades.Add(atividade);
                 }
             }
         }

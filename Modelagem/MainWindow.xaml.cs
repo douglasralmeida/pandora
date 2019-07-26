@@ -95,7 +95,7 @@ namespace Modelagem
                 Mouse.OverrideCursor = Cursors.AppStarting;
                 ControlePrincipal.Content = _depuracao;
                 central.gerarInstancia();
-                addEntradas(central);
+                central.definirEntradas(_entradas);
                 addVariaveis(central);
                 central.carregar(_edicao.ObjetoAtivo);
                 if (checarCarteira())
@@ -206,12 +206,7 @@ namespace Modelagem
             }
         }
 
-        private void addEntradas(CentralExecucao central)
-        {
-            central.definirEntradas(_entradas);
-        }
-
-            private void addVariaveis(CentralExecucao central)
+        private void addVariaveis(CentralExecucao central)
         {
             Variavel variavel;
             VarGlobais varGlobais = (Application.Current as App).VarGlobais;
