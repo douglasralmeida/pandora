@@ -55,8 +55,8 @@ namespace BibliotecaPadrao
             string senha = "";
             dynamic handle;
 
-            if (args.Count < 2)
-                return (false, "A operação Auntenticar esperava 2 argumentos, mas eles não foram encontrados.");
+            if (args.Count < 3)
+                return (false, "A operação Auntenticar esperava 3 argumentos, mas eles não foram encontrados.");
 
             using (var iter = args.GetEnumerator())
             {
@@ -91,6 +91,31 @@ namespace BibliotecaPadrao
             return (false, "Uma janela do Plenus era esperada, mas não foi encontrada.");
         };
 
+        // arg1 = texto a digitar na tela
+        // usa a constante bloconotas.handle
+        private Funcao _funcaoDigitar = (vars, args) =>
+        {
+            string texto;
+            dynamic handle;
+
+            if (args.Count < 1)
+                return (false, "A operação Digitar esperava 1 argumento, mas ele não foi encontrado.");
+            using (var iter = args.GetEnumerator())
+            {
+                texto = iter.Current.Valor;
+            }
+            handle = vars.obterVar("bloconotas.handle");
+            if (handle != null)
+            {
+                IntPtr p = handle;
+                SetForegroundWindow(p);
+                System.Windows.Forms.SendKeys.SendWait(texto);
+                return (true, null);
+            }
+
+            return (false, "Era esperado uma janela para enviar dados.");
+        };
+
         public Plenus() : base("Plenus")
         {
             
@@ -101,6 +126,7 @@ namespace BibliotecaPadrao
             base.adicionarComandos();
             Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 0));
             Funcoes.Add("Autenticar", new FuncaoInfo(_funcaoAutenticar, 3));
+            Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
         }
 
         public override void adicionarConstNecessarias()

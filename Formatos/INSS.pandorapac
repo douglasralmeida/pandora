@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pacote>
+  <cabecalho>
+    <versao>1</versao>
+    <geracao nome="Usuário sem nome" data="2019-07-27T00:11:50.2908048-03:00" />
+  </cabecalho>
+  <conteudo>
+    <processos>
+      <processo>
+        <nome>INFBEN</nome>
+        <descricao />
+        <atividades>
+          <atividade fase="pre">
+            <tarefa>Abrir o SUB</tarefa>
+          </atividade>
+          <atividade fase="normal">
+            <tarefa>Consultar INFBEN</tarefa>
+          </atividade>
+        </atividades>
+      </processo>
+    </processos>
+    <tarefas>
+      <tarefa>
+        <nome>Abrir o SUB</nome>
+        <descricao>Abre o Plenus, loga no CV3 e vai para o SUB</descricao>
+        <modulo>Plenus</modulo>
+        <operacoes>
+          <operacao>
+            <comando>AbrirPrograma </comando>
+          </operacao>
+          <operacao>
+            <comando>Autenticar </comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "BEN SIS"</comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "{ENTER}"</comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+      <tarefa>
+        <nome>Consultar CONBAS</nome>
+        <descricao>Consulta um benefício no CONBAS</descricao>
+        <modulo>Plenus</modulo>
+        <operacoes>
+          <operacao>
+            <comando>Digitar "CONBAS{ENTER}"</comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "(ENTRADA NB){ENTER}"</comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "{TAB}O{ENTER}"</comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+      <tarefa>
+        <nome>Consultar INFBEN</nome>
+        <descricao>Consulta um benefício no INFBEN</descricao>
+        <modulo>Plenus</modulo>
+        <operacoes>
+          <operacao>
+            <comando>Digitar "INFBEN{ENTER}"</comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "(ENTRADA NB){ENTER}"</comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "{TAB}O{ENTER}"</comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+    </tarefas>
+  </conteudo>
+</pacote>

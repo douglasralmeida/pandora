@@ -31,7 +31,7 @@ UninstallDisplayIcon={app}\pandora.modelagem.exe
 VersionInfoVersion=1.0.0
 VersionInfoProductVersion=1.0
 UninstallDisplaySize=5000000
-OutputDir=output
+OutputDir=saida
 DisableReadyPage=True
 
 [Languages]

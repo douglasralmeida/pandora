@@ -7,12 +7,12 @@ using System.Windows;
 // As informações gerais sobre um assembly são controladas por
 // conjunto de atributos. Altere estes valores de atributo para modificar as informações
 // associada a um assembly.
-[assembly: AssemblyTitle("Modelagem")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Modelagem de Processos do Pandora")]
+[assembly: AssemblyDescription("Aplicativo modelador de processos do Pandora")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Modelagem")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCompany("Douglas R. Almeida")]
+[assembly: AssemblyProduct("Pandora 1.0")]
+[assembly: AssemblyCopyright("Copyright ©  2019 Douglas R. Almeida")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // É possível especificar todos os valores ou usar como padrão os Números de Build e da Revisão
 // usando o "*" como mostrado abaixo:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.801.0")]
+[assembly: AssemblyFileVersion("1.0.801.0")]
