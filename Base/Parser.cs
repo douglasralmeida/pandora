@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -15,22 +16,25 @@ namespace Base
         //Transforma uma string no formato (ABC DEF) na própra em uma tupla ABC, DEF.
         // textoPuro: Se true, retorna o texto da entrada puro.
         //            Se false, retorna no formato '(AGF DEF)'.
-        public static (string, string)[] analisar(string texto, bool textoPuro)
+        public static Tuple<string, string, string>[] analisar(string texto, bool textoPuro)
         {
-            string chave, variavel;
-            List<(string, string)> lista;
+            string chave, valor, variavel;
+            Tuple<string, string, string> item;
+            List<Tuple<string, string, string>> lista;
             MatchCollection combinacoes;
 
             combinacoes = Regex.Matches(texto, padrao);
-            lista = new List<(string, string)>();
+            lista = new List<Tuple<string, string, string>>();
             foreach (Match m in combinacoes)
             {
+                valor = m.Value;
                 chave = m.Groups[1].ToString();
                 if (textoPuro)                   
                     variavel = m.Groups[2].ToString();
                 else
                     variavel = string.Format(formato, chave, m.Groups[2]);
-                lista.Add((chave, variavel));
+                item = new Tuple<string, string, string>(valor, chave, variavel);
+                lista.Add(item);
             }
             return lista.ToArray();
         }

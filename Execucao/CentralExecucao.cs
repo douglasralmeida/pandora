@@ -311,32 +311,32 @@ namespace Execucao
         {
             string[] cabecalhoEntradas;
             string[] dadosEntradas;
-            (string, string)[] pares;
+            Tuple<string, string, string>[] tuplas;
             StringBuilder builder = new StringBuilder();
             dynamic valor;
             int i;
 
             cabecalhoEntradas = _instancia.entradas.ObterCabecalhos();
             dadosEntradas = _instancia.entradas.ObterDados(cabecalhoEntradas)[entrada];
-            pares = Parser.analisar(param, true);
-            if (pares.Length == 0)
+            tuplas = Parser.analisar(param, true);
+            if (tuplas.Length == 0)
             {
-                pares = new (string, string)[1];
+                tuplas = new Tuple<string, string, string>[1];
                 if (param[0] == '"' && param[param.Length - 1] == '"')
-                    pares[0] = ("", param.Remove(param.Length - 1).Remove(0));
+                    tuplas[0] = new Tuple<string, string, string>(param, "", param.Remove(param.Length - 1).Remove(0));
                 else
-                    pares[0] = ("", param);
+                    tuplas[0] = new Tuple<string, string, string>(param, "", param);
             }
-            foreach ((string, string) p in pares)
+            foreach (Tuple<string, string, string> t in tuplas)
             {
-                valor = "";
-                if (p.Item1 == "ENTRADA")
+                valor = param;
+                if (t.Item2 == "ENTRADA")
                 {
                     i = 0;
-                    valor = p.Item2;
+                    valor = t.Item3;
                     foreach(string s in cabecalhoEntradas)
                     {
-                        if (s == p.Item2)
+                        if (s == t.Item3)
                         {
                             valor = dadosEntradas[i];
                             break;
@@ -344,13 +344,13 @@ namespace Execucao
                         i++;
                     }
                 }
-                else if (p.Item1 == "VAR")
+                else if (t.Item2 == "VAR")
                 {
-                    valor = _instancia.variaveis.obterVar(p.Item2);
+                    valor = _instancia.variaveis.obterVar(t.Item3);
                     if (valor == null)
-                        valor = p.Item2;
+                        valor = t.Item3;
                 }
-                builder.Append(valor);
+                builder.Append(param.Replace(t.Item1, valor));
                 builder.Append(' ');
             }
             // remove o espaço extra
@@ -362,26 +362,17 @@ namespace Execucao
 
         public void prepararFluxos()
         {
-            Fluxo fluxo;            
             int quantidadeentradas;
 
             quantidadeentradas = _instancia.entradas.Quantidade();
 
             //cria um fluxo de execução para cada entrada de dados
             for (int i = 0; i < quantidadeentradas; i++)
-            {
-                fluxo = new Fluxo(i+1);
-                fluxo.VariaveisFluxo = _instancia.variaveis.gerarCopia();
-                _instancia.execucao.Add(fluxo);
-            }
+                _instancia.execucao.Add(new Fluxo(i + 1));
 
             // se não tem entradas, cria pelo menos um fluxo mesmo assim
             if (_instancia.execucao.Count == 0)
-            {
-                fluxo = new Fluxo(1);
-                fluxo.VariaveisFluxo = _instancia.variaveis.gerarCopia();
-                _instancia.execucao.Add(fluxo);
-            }
+                _instancia.execucao.Add(new Fluxo(1));
         }
 
         public void processar()
@@ -392,9 +383,9 @@ namespace Execucao
 
             // segundo, executa os comandos da fase principal
             // um processamento para cada entrada disponível
-
             foreach (Fluxo f in _instancia.execucao)
             {
+                f.VariaveisFluxo = _instancia.preexecucao.VariaveisFluxo.gerarCopia();
                 f.processar();
                 TotalExitos++;
             }

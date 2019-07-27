@@ -90,7 +90,7 @@ namespace Base
                     continue;
                 
                 //varre todos os filhos do nó 'atividades'
-                foreach (XElement ativ in el.Element())
+                foreach (XElement ativ in el.Elements())
                 {
                     if (ativ.Name != "atividade")
                     continue;
@@ -153,7 +153,7 @@ namespace Base
                 else if (el.Name == "subprocesso")
                 {
                     var consultaprocesso = from processo in _processos
-                                           where processo.Nome == subel.Value
+                                           where processo.Nome == el.Value
                                            select processo;
 
                     atividade = new Atividade(consultaprocesso.First());

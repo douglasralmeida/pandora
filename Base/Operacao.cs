@@ -118,14 +118,14 @@ namespace Base
 
         public override string[] obterEntradas()
         {
-            (string, string)[] parametros;
+            Tuple<string, string, string>[] parametros;
             List<string> lista = new List<string>();
 
             for (int i = 1; i < _parametros.Length; i++)
             {
                 parametros = Parser.analisar(_parametros[i], true);
-                foreach ((string, string) p in parametros)
-                    lista.Add(p.Item2);
+                foreach (Tuple<string, string, string> p in parametros)
+                    lista.Add(p.Item3);
             }
 
             return lista.ToArray();

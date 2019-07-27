@@ -2,7 +2,7 @@
 <pacote>
   <cabecalho>
     <versao>1</versao>
-    <geracao nome="Usuário sem nome" data="2019-07-25T00:06:57.14345-03:00" />
+    <geracao nome="Usuário sem nome" data="2019-07-26T21:18:49.3339221-03:00" />
   </cabecalho>
   <conteudo>
     <processos>
@@ -36,7 +36,10 @@
         <modulo>BlocoNotas</modulo>
         <operacoes>
           <operacao>
-            <comando>Digitar "Entrada (ENTRADA valor){ENTER}"</comando>
+            <comando>Digitar "Entrada (ENTRADA valor)"</comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "{ENTER}"</comando>
           </operacao>
         </operacoes>
       </tarefa>
