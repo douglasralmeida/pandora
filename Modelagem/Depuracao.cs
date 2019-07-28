@@ -14,9 +14,9 @@ namespace Modelagem
 
         private StringBuilder _saida;
 
-        private bool iniciou;
+        //private bool iniciou;
 
-        private bool finalizou;
+        //private bool finalizou;
 
         public string Saida
         {
@@ -38,22 +38,21 @@ namespace Modelagem
             _central.CompilacaoAntes += CompilacaoIniciar;
             _central.CompilacaoDepois += CompilacaoFinalizar;
 
-            iniciou = false;
-            finalizou = false;
+            //iniciou = false;
+            //finalizou = false;
         }
 
         private void CompilacaoFinalizar(object sender, EventArgs e)
         {
-            iniciou = false;
-            finalizou = true;
-
+            //iniciou = false;
+            //finalizou = true;
             _saida.AppendLine(String.Format("========== Depuração finalizada: %d com êxito, %d com falha ==========", _central.TotalExitos, _central.TotalFalhas));
         }
 
         private void CompilacaoIniciar(object sender, EventArgs e)
         {
-            iniciou = true;
-            finalizou = false;
+            //iniciou = true;
+            //finalizou = false;
             _saida.AppendLine(String.Format("========== Depuração iniciada: Objeto: %s ==========", _central.ObjetoCarregado));
         }
     }

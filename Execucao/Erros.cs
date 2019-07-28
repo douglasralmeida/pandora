@@ -44,8 +44,9 @@ namespace Execucao
         private static List<Erro> ListaErros = new List<Erro>()
         {
             new Erro("CT0001", "Nenhuma carteira foi aberta.", ErroTipo.Erro, new string[0]),
-            new Erro("CT0002", "O item da carteira '%s' é de preenchimento obrigatório, mas não foi informado.", ErroTipo.Erro, new string[0]),
-            new Erro("VG0001", "A variável global '%s' é obrigatória, mas não foi informada.", ErroTipo.Erro, new string[0]),
+            new Erro("CT0002", "O item da carteira '{0}' é de preenchimento obrigatório, mas não foi informado.", ErroTipo.Erro, new string[0]),
+            new Erro("ET0001", "Era esperado um valor de entrada chamado '{0}', mas não foi informado.", ErroTipo.Aviso, new string[0]),
+            new Erro("VG0001", "A variável global '{0}' é obrigatória, mas não foi informada.", ErroTipo.Erro, new string[0]),
             new Erro("SX0001", "Existe um ciclo de subprocessos na modelagem.", ErroTipo.Erro, new string[0])
         };
 
@@ -55,7 +56,7 @@ namespace Execucao
             {
                 if (e.Codigo == codigo)
                 {
-                    e.Descricao = String.Format(e.Descricao, valores);
+                    e.Descricao = string.Format(e.Descricao, valores);
                     e.Valores = valores;
                     return e;
                 }

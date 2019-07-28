@@ -311,13 +311,23 @@ namespace Execucao
         {
             string[] cabecalhoEntradas;
             string[] dadosEntradas;
+            bool possuientradas;
             Tuple<string, string, string>[] tuplas;
             StringBuilder builder = new StringBuilder();
             dynamic valor;
             int i;
 
             cabecalhoEntradas = _instancia.entradas.ObterCabecalhos();
-            dadosEntradas = _instancia.entradas.ObterDados(cabecalhoEntradas)[entrada];
+            if (_instancia.entradas.Quantidade() > 0)
+            {
+                possuientradas = true;
+                dadosEntradas = _instancia.entradas.ObterDados(cabecalhoEntradas)[entrada];
+            }
+            else
+            {
+                possuientradas = false;
+                dadosEntradas = null;
+            }
             tuplas = Parser.analisar(param, true);
             if (tuplas.Length == 0)
             {
@@ -333,7 +343,12 @@ namespace Execucao
                 if (t.Item2 == "ENTRADA")
                 {
                     i = 0;
-                    valor = t.Item3;
+                    valor = "";
+                    if (!possuientradas)
+                    {
+                        string[] valores = { t.Item3 };
+                        Erros.Adicionar("ET0001", valores);
+                    }
                     foreach(string s in cabecalhoEntradas)
                     {
                         if (s == t.Item3)
@@ -348,7 +363,7 @@ namespace Execucao
                 {
                     valor = _instancia.variaveis.obterVar(t.Item3);
                     if (valor == null)
-                        valor = t.Item3;
+                        valor = "";
                 }
                 builder.Append(param.Replace(t.Item1, valor));
                 builder.Append(' ');
