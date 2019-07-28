@@ -173,7 +173,7 @@ namespace Modelagem
         {
             if (Modificado)
             {
-                if (CaixaDialogo.PerguntaSimples(DADOS_MODIFICADOS))
+                if (CaixaDialogo.PerguntaSimples(this, DADOS_MODIFICADOS))
                 {
                     if (NomeArquivo == DADOS_SEMNOME)
                     {
@@ -213,7 +213,7 @@ namespace Modelagem
             }
             catch (Exception e)
             {
-                CaixaDialogo.ErroSimples(e.Message);
+                CaixaDialogo.ErroSimples(this, e.Message);
                 return false;
             }
 
@@ -224,7 +224,7 @@ namespace Modelagem
             numlinhas = linhas.Length;
             if (numlinhas == 0)
             {
-                CaixaDialogo.ErroSimples(ERRO_CSVVAZIO);
+                CaixaDialogo.ErroSimples(this, ERRO_CSVVAZIO);
                 return false;
             }
 
@@ -253,7 +253,7 @@ namespace Modelagem
                     {
                         if (j >= csvArquivo.Columns.Count)
                         {
-                            CaixaDialogo.ErroSimples(ERRO_CSVINVALIDO);
+                            CaixaDialogo.ErroSimples(this, ERRO_CSVINVALIDO);
                             return false;
                         }
                         DataColumn coluna = csvArquivo.Columns[j];

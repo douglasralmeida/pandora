@@ -224,7 +224,7 @@ namespace Modelagem
             {
                 carteiraSelecionada = null;
                 menu.IsChecked = false;
-                CaixaDialogo.ErroSimples(SENHA_ERRADA);
+                CaixaDialogo.ErroSimples(this, SENHA_ERRADA);
             }
         }
 
@@ -239,7 +239,7 @@ namespace Modelagem
 
             if (_editor.Modificado)
             {
-                if (CaixaDialogo.PerguntaSimples(PERGUNTA_SALVAR))
+                if (CaixaDialogo.PerguntaSimples(this, PERGUNTA_SALVAR))
                 {
                     BtoSalvarPacote_Click(null, null);
                     return !_editor.Modificado;

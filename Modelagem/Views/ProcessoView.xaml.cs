@@ -100,7 +100,7 @@ namespace Modelagem
             else
                 mensagem = PERG_EXCLUIRAT_MAIS1;
 
-            if (CaixaDialogo.PerguntaSimples(mensagem))
+            if (CaixaDialogo.PerguntaSimples(this, mensagem))
             {
                 if (ListaAtividades.SelectedItems.Count > 0)
                 {

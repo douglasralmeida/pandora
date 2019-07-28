@@ -146,7 +146,7 @@ namespace Modelagem
 
         private void BtoExcluirCarteira_Click(object sender, RoutedEventArgs e)
         {
-            if (CaixaDialogo.PerguntaSimples(EXCLUIR_CATEIRA))
+            if (CaixaDialogo.PerguntaSimples(this, EXCLUIR_CATEIRA))
             {
                 Exclusao = true;
                 _app.Carteiras.RemoverCarteira(carteira);
@@ -162,17 +162,17 @@ namespace Modelagem
         {
             if (Responsavel.Trim().Length == 0)
             {
-                CaixaDialogo.ErroSimples(ERRO_NOMERESPONSAVEL_VAZIO);
+                CaixaDialogo.ErroSimples(this, ERRO_NOMERESPONSAVEL_VAZIO);
                 return;
             }
             if (_app.Carteiras.ProcurarPorResponsavel(Responsavel))
             {
-                CaixaDialogo.ErroSimples(ERRO_RESP_JAEXISTE);
+                CaixaDialogo.ErroSimples(this, ERRO_RESP_JAEXISTE);
                 return;
             }
             if (CaixaSenha1.Password != CaixaSenha2.Password)
             {
-                CaixaDialogo.ErroSimples(ERRO_SENHAS_DIFERENTES);
+                CaixaDialogo.ErroSimples(this, ERRO_SENHAS_DIFERENTES);
                 return;
             }
             salvarCarteira();
