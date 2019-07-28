@@ -1,22 +1,10 @@
 ﻿using Base;
-using Execucao;
 using Modelagem.Views;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Modelagem
 {
@@ -25,6 +13,10 @@ namespace Modelagem
     /// </summary>
     public partial class EditorView : UserControl, INotifyPropertyChanged
     {
+        private const string PROCESSO_UTILIZADO = "O processo selecionado é utilizado como atividade em outros processos. Ao excluí-lo, essas atividades também serão exclúidas. Você deseja excluí-lo mesmo assim?";
+
+        private const string TAREFA_UTILIZADA = "A tarefa selecionada é utilizada como atividade em outros processos. Ao excluí-la, essas atividades também serão exclúidas. Você deseja excluí-la mesmo assim?";
+
         private Editor _editor;
 
         private Objeto _objetoativo;
@@ -134,14 +126,40 @@ namespace Modelagem
             _editor.inserirTarefa();
         }
 
+        private void BtoExcluirProcesso_Click(object sender, RoutedEventArgs e)
+        {
+            var processo = ArvoreProcessos.SelectedItem as Processo;
+
+            if (processo != null)
+            {
+                if (_editor.objetoUtilizadoComoAtividade(processo))
+                    if (!CaixaDialogo.PerguntaSimples(this, PROCESSO_UTILIZADO))
+                        return;
+                exibirTodosProcessos();
+                _editor.excluirProcesso(processo);
+            }
+        }
+
         private void BtoExcluirTarefa_Click(object sender, RoutedEventArgs e)
         {
             var tarefa = ArvoreTarefas.SelectedItem as Tarefa;
+
             if (tarefa != null)
             {
+                if (_editor.objetoUtilizadoComoAtividade(tarefa))
+                    if (!CaixaDialogo.PerguntaSimples(this, TAREFA_UTILIZADA))
+                        return;
                 exibirTodasTarefas();
-                excluirTarefa(tarefa);
+                _editor.excluirTarefa(tarefa);
             }
+        }
+
+        private void Editor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            string[] propriedades = { "Modificado", "NomeArquivo" };
+
+            if (propriedades.Contains(e.PropertyName))
+                OnPropertyChanged(e.PropertyName);
         }
 
         public void Editor_TarefaAdded(object sender, Tarefa tarefa)
@@ -180,29 +198,16 @@ namespace Modelagem
 //            ObjetoAtivo = tarefa;
         }
 
-        public void exibirTodasTarefas()
-        {
-            Paginas.Content = new TodasTarefasView();
-            ObjetoAtivo = null;
-        }
-
         public void exibirTodosProcessos()
         {
             Paginas.Content = new TodosProcessosView();
             ObjetoAtivo = null;
         }
 
-        public void excluirTarefa(Tarefa tarefa)
+        public void exibirTodasTarefas()
         {
-            _editor.excluirTarefa(tarefa);
-        }
-
-        private void Editor_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            string[] propriedades = { "Modificado", "NomeArquivo" };
-
-            if (propriedades.Contains(e.PropertyName))
-                OnPropertyChanged(e.PropertyName);
+            Paginas.Content = new TodasTarefasView();
+            ObjetoAtivo = null;
         }
 
         private void ObjetoView_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -229,9 +234,5 @@ namespace Modelagem
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void BtoExcluirProcesso_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
     }
 }

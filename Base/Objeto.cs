@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Xml.Linq;
 
 namespace Base
 {
-    public class Objeto : INotifyPropertyChanged
+    public class Objeto : INotifyPropertyChanged, IEquatable<Objeto>
     {
         protected string _nome;
 
@@ -13,10 +14,8 @@ namespace Base
 
         public string Nome
         {
-            get
-            {
-                return _nome;
-            }
+            get => _nome;
+
             set
             {
                 if (_nome != value)
@@ -46,6 +45,21 @@ namespace Base
         {
             
         }
+
+        public bool Equals(Objeto outro)
+        {
+            string nome, outronome;
+
+            nome = Nome.ToUpper();
+            outronome = outro.Nome.ToUpper();
+            return null != outro && nome == outronome;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Objeto);
+        }
+
         public virtual XElement gerarXml()
         {
             XElement objeto;
@@ -55,6 +69,11 @@ namespace Base
             return objeto;
         }
 
+        public override int GetHashCode()
+        {
+            return Nome.ToUpper().GetHashCode();
+        }
+
         public virtual string[] obterEntradas()
         {
             return null;
@@ -62,9 +81,7 @@ namespace Base
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

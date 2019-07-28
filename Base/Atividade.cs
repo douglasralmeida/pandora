@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Text;
 using System.Windows.Data;
 
 namespace Base
@@ -36,7 +34,7 @@ namespace Base
         }
     }
 
-    public class Atividade
+    public class Atividade : IEquatable<Atividade>
     {
         public Atividade(Objeto objeto)
         {
@@ -47,8 +45,36 @@ namespace Base
 
         public AtividadeFase Fase { get; set; }
 
-        public string Nome { get => ObjetoRelacionado.Nome; }
+        public string Nome => ObjetoRelacionado != null ? ObjetoRelacionado.Nome : "";
 
         public Objeto ObjetoRelacionado { get; private set; }
+
+        public bool Equals(Atividade outra)
+        {
+            return null != outra && ObjetoRelacionado == outra.ObjetoRelacionado;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Atividade);
+        }
+
+        public override int GetHashCode()
+        {
+            string nomecompleto;
+            if (ObjetoRelacionado is Tarefa)
+                nomecompleto = "tarefa " + ObjetoRelacionado.Nome;
+            else if (ObjetoRelacionado is Processo)
+                nomecompleto = "processo " + ObjetoRelacionado.Nome;
+            else
+                nomecompleto = "";
+
+            return nomecompleto.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return Nome;
+        }
     }
 }

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Data;
 using System.Xml.Linq;
 
@@ -28,10 +26,8 @@ namespace Base
 
         public string Descricao
         {
-            get
-            {
-                return _descricao;
-            }
+            get =>_descricao;
+
             set
             {
                 if (_descricao != value)
@@ -52,17 +48,6 @@ namespace Base
         {
             prepararProcesso(tarefas, processos);
             analisarXml(xml);
-        }
-
-        private void prepararProcesso(ObservableCollection<Tarefa> tarefas, ObservableCollection<Processo> processos)
-        {
-            nomeElementoXml = "processo";
-            _tarefas = tarefas;
-            _processos = processos;
-            xmlAtividades = new Dictionary<string, List<XElement>>();
-            Atividades = new ObservableCollection<Atividade>();
-            Atividades.CollectionChanged += Atividades_CollectionChanged;
-            Visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase", new AtividadeFaseConverter()));
         }
 
         public void adicionarAtividade(Atividade atividade)
@@ -116,6 +101,26 @@ namespace Base
         private void Atividades_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
         {
             OnPropertyChanged("Atividades");
+        }
+
+        //verifica se uma tarefa ou um processo é um subprocesso
+        //do processo atual
+        public bool contemAtividade(Objeto objeto)
+        {
+            Atividade item;
+
+            item = new Atividade(objeto);
+            return Atividades.Contains(item);
+        }
+
+        //excluir todas as atividades relacionadas ao objeto,
+        //se houver
+        public void excluirAtividade(Objeto objeto)
+        {
+            var atividadesParaRemover = Atividades.Where(a => a.ObjetoRelacionado == objeto).ToList();
+
+            foreach(Atividade a in atividadesParaRemover)
+                Atividades.Remove(a);
         }
 
         //carrega as atividades de um processo
@@ -225,6 +230,17 @@ namespace Base
             }
 
             return lista.ToArray();
+        }
+
+        private void prepararProcesso(ObservableCollection<Tarefa> tarefas, ObservableCollection<Processo> processos)
+        {
+            nomeElementoXml = "processo";
+            _tarefas = tarefas;
+            _processos = processos;
+            xmlAtividades = new Dictionary<string, List<XElement>>();
+            Atividades = new ObservableCollection<Atividade>();
+            Atividades.CollectionChanged += Atividades_CollectionChanged;
+            Visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase", new AtividadeFaseConverter()));
         }
     }
 }

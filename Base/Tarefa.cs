@@ -1,11 +1,9 @@
 ﻿using Execucao;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Base
@@ -18,7 +16,7 @@ namespace Base
 
         private string _descricao;
 
-        private readonly List<string> _entradas;
+        private List<string> _entradas;
 
         private Modulo _modulo;
 
@@ -26,14 +24,10 @@ namespace Base
 
         private int _etapa;
 
-        private readonly ObservableCollection<Operacao> _operacoes;
-
         public string Descricao
         {
-            get
-            {
-                return _descricao;
-            }
+            get =>_descricao;
+
             set
             {
                 if (_descricao != value)
@@ -46,10 +40,8 @@ namespace Base
 
         public Modulo Modulo
         {
-            get
-            {
-                return _modulo;
-            }
+            get => _modulo;
+
             set
             {
                 if (_modulo != value)
@@ -60,32 +52,17 @@ namespace Base
             }
         }
 
-        public ObservableCollection<Operacao> Operacoes
-        {
-            get
-            {
-                return _operacoes;
-            }
-        }
+        public ObservableCollection<Operacao> Operacoes { get; private set; }
 
         public Tarefa(string nome)
         {
             nomeElementoXml = "tarefa";
-            _nome = nome;
-            _entradas = new List<string>();
-            _operacoes = new ObservableCollection<Operacao>();
-            _operacoes.CollectionChanged += Operacoes_CollectionChanged;
-            _etapa = 0;
+            prepararTarefa();
         }
 
         public Tarefa(XElement xml)
         {
-            nomeElementoXml = "tarefa";
-            _entradas = new List<string>();
-            _operacoes = new ObservableCollection<Operacao>();
-            _operacoes.CollectionChanged += Operacoes_CollectionChanged;
-            _etapa = 0;
-
+            prepararTarefa();
             analisarXml(xml);
         }
 
@@ -127,7 +104,7 @@ namespace Base
                         novaoperacao = carregarOperacao(el, i);
                         if (novaoperacao != null)
                         {
-                            _operacoes.Add(novaoperacao);
+                            Operacoes.Add(novaoperacao);
                             i++;
                         }
                     }
@@ -154,7 +131,7 @@ namespace Base
             tarefa.Add(new XElement("descricao", Descricao));
             tarefa.Add(new XElement("modulo", Modulo));
             operacoes = new XElement("operacoes");
-            foreach (Base.Operacao operacao in _operacoes)
+            foreach (Base.Operacao operacao in Operacoes)
             {
                 operacoes.Add(operacao.gerarXml());
             }
@@ -166,7 +143,7 @@ namespace Base
 
         public int getOperacoesCount()
         {
-            return _operacoes.Count;
+            return Operacoes.Count;
         }
 
         public void iniciar()
@@ -179,7 +156,7 @@ namespace Base
         {
             List<string> lista = new List<string>();
 
-            foreach(Operacao o in _operacoes)
+            foreach(Operacao o in Operacoes)
             {
                 if (o.obterEntradas() != null)
                     lista.AddRange(o.obterEntradas());
@@ -196,7 +173,7 @@ namespace Base
         public string proximaOperacao()
         {
             int i;
-            StringBuilder builder = new StringBuilder(_operacoes.ElementAt(_etapa).Nome);
+            StringBuilder builder = new StringBuilder(Operacoes.ElementAt(_etapa).Nome);
 
             while (builder.ToString().IndexOf(ENTRADA) != -1)
             {
@@ -213,6 +190,15 @@ namespace Base
         public bool possuiProximaOperacao()
         {
             return (_etapa < this.getOperacoesCount());
+        }
+
+        private void prepararTarefa()
+        {
+            nomeElementoXml = "tarefa";
+            _entradas = new List<string>();
+            Operacoes = new ObservableCollection<Operacao>();
+            Operacoes.CollectionChanged += Operacoes_CollectionChanged;
+            _etapa = 0;
         }
 
         public void reprocessarOperacaoIds()

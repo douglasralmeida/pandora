@@ -5,10 +5,8 @@ using Microsoft.Win32;
 using Modelagem.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -84,7 +82,14 @@ namespace Modelagem
 
             dialogoAbrir.Filter = "Pacote do Pandora|*.pandorapac|Demais arquivos|*.*";
             if (checarSalvamento() && dialogoAbrir.ShowDialog() == true)
-                _editor.abrir(dialogoAbrir.FileName);
+                try
+                {
+                    _editor.abrir(dialogoAbrir.FileName);
+                }
+                catch (Exception ex)
+                {
+                    CaixaDialogo.ErroSimples(this, ex.Message);
+                }
         }
 
         private void BtoNovoPacote_Click(object sender, RoutedEventArgs e)

@@ -1,9 +1,7 @@
 ﻿using Base;
 using Execucao;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Controls;
 using System.Xml.Linq;
 
@@ -84,11 +82,15 @@ namespace Modelagem
             {
                 NomeArquivo = nomearquivo;
                 Modificado = false;
-                OnPropertyChanged(null);
                 return true;
             }
 
             return false;
+        }
+
+        public void excluirProcesso(Processo processo)
+        {
+            _pacote.excluirProcesso(processo);
         }
 
         public void excluirTarefa(Tarefa tarefa)
@@ -151,6 +153,11 @@ namespace Modelagem
             NomeArquivo = ARQUIVO_SEMNOME;
             Modificado = true;
             OnPropertyChanged(null);
+        }
+
+        public bool objetoUtilizadoComoAtividade(Objeto objeto)
+        {
+            return _pacote.objetoEhUtilizado(objeto);
         }
 
         protected void OnPropertyChanged(string propertyName)

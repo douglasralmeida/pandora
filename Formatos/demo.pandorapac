@@ -6,20 +6,24 @@
   </cabecalho>
   <conteudo>
     <processos>
-      <processo>
-        <nome>Gerar cópia do INFBEN</nome>
-        <descricao></descricao>
-        <atividades fase="normal">
-          <atividade>
-            <tarefa>INFBEN</tarefa>
-          </atividade>
-        </atividades>
-      </processo>
     </processos>
     <tarefas>
       <tarefa>
         <nome>INFBEN</nome>
         <descricao>Imprime a tela do INFBEN</descricao>
+        <modulo>Plenus</modulo>
+        <operacoes>
+          <operacao>
+            <comando>Digitar "INFBEN{ENTER}"</comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "(ENTRADA NB)"</comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+      <tarefa>
+        <nome>INFBEN</nome>
+        <descricao>Imprime a tela do INFBEN 2</descricao>
         <modulo>Plenus</modulo>
         <operacoes>
           <operacao>

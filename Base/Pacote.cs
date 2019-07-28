@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Windows.Controls;
 using System.Xml.Linq;
 
 namespace Base
@@ -45,6 +44,10 @@ namespace Base
         private const string PAC_SEMTAREFAS = "O pacote de processos do Pandora informado não possui uma lista de tarefas válida.";
 
         private const string PAC_SEMPRCOS = "O pacote de processos do Pandora informado não possui uma lista de processos válida.";
+
+        private const string TAREFA_DUPLICADA = "O pacote informado é inválido pois possui tarefas duplicadas.";
+
+        private const string PROCESSO_DUPLICADO = "O pacote informado é inválido pois possui processos duplicados.";
 
         private const string XMLVER = "1";
 
@@ -128,8 +131,11 @@ namespace Base
                 if (el.Name == "tarefa")
                 {
                     novatarefa = carregarTarefa(el);
-                    if (novatarefa != null)
-                        Tarefas.Add(novatarefa);
+                    if (novatarefa == null)
+                        continue;
+                    if (Tarefas.Contains(novatarefa))
+                        throw new PandoraException(TAREFA_DUPLICADA);
+                    Tarefas.Add(novatarefa);
                 }
             }
 
@@ -141,8 +147,11 @@ namespace Base
                 if (el.Name == "processo")
                 {
                     novoprocesso = carregarProcesso(el);
-                    if (novoprocesso != null)
-                        Processos.Add(novoprocesso);
+                    if (novoprocesso == null)
+                        continue;
+                    if (Processos.Contains(novoprocesso))
+                        throw new PandoraException(PROCESSO_DUPLICADO);
+                    Processos.Add(novoprocesso);
                 }
             }
             
@@ -169,8 +178,17 @@ namespace Base
             return tarefa;
         }
 
+        public void excluirProcesso(Processo processo)
+        {
+            foreach(Processo p in Processos)
+                p.excluirAtividade(processo);
+            Processos.Remove(processo);
+        }
+
         public void excluirTarefa(Tarefa tarefa)
         {
+            foreach (Processo p in Processos)
+                p.excluirAtividade(tarefa);
             Tarefas.Remove(tarefa);
         }
 
@@ -215,22 +233,45 @@ namespace Base
 
         public void inserirProcesso()
         {
+            int i = 0;
+            string nomeinicial = "NovoProcesso";
             Processo novoprocesso;
 
-            novoprocesso = new Processo("NovoProcesso", Tarefas, Processos);
+            novoprocesso = new Processo("", Tarefas, Processos);
+            do
+            {
+                i++;
+                novoprocesso.Nome = nomeinicial + i;
+            }
+            while (Processos.Contains(novoprocesso));
             Processos.Add(novoprocesso);
-
             OnProcessoAdded(novoprocesso);
         }
 
         public void inserirTarefa()
         {
+            int i = 0;
+            string nomeinicial = "NovaTarefa";
             Tarefa novatarefa;
 
-            novatarefa = new Tarefa("NovaTarefa");
+            novatarefa = new Tarefa("");
+            do
+            {
+                i++;
+                novatarefa.Nome = nomeinicial + i;
+            }
+            while (Tarefas.Contains(novatarefa));
             Tarefas.Add(novatarefa);
-
             OnTarefaAdded(novatarefa);
+        }
+
+        public bool objetoEhUtilizado(Objeto objeto)
+        {
+            foreach (Processo p in Processos)
+                if (p.contemAtividade(objeto))
+                    return true;
+
+            return false;
         }
 
         protected void OnProcessoAdded(Processo processo)
