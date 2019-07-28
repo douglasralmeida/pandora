@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Modelagem"
         mc:Ignorable="d"
         Height="787" Width="864"
-        Title="{Binding NomeArquivo, StringFormat= 'Modelagem de Processos - {0}'}">
+        Title="{Binding NomeArquivo, StringFormat= 'Modelagem de Processos - {0}'}"
+        Closing="JanelaPadrao_Fechando">
     <Window.Resources>
         <local:BoolToStringConverter  x:Key="ModificadoConverter" FalseValue="Sem modificações" TrueValue="Modificado" />
     </Window.Resources>

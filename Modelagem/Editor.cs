@@ -28,14 +28,12 @@ namespace Modelagem
             get => Erros.Lista;
         }
 
-        public Erros Erros { get; set; }
+        public Erros Erros { get; }
 
         public bool Modificado
         {
-            get
-            {
-                return _modificado;
-            }
+            get => _modificado;
+
             set
             {
                 if (_modificado != value)
@@ -48,36 +46,32 @@ namespace Modelagem
 
         public string NomeArquivo
         {
-            get
-            {
-                return _nomeArquivo;
-            }
+            get =>_nomeArquivo;
+
             set
             {
-                _nomeArquivo = value;
-                OnPropertyChanged("NomeArquivo");
+                if (_nomeArquivo != value)
+                {
+                    _nomeArquivo = value;
+                    OnPropertyChanged("NomeArquivo");
+                }
             }
         }
 
         public ObservableCollection<Processo> Processos
         {
-            get
-            {
-                return _pacote.Processos;
-            }
+            get => _pacote.Processos;
         }
 
         public ObservableCollection<Tarefa> Tarefas
         {
-            get
-            {
-                return _pacote.Tarefas;
-            }
+            get => _pacote.Tarefas;
         }
 
         public Editor()
         {
             _modificado = false;
+            Erros = new Erros();
         }
 
         public bool abrir(string nomearquivo)
@@ -88,11 +82,9 @@ namespace Modelagem
             xml = XElement.Load(nomearquivo);
             if (processarXML(xml))
             {
-                _nomeArquivo = nomearquivo;
-                _modificado = false;
+                NomeArquivo = nomearquivo;
+                Modificado = false;
                 OnPropertyChanged(null);
-                OnPropertyChanged("NomeArquivo");
-                OnPropertyChanged("Modificado");
                 return true;
             }
 
@@ -146,16 +138,19 @@ namespace Modelagem
             _pacote.inserirTarefa();
         }
 
+        public void limparErros()
+        {
+            Erros.Limpar();
+        }
+
         public void novo(string usuarioGerador)
         {
             _pacote = new Pacote(usuarioGerador);
             _pacote.PropertyChanged += Pacote_PropertyChanged;
             _pacote.TarefaAdded += Pacote_TarefaAdded;
-            _nomeArquivo = ARQUIVO_SEMNOME;
-            _modificado = true;
+            NomeArquivo = ARQUIVO_SEMNOME;
+            Modificado = true;
             OnPropertyChanged(null);
-            OnPropertyChanged("NomeArquivo");
-            OnPropertyChanged("Modificado");
         }
 
         protected void OnPropertyChanged(string propertyName)

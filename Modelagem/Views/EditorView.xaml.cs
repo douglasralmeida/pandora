@@ -36,6 +36,16 @@ namespace Modelagem
             get => (Application.Current as App).Carteiras.Lista;
         }
 
+        public bool Modificado
+        {
+            get => _editor.Modificado;
+        }
+
+        public string NomeArquivo
+        {
+            get => _editor.NomeArquivo;
+        }
+
         public Objeto ObjetoAtivo
         {
             get
@@ -189,7 +199,10 @@ namespace Modelagem
 
         private void Editor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //OnPropertyChanged(e.PropertyName);
+            string[] propriedades = { "Modificado", "NomeArquivo" };
+
+            if (propriedades.Contains(e.PropertyName))
+                OnPropertyChanged(e.PropertyName);
         }
 
         private void ObjetoView_PropertyChanged(object sender, PropertyChangedEventArgs e)

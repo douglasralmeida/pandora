@@ -6,6 +6,7 @@ using Modelagem.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Threading;
@@ -36,8 +37,6 @@ namespace Modelagem
 
         Entradas _entradas;
 
-        Erros _erros;
-
         Dictionary<string, Variavel> _variaveis;
 
         private Carteira carteiraSelecionada;
@@ -49,12 +48,34 @@ namespace Modelagem
             _edicao = new EditorView(_editor);
             _editor.novo(_app.Configuracoes.UsuarioNome);
             _entradas = new Entradas();
-            _erros = new Erros();
-            _editor.Erros = _erros;
             _variaveis = new Dictionary<string, Variavel>();
             carteiraSelecionada = null;
             DataContext = _edicao;
             ControlePrincipal.Content = _edicao;
+        }
+
+        private void addVariaveis(CentralExecucao central)
+        {
+            Variavel variavel;
+            VarGlobais varGlobais = (Application.Current as App).VarGlobais;
+
+            //variáveis globais
+            foreach (Dado dado in varGlobais.Lista)
+            {
+                variavel = new Variavel(dado.Valor);
+                variavel.Opcional = false;
+                variavel.Protegida = false;
+                central.adicionarVariaveis(dado.Nome, variavel);
+            }
+
+            //variáveis da carteira
+            foreach (KeyValuePair<string, Variavel> v in _variaveis)
+            {
+                variavel = new Variavel(v.Value.Valor);
+                variavel.Opcional = v.Value.Opcional;
+                variavel.Protegida = v.Value.Protegida;
+                central.adicionarVariaveis(v.Key, variavel);
+            }
         }
 
         private void BtoAbrirPacote_Click(object sender, RoutedEventArgs e)
@@ -62,7 +83,7 @@ namespace Modelagem
             OpenFileDialog dialogoAbrir = new OpenFileDialog();
 
             dialogoAbrir.Filter = "Pacote do Pandora|*.pandorapac|Demais arquivos|*.*";
-            if (dialogoAbrir.ShowDialog() == true)
+            if (checarSalvamento() && dialogoAbrir.ShowDialog() == true)
                 _editor.abrir(dialogoAbrir.FileName);
         }
 
@@ -75,7 +96,8 @@ namespace Modelagem
         {
             SaveFileDialog dialogoSalvar = new SaveFileDialog();
 
-            dialogoSalvar.FileName = _editor.NomeArquivo;
+            dialogoSalvar.InitialDirectory = System.IO.Path.GetDirectoryName(_editor.NomeArquivo);
+            dialogoSalvar.FileName = System.IO.Path.GetFileName(_editor.NomeArquivo);
             dialogoSalvar.Filter = "Pacote do Pandora|*.pandorapac|Demais arquivos|*.*";
             if (dialogoSalvar.ShowDialog() == true)
                 _editor.salvar(dialogoSalvar.FileName);
@@ -86,10 +108,10 @@ namespace Modelagem
             CentralExecucao central = new CentralExecucao();
             Thread t = new Thread(central.processar);
 
-            central.Erros = _erros;
+            central.Erros = _editor.Erros;
             _depurador = new Depuracao(central);
             _depuracao = new DepuracaoView(_depurador);
-            _erros.Limpar();
+            _editor.limparErros();
             try
             {
                 Mouse.OverrideCursor = Cursors.AppStarting;
@@ -107,7 +129,7 @@ namespace Modelagem
                 else
                 {
                     //Gerar erro: Nenhuma carteira aberta.
-                    _erros.Adicionar("CT0001", new string[0]);
+                    central.Erros.Adicionar("CT0001", new string[0]);
                 }
             }
             finally
@@ -206,34 +228,34 @@ namespace Modelagem
             }
         }
 
-        private void addVariaveis(CentralExecucao central)
-        {
-            Variavel variavel;
-            VarGlobais varGlobais = (Application.Current as App).VarGlobais;
-
-            //variáveis globais
-            foreach (Dado dado in varGlobais.Lista)
-            {
-                variavel = new Variavel(dado.Valor);
-                variavel.Opcional = false;
-                variavel.Protegida = false;
-                central.adicionarVariaveis(dado.Nome, variavel);
-            }
-
-            //variáveis da carteira
-            foreach (KeyValuePair<string, Variavel> v in _variaveis)
-            {
-                variavel = new Variavel(v.Value.Valor);
-                variavel.Opcional = v.Value.Opcional;
-                variavel.Protegida = v.Value.Protegida;
-                central.adicionarVariaveis(v.Key, variavel);
-            }
-        }
-
         private bool checarCarteira()
         {
-            return (carteiraSelecionada != null);        }
+            return (carteiraSelecionada != null);
+        }
 
+        private bool checarSalvamento()
+        {
+            const string PERGUNTA_SALVAR = "Você deseja salvar as alterações feitas no pacote atual?";
+
+            if (_editor.Modificado)
+            {
+                if (CaixaDialogo.PerguntaSimples(PERGUNTA_SALVAR))
+                {
+                    BtoSalvarPacote_Click(null, null);
+                    return !_editor.Modificado;
+                }
+                else
+                    return true;
+            }
+            else
+                return true;
+        }
+
+        void JanelaPadrao_Fechando(object sender, CancelEventArgs e)
+        {
+            if (!checarSalvamento())
+                e.Cancel = true;
+        }
 
         private bool selecionarCarteira(byte[] hash)
         {
