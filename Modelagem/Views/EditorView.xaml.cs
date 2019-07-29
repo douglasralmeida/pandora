@@ -40,10 +40,7 @@ namespace Modelagem
 
         public Objeto ObjetoAtivo
         {
-            get
-            {
-                return _objetoativo;
-            }
+            get => _objetoativo;
 
             set
             {
@@ -81,10 +78,9 @@ namespace Modelagem
         {
             var treeView = sender as TreeView;
             var processo = treeView.SelectedItem as Processo;
+
             if (processo != null)
-            {
                 exibirProcesso(processo);
-            }
             else
             {
                 if (treeView.SelectedItem != null && treeView.SelectedItem == treeView.Items.GetItemAt(0))
@@ -101,13 +97,12 @@ namespace Modelagem
         public void ArvoreTarefas_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var treeView = sender as TreeView;
+            
             if (treeView != null)
             {
                 var tarefa = treeView.SelectedItem as Tarefa;
                 if (tarefa != null)
-                {
                     exibirTarefa(tarefa);
-                }
                 else
                 {
                     if (treeView.SelectedItem != null && treeView.SelectedItem == treeView.Items.GetItemAt(0))
@@ -170,9 +165,7 @@ namespace Modelagem
             {
                 var filho = item.ItemContainerGenerator.ContainerFromItem(tarefa) as TreeViewItem;
                 if (filho != null)
-                {
                     filho.IsSelected = true;
-                }
             }
         }
 
@@ -233,6 +226,5 @@ namespace Modelagem
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

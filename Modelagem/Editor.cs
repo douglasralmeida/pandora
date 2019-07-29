@@ -124,9 +124,8 @@ namespace Modelagem
             item = new TreeViewItem();
             item.Header = "Todas as tarefas";
             foreach (Tarefa nome in _pacote.Tarefas)
-            {
                 item.Items.Add(nome);
-            }
+
             return item;
         }
 
@@ -177,9 +176,9 @@ namespace Modelagem
 
         private void Pacote_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Tarefas")
-                OnPropertyChanged(e.PropertyName);
-            if (e.PropertyName == "Processos")
+            string[] propriedades = {"Processos", "Tarefas"};
+
+            if (propriedades.Contains(e.PropertyName))
                 OnPropertyChanged(e.PropertyName);
             Modificado = true;
         }
@@ -189,6 +188,8 @@ namespace Modelagem
             _pacote = new Pacote(xml);
             _pacote.PropertyChanged += Pacote_PropertyChanged;
             _pacote.TarefaAdded += Pacote_TarefaAdded;
+            OnPropertyChanged("Processos");
+            OnPropertyChanged("Tarefas");
 
             return true;
         }

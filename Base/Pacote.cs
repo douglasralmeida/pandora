@@ -210,15 +210,11 @@ namespace Base
 
             processos = new XElement("processos");
             foreach(Processo processo in Processos)
-            {
                 processos.Add(processo.gerarXml());
-            }
 
             tarefas = new XElement("tarefas");
             foreach (Tarefa tarefa in Tarefas)
-            {
                 tarefas.Add(tarefa.gerarXml());
-            }
 
             conteudo = new XElement("conteudo");
             conteudo.Add(processos);
