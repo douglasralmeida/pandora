@@ -127,6 +127,7 @@ namespace Modelagem
                 central.carregar(_edicao.ObjetoAtivo);
                 if (checarCarteira())
                 {
+                    central.preparar();
                      // chama central.processar() em uma thread separada
                      t.Start();
                      Thread.Sleep(5000);

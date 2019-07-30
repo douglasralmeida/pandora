@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prototipo2", "Prototipo2\Prototipo2.csproj", "{AF6F7747-847B-4D6D-8684-6615D7FF1B3D}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Base", "Base\Base.shproj", "{A1E6330C-935A-4756-B231-82B4EB2C3E0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modelagem", "Modelagem\Modelagem.csproj", "{28FEDD2F-91DF-4C43-914C-FD754D12F668}"
@@ -30,10 +28,6 @@ Global
 		Dialogo\Dialogo.projitems*{89622e61-1654-4c9f-8e7e-1f2b74efc1d2}*SharedItemsImports = 4
 		Execucao\Execucao.projitems*{89622e61-1654-4c9f-8e7e-1f2b74efc1d2}*SharedItemsImports = 4
 		Base\Base.projitems*{a1e6330c-935a-4756-b231-82b4eb2c3e0f}*SharedItemsImports = 13
-		Base\Base.projitems*{af6f7747-847b-4d6d-8684-6615d7ff1b3d}*SharedItemsImports = 4
-		BibliotecaPadrao\BibliotecaPadrao.projitems*{af6f7747-847b-4d6d-8684-6615d7ff1b3d}*SharedItemsImports = 4
-		Dialogo\Dialogo.projitems*{af6f7747-847b-4d6d-8684-6615d7ff1b3d}*SharedItemsImports = 4
-		Execucao\Execucao.projitems*{af6f7747-847b-4d6d-8684-6615d7ff1b3d}*SharedItemsImports = 4
 		BibliotecaPadrao\BibliotecaPadrao.projitems*{b70fabfb-4f44-492f-b9f0-8d882d8c74b8}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,10 +36,6 @@ Global
 		Description = Projeto Pandora de Automação
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AF6F7747-847B-4D6D-8684-6615D7FF1B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF6F7747-847B-4D6D-8684-6615D7FF1B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF6F7747-847B-4D6D-8684-6615D7FF1B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF6F7747-847B-4D6D-8684-6615D7FF1B3D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28FEDD2F-91DF-4C43-914C-FD754D12F668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28FEDD2F-91DF-4C43-914C-FD754D12F668}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28FEDD2F-91DF-4C43-914C-FD754D12F668}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -56,26 +56,7 @@ namespace BibliotecaPadrao
         private Funcao _funcaoCopiar = (vars, args) =>
         {
             dynamic handle;
-            string texto = "^C";
-
-            handle = vars.obterVar("bloconotas.handle");
-            if (handle != null)
-            {
-                IntPtr p = handle;
-                SetForegroundWindow(p);
-                System.Windows.Forms.SendKeys.SendWait(texto);
-                return (true, null);
-            }
-
-            return (false, "Era esperado uma janela para enviar comandos.");
-        };
-
-        // arg1 = texto a digitar na tela
-        // usa a constante bloconotas.handle
-        private Funcao _funcaoDigitar = (vars, args) =>
-        {
-            string texto = args.FirstOrDefault().Valor;
-            dynamic handle;
+            string texto = "^A^C";
 
             handle = vars.obterVar("bloconotas.handle");
             if (handle != null)
@@ -127,6 +108,25 @@ namespace BibliotecaPadrao
             return (false, "Era esperado um programa para fechar.");
         };
 
+        // sem argumentos
+        // sem uso de variáveis
+        private Funcao _funcaoLimpar = (vars, args) =>
+        {
+            dynamic handle;
+            string texto = "^A{Del}";
+
+            handle = vars.obterVar("bloconotas.handle");
+            if (handle != null)
+            {
+                IntPtr p = handle;
+                SetForegroundWindow(p);
+                System.Windows.Forms.SendKeys.SendWait(texto);
+                return (true, null);
+            }
+
+            return (false, "Era esperado uma janela para enviar comandos.");
+        };
+
         public BlocoNotas() : base("BlocoNotas")
         {
 
@@ -136,8 +136,11 @@ namespace BibliotecaPadrao
         {
             base.adicionarComandos();
             Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 0));
+            Funcoes.Add("Colar", new FuncaoInfo(_funcaoColar, 0));
+            Funcoes.Add("Copiar", new FuncaoInfo(_funcaoCopiar, 0));
             Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
             Funcoes.Add("FecharPrograma", new FuncaoInfo(_funcaoEncerrarPrograma, 0));
+            Funcoes.Add("Limpar", new FuncaoInfo(_funcaoLimpar, 1));
         }
 
         public override void adicionarConstNecessarias()

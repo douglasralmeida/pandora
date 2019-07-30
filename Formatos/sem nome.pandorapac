@@ -2,7 +2,7 @@
 <pacote>
   <cabecalho>
     <versao>1</versao>
-    <geracao nome="Usuário sem nome" data="2019-07-26T21:18:49.3339221-03:00" />
+    <geracao nome="Usuário sem nome" data="2019-07-29T22:17:07.6552582-03:00" />
   </cabecalho>
   <conteudo>
     <processos>
@@ -15,6 +15,9 @@
           </atividade>
           <atividade fase="normal">
             <tarefa>Digitar no bloco de notas</tarefa>
+          </atividade>
+          <atividade fase="normal">
+            <tarefa>Limpar o bloco de notas</tarefa>
           </atividade>
         </atividades>
       </processo>
@@ -40,6 +43,22 @@
           </operacao>
           <operacao>
             <comando>Digitar "{ENTER}"</comando>
+          </operacao>
+          <operacao>
+            <comando>Copiar </comando>
+          </operacao>
+          <operacao>
+            <comando>Colar </comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+      <tarefa>
+        <nome>Limpar o bloco de notas</nome>
+        <descricao>Só limpeza</descricao>
+        <modulo>BlocoNotas</modulo>
+        <operacoes>
+          <operacao>
+            <comando>Limpar </comando>
           </operacao>
         </operacoes>
       </tarefa>

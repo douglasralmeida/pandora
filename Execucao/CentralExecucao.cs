@@ -375,6 +375,12 @@ namespace Execucao
             return builder.ToString();
         }
 
+        public void preparar()
+        {
+            //Desabilita o CAPSLOCK parar prevenir erros de digitação
+            Teclado.desabilitarCapsLock();
+        }
+
         public void prepararFluxos()
         {
             int quantidadeentradas;
