@@ -29,7 +29,12 @@ namespace Base
             IntPtr wParam,
             IntPtr lParam);
 
-        public static void clicar(IntPtr handle, int menuindex, int itemindex)
+        // simula um clique de menu
+        // retorna 0 se houve sucesso
+        // retorna 1 se o menu não foi encontrado
+        // retorna 2 se o submenu não foi encontrado
+        // retorna 3 se o item de menu não foi encontrado.
+        public static int clicar(IntPtr handle, int menuindex, int itemindex)
         {
             IntPtr item;
             IntPtr menu;
@@ -37,21 +42,16 @@ namespace Base
 
             menu = GetMenu(handle);
             if (menu == IntPtr.Zero)
-            {
-                MessageBox.Show("O menu do Plenus não foi encontrado.");
-            }
+                return 1;
             submenu = GetSubMenu(menu, (UInt32)menuindex);
             if (submenu == IntPtr.Zero)
-            {
-                MessageBox.Show("O submenu 'Editar' do Plenus não foi encontrado.");
-            }
+                return 2;
             item = GetMenuItemID(submenu, (UInt32)itemindex);
             if (item == IntPtr.Zero)
-            {
-                MessageBox.Show("O item de menu 'Colar' do Plenus não foi encontrado.");
-            }
-
+                return 3;
             PostMessage(handle, WM_COMMAND, item, IntPtr.Zero);
+
+            return 0;
         }
     }
 }

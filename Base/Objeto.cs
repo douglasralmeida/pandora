@@ -48,11 +48,7 @@ namespace Base
 
         public bool Equals(Objeto outro)
         {
-            string nome, outronome;
-
-            nome = Nome.ToUpper();
-            outronome = outro.Nome.ToUpper();
-            return null != outro && nome == outronome;
+            return null != outro && Nome.ToUpper() == outro.Nome.ToUpper();
         }
 
         public override bool Equals(object obj)

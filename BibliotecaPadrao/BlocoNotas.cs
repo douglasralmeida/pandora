@@ -1,9 +1,6 @@
 ﻿using Execucao;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace BibliotecaPadrao
 {
@@ -35,6 +32,44 @@ namespace BibliotecaPadrao
             }
         };
 
+        // sem argumentos
+        // sem uso de variáveis
+        private Funcao _funcaoColar = (vars, args) =>
+        {
+            dynamic handle;
+            string texto = "^V";
+
+            handle = vars.obterVar("bloconotas.handle");
+            if (handle != null)
+            {
+                IntPtr p = handle;
+                SetForegroundWindow(p);
+                System.Windows.Forms.SendKeys.SendWait(texto);
+                return (true, null);
+            }
+
+            return (false, "Era esperado uma janela para enviar comandos.");
+        };
+
+        // sem argumentos
+        // sem uso de variáveis
+        private Funcao _funcaoCopiar = (vars, args) =>
+        {
+            dynamic handle;
+            string texto = "^C";
+
+            handle = vars.obterVar("bloconotas.handle");
+            if (handle != null)
+            {
+                IntPtr p = handle;
+                SetForegroundWindow(p);
+                System.Windows.Forms.SendKeys.SendWait(texto);
+                return (true, null);
+            }
+
+            return (false, "Era esperado uma janela para enviar comandos.");
+        };
+
         // arg1 = texto a digitar na tela
         // usa a constante bloconotas.handle
         private Funcao _funcaoDigitar = (vars, args) =>
@@ -51,7 +86,26 @@ namespace BibliotecaPadrao
                 return (true, null);
             }
 
-            return (false, "Era esperado uma janela para enviar dados.");
+            return (false, "Era esperado uma janela para enviar comandos.");
+        };
+
+        // arg1 = texto a digitar na tela
+        // usa a constante bloconotas.handle
+        private Funcao _funcaoDigitar = (vars, args) =>
+        {
+            string texto = args.FirstOrDefault().Valor;
+            dynamic handle;
+
+            handle = vars.obterVar("bloconotas.handle");
+            if (handle != null)
+            {
+                IntPtr p = handle;
+                SetForegroundWindow(p);
+                System.Windows.Forms.SendKeys.SendWait(texto);
+                return (true, null);
+            }
+
+            return (false, "Era esperado uma janela para enviar comandos.");
         };
 
         // sem argumentos

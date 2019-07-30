@@ -91,8 +91,37 @@ namespace BibliotecaPadrao
             return (false, "Uma janela do Plenus era esperada, mas não foi encontrada.");
         };
 
+        // sem argumentos
+        // não usa variáveis
+        private Funcao _funcaoCopiarTela = (vars, args) =>
+        {
+            int resultado;
+            dynamic handle;
+
+            handle = vars.obterVar("plenus.handle");
+            if (handle != null)
+            {
+                //clicar em Editar->Sel. Tudo
+                resultado = Base.Menu.clicar(handle, 2, 3);
+                if (resultado != 0)
+                    return (false, "Erro.");
+
+                //clicar em Editar->Copiar
+                resultado = Base.Menu.clicar(handle, 2, 1);
+                if (resultado != 0)
+                    return (false, "Erro.");
+
+                //dorme 1 seg aguardando processamento
+                System.Threading.Thread.Sleep(1000);
+
+                return (true, null);
+            }
+
+            return (false, "Era esperado uma janela para enviar comandos.");
+        };
+
         // arg1 = texto a digitar na tela
-        // usa a constante bloconotas.handle
+        // usa a variável plenus.handle
         private Funcao _funcaoDigitar = (vars, args) =>
         {
             string texto;
@@ -104,7 +133,7 @@ namespace BibliotecaPadrao
             {
                 texto = iter.Current.Valor;
             }
-            handle = vars.obterVar("bloconotas.handle");
+            handle = vars.obterVar("plenus.handle");
             if (handle != null)
             {
                 IntPtr p = handle;
@@ -113,7 +142,7 @@ namespace BibliotecaPadrao
                 return (true, null);
             }
 
-            return (false, "Era esperado uma janela para enviar dados.");
+            return (false, "Era esperado uma janela para enviar comandos.");
         };
 
         public Plenus() : base("Plenus")
@@ -126,6 +155,7 @@ namespace BibliotecaPadrao
             base.adicionarComandos();
             Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 0));
             Funcoes.Add("Autenticar", new FuncaoInfo(_funcaoAutenticar, 3));
+            Funcoes.Add("CopiarTela", new FuncaoInfo(_funcaoDigitar, 0));
             Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
         }
 
