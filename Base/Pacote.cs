@@ -282,6 +282,12 @@ namespace Base
 
         void Processos_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
         {
+            if (e.PropPropertyName == "Nome")
+            {
+                var prop = sender.GetType().GetProperty(e.PropertyName);
+                Processo processo = prop == null ? null : prop.GetValue(sender, null) as Processo;
+            }
+
             OnPropertyChanged("Processos");
         }
 

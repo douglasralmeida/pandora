@@ -4,8 +4,15 @@ using System.Xml.Linq;
 
 namespace Base
 {
-    public class Objeto : INotifyPropertyChanged, IEquatable<Objeto>
+    public class Objeto : INotifyPropertyChanged, IEquatable<Objeto>, IEditableObject
     {
+        protected struct copiadados
+        {
+            internal string nome;
+        }
+
+        protected bool modoTransacao = false;
+        
         protected string _nome;
 
         protected string nomeElementoXml;
@@ -41,9 +48,36 @@ namespace Base
             
         }
 
+        private void BeginEdit()
+        {
+            if (!modoTransacao)
+            {
+                this.copiadados.nome = _nome;
+                modoTransacao = true;
+            }
+        }
+
+        private void CancelEdit()
+        {
+            if (modoTransacao)
+            {
+                _nome = this.copiadados.nome;
+                modoTransacao = false;
+            }
+        }
+
         public virtual void colarDe(Objeto objeto)
         {
             
+        }
+
+        private void EndEdit()
+        {
+            if (modoTransacao)
+            {
+                this.copiadados.nome = "";
+                modoTransacao = false;
+            }
         }
 
         public bool Equals(Objeto outro)
