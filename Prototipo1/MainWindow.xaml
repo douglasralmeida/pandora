@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Prototipo1"
         mc:Ignorable="d"
-        Title="Prototipo 1" Height="400" Width="516">
+        Title="Prototipo 1 - Processar telas do Plenus" Height="400" Width="516">
     <Grid Margin="0,0,2,-21" Height="375" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="95*"/>
+            <ColumnDefinition Width="411*"/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
         <Button Content="Salvar tela" HorizontalAlignment="Left" Height="34" Margin="10,327,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click_1"/>
-        <Button Content="Carregar tela salva" HorizontalAlignment="Left" Height="34" Margin="98,327,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_2" RenderTransformOrigin="-0.414,0.706"/>
-        <Button Content="Filtrar caracteres" HorizontalAlignment="Left" Height="34" Margin="231,327,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_3"/>
-        <TextBox x:Name="textoExibir" Height="312" Margin="10,10,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontFamily="Consolas"/>
+        <Button Content="Carregar tela salva" HorizontalAlignment="Left" Height="34" Margin="3,327,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_2" RenderTransformOrigin="-0.414,0.706" Grid.Column="1"/>
+        <Button Content="Filtrar caracteres" HorizontalAlignment="Left" Height="34" Margin="136,327,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_3" Grid.Column="1"/>
+        <TextBox x:Name="textoExibir" Height="312" Margin="10,10,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontFamily="Consolas" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>
