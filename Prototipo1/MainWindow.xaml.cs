@@ -1,4 +1,5 @@
 ﻿using Base;
+using BibliotecaPadrao;
 using System;
 using System.IO;
 using System.Text;
@@ -12,29 +13,20 @@ namespace Prototipo1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Plenus plenus;
-
         public MainWindow()
         {
             InitializeComponent();
-            plenus = new Plenus();
-            if (!plenus.encontrarJanela())
-            {
-                MessageBox.Show("Janela do Plenus não encontrada.");
-            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            plenus.inserirTexto(editClasse.Text);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             string texto;
 
-            plenus.obterTextoTela();
-            texto = plenus.textoObtido();
+            texto = Clipboard.GetText();
             File.WriteAllText("saida.txt", texto, new ASCIIEncoding());
         }
 
@@ -52,7 +44,6 @@ namespace Prototipo1
 
             texto = processar(textoExibir.Text);
             textoExibir.Text = texto;
-
         }
 
         private string processar(String texto)
