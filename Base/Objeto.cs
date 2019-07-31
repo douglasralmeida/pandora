@@ -4,16 +4,22 @@ using System.Xml.Linq;
 
 namespace Base
 {
+    public struct ObjetoBackup
+    {
+        internal string nome;
+    };
+
     public class Objeto : INotifyPropertyChanged, IEquatable<Objeto>, IEditableObject
     {
-        protected struct copiadados
-        {
-            internal string nome;
-        }
+        protected string _nome;
+
+        protected ObjetoBackup copiaDados;
+
+        protected bool erroExiste = false;
+
+        protected string erroDescricao = "";
 
         protected bool modoTransacao = false;
-        
-        protected string _nome;
 
         protected string nomeElementoXml;
 
@@ -27,8 +33,20 @@ namespace Base
             {
                 if (_nome != value)
                 {
-                    _nome = value;
-                    OnPropertyChanged("Nome");
+                    try
+                    {
+                        BeginEdit();
+                        _nome = value;
+                        OnPropertyChanged("Nome");
+                        EndEdit();
+                        erroExiste = false;
+                    }
+                    catch (Exception e)
+                    {
+                        CancelEdit();
+                        erroDescricao = e.Message;
+                        erroExiste = true;
+                    }
                 }
             }
         }
@@ -48,20 +66,20 @@ namespace Base
             
         }
 
-        private void BeginEdit()
+        public void BeginEdit()
         {
             if (!modoTransacao)
             {
-                this.copiadados.nome = _nome;
+                copiaDados.nome = _nome;
                 modoTransacao = true;
             }
         }
 
-        private void CancelEdit()
+        public void CancelEdit()
         {
             if (modoTransacao)
             {
-                _nome = this.copiadados.nome;
+                _nome = this.copiaDados.nome;
                 modoTransacao = false;
             }
         }
@@ -71,11 +89,11 @@ namespace Base
             
         }
 
-        private void EndEdit()
+        public void EndEdit()
         {
             if (modoTransacao)
             {
-                this.copiadados.nome = "";
+                this.copiaDados.nome = "";
                 modoTransacao = false;
             }
         }

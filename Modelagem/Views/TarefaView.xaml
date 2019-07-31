@@ -11,6 +11,7 @@
         <Style x:Key="ListViewStyle" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Left" />
         </Style>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </local:ObjetoView.Resources>
     <DockPanel x:Name="PainelTarefa">
         <DockPanel x:Name="PainelTarefaCabecalho" DockPanel.Dock="Top">
@@ -25,14 +26,19 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0">Nome:</Label>
+                    <Label Grid.Row="0" Grid.Column="0">Nome:</Label>
                     <TextBox Name="editNome" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Nome}"></TextBox>
-                    <Label Grid.Row="1">Descrição:</Label>
+                    <Label Grid.Row="1" Grid.Column="0">Descrição:</Label>
                     <TextBox Name="editDesc"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Descricao}"></TextBox>                    
-                    <Label Grid.Row="2">Sistema:</Label>
+                    <Label Grid.Row="2" Grid.Column="0">Sistema:</Label>
                     <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Source={x:Static BP:Biblioteca.ObterTudo}}" SelectedValue="{Binding Modulo}" />
+                    <WrapPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Visibility="{Binding ErroExiste, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Width="16" Height="16" Source="pack://application:,,,/Views/Resources/erro.png"></Image>
+                        <Label Content="{Binding ErroDescricao}"/>
+                    </WrapPanel>
                 </Grid>
             </WrapPanel>
         </DockPanel>

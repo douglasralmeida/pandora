@@ -38,6 +38,10 @@ namespace Base
             }
         }
 
+        public string ErroDescricao => erroDescricao;
+
+        public bool ErroExiste => erroExiste;
+
         public Modulo Modulo
         {
             get => _modulo;

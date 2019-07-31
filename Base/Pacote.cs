@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -48,6 +49,10 @@ namespace Base
         private const string TAREFA_DUPLICADA = "O pacote informado é inválido pois possui tarefas duplicadas.";
 
         private const string PROCESSO_DUPLICADO = "O pacote informado é inválido pois possui processos duplicados.";
+
+        private const string PROCESSO_NOMEJAEXISTE = "Não é possível alterar o nome deste processo para {0} pois já existe um processo com este nome.";
+
+        private const string TAREFA_NOMEJAEXISTE = "Não é possível alterar o nome desta tarefa para {0} pois já existe uma tarefa com este nome.";
 
         private const string XMLVER = "1";
 
@@ -135,6 +140,7 @@ namespace Base
                         continue;
                     if (Tarefas.Contains(novatarefa))
                         throw new PandoraException(TAREFA_DUPLICADA);
+                    novatarefa.PropertyChanged += Objeto_PropertyChanged;
                     Tarefas.Add(novatarefa);
                 }
             }
@@ -151,6 +157,7 @@ namespace Base
                         continue;
                     if (Processos.Contains(novoprocesso))
                         throw new PandoraException(PROCESSO_DUPLICADO);
+                    novoprocesso.PropertyChanged += Objeto_PropertyChanged;
                     Processos.Add(novoprocesso);
                 }
             }
@@ -240,6 +247,7 @@ namespace Base
                 novoprocesso.Nome = nomeinicial + i;
             }
             while (Processos.Contains(novoprocesso));
+            novoprocesso.PropertyChanged += Objeto_PropertyChanged;
             Processos.Add(novoprocesso);
             OnProcessoAdded(novoprocesso);
         }
@@ -257,6 +265,7 @@ namespace Base
                 novatarefa.Nome = nomeinicial + i;
             }
             while (Tarefas.Contains(novatarefa));
+            novatarefa.PropertyChanged += Objeto_PropertyChanged;
             Tarefas.Add(novatarefa);
             OnTarefaAdded(novatarefa);
         }
@@ -268,6 +277,28 @@ namespace Base
                     return true;
 
             return false;
+        }
+
+        private void Objeto_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            HashSet<Objeto> conjunto;
+
+            if (e.PropertyName == "Nome")
+            {
+                conjunto = new HashSet<Objeto>();
+                var prop = sender.GetType().GetProperty(e.PropertyName);
+                Objeto objeto = sender as Objeto;
+                if (objeto is Processo)
+                {
+                    if (Processos.Any(r => !conjunto.Add(r)))
+                        throw new PandoraException(string.Format(PROCESSO_NOMEJAEXISTE, objeto.Nome));
+                }
+                else if (objeto is Tarefa)
+                {
+                    if (Tarefas.Any(r => !conjunto.Add(r)))
+                        throw new PandoraException(string.Format(TAREFA_NOMEJAEXISTE, objeto.Nome));
+                }
+            }
         }
 
         protected void OnProcessoAdded(Processo processo)
@@ -282,12 +313,6 @@ namespace Base
 
         void Processos_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
         {
-            if (e.PropPropertyName == "Nome")
-            {
-                var prop = sender.GetType().GetProperty(e.PropertyName);
-                Processo processo = prop == null ? null : prop.GetValue(sender, null) as Processo;
-            }
-
             OnPropertyChanged("Processos");
         }
 
