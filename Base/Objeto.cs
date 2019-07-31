@@ -40,12 +40,14 @@ namespace Base
                         OnPropertyChanged("Nome");
                         EndEdit();
                         erroExiste = false;
+                        OnPropertyChanged("ErroExiste");
                     }
                     catch (Exception e)
                     {
                         CancelEdit();
                         erroDescricao = e.Message;
                         erroExiste = true;
+                        OnPropertyChanged("ErroExiste");
                     }
                 }
             }
