@@ -1,5 +1,6 @@
 ﻿using Execucao;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BibliotecaPadrao
@@ -74,9 +75,15 @@ namespace BibliotecaPadrao
         // usa a constante bloconotas.handle
         private Funcao _funcaoDigitar = (vars, args) =>
         {
-            string texto = args.FirstOrDefault().Valor;
+            IEnumerator<string> lista;
+            string texto;
             dynamic handle;
 
+            lista = args.GetEnumerator();
+            if (lista.MoveNext())
+                texto = lista.Current;
+            else
+                texto = "";
             handle = vars.obterVar("bloconotas.handle");
             if (handle != null)
             {

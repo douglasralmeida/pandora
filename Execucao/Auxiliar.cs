@@ -24,6 +24,9 @@ namespace Execucao
             startinfo.WorkingDirectory = workdir;
             proc = Process.Start(startinfo);
             Thread.Sleep(sleep);
+            proc.Refresh();
+            if (proc.HasExited)
+                return (IntPtr.Zero, 0);
             if (!Process.GetProcessesByName(proc.ProcessName).Any())
                 return (IntPtr.Zero, 0);
             handle = proc.MainWindowHandle;

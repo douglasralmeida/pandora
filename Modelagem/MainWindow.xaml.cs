@@ -112,6 +112,7 @@ namespace Modelagem
         {
             CentralExecucao central = new CentralExecucao();
             Thread t = new Thread(central.processar);
+            t.Name = "Pandora_Execucao";
 
             central.Erros = _editor.Erros;
             _depurador = new Depuracao(central);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -6,10 +7,74 @@ using System.Threading.Tasks;
 
 namespace Execucao
 {
-    /* bool -> funcao executou corretamente
+    public class Parametros : IEnumerable<string>
+    {
+        private ObservableCollection<Variavel> lista;
+
+        public int Cont { get => lista.Count; }
+
+        public int ObrigatoriosCont
+        {
+            get
+            {
+                int i = 0;
+                foreach (Variavel v in lista)
+                {
+                    if (!v.Opcional)
+                        i++;
+                }
+
+                return i;
+            }
+        }
+
+        public Parametros()
+        {
+            lista = new ObservableCollection<Variavel>();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach(Variavel v in lista)
+            {
+                sb.Append('"');
+                sb.Append(v.Valor);
+                sb.Append('"');
+                sb.Append(' ');
+            }
+            if (sb.Length > 2)
+                sb.Remove(sb.Length - 1, 1);
+
+            return sb.ToString();
+        }
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            List<string> valores = new List<string>();
+
+            foreach (Variavel v in lista)
+                valores.Add(v.Valor);
+
+            return valores.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        internal void Add(Variavel variavel)
+        {
+            lista.Add(variavel);
+        }
+    }
+
+    /* bool -> se funcao executou corretamente
      * string -> parametros da funcao
      */
-    public delegate (bool, string) Funcao(Variaveis variaveis, ObservableCollection<Variavel> parametros);
+    public delegate (bool, string) Funcao(Variaveis variaveis, Parametros parametros);
 
     public class Comando
     {
@@ -24,22 +89,9 @@ namespace Execucao
             get; set;
         }
 
-        public ObservableCollection<Variavel> Parametros { get; private set; }
+        public Parametros ListaParametros { get; }
 
-        public int ParamObrigatoriosCont
-        {
-            get
-            {
-                int i = 0;
-                foreach (Variavel v in Parametros)
-                {
-                    if (!v.Opcional)
-                        i++;
-                }
-
-                return i;
-            }
-        }
+        public int ParamObrigatorios => ListaParametros.ObrigatoriosCont;
 
         public string Retorno { get; private set; }
 
@@ -49,7 +101,7 @@ namespace Execucao
             Dados = null;
             _funcao = funcao;
             Espera = 0;
-            Parametros = new ObservableCollection<Variavel>();
+            ListaParametros = new Parametros();
             Retorno = null;
         }
 
@@ -65,7 +117,7 @@ namespace Execucao
 
             //constantes = variáveis globais e carteira
             //Parametros = argumentos da execução
-            (executou, Retorno) = _funcao(variaveis, Parametros);
+            (executou, Retorno) = _funcao(variaveis, ListaParametros);
             if (espera > 0)
                 await Task.Delay(espera * 1000);
 
@@ -74,7 +126,12 @@ namespace Execucao
 
         public override string ToString()
         {
-            return Nome + string.Join(", ", Parametros);
+            return Nome + " " + string.Join(", ", ListaParametros);
+        }
+
+        internal void AddParametro(Variavel variavel)
+        {
+            ListaParametros.Add(variavel);
         }
     }
 }

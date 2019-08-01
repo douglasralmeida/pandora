@@ -215,17 +215,10 @@ namespace Execucao
                 {
                     //substitui o parâmetro por uma variável ou um valor da entrada
                     parametroProcessado = parseParametro(op.ListaParametros[i], entrada);
-                    comando.Parametros.Add(new Variavel(parametroProcessado));
+                    comando.AddParametro(new Variavel(parametroProcessado));
                 }
 
-                Debug.Write("Parametros depois: ");
-                foreach (Variavel v in comando.Parametros)
-                {
-                    Debug.Write(v.ToString());
-                    Debug.Write("; ");
-                }
-                Debug.Write("\n");
-
+                Debug.Write("Parametros depois: " + comando.ListaParametros + "\n");
                 comandos.Add(comando);
             }
 

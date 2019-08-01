@@ -48,26 +48,32 @@ namespace BibliotecaPadrao
             }
         };
 
+        // sem argumentos
+        // usa variáveis: PLENUS_USUARIO, PLENUS_MAT, PLENUS_SENHA, plenus.handle
         private Funcao _funcaoAutenticar = (vars, args) =>
         {
             StringBuilder builder = new StringBuilder();
+            dynamic saida;
             string usuario;
             string matricula = "";
             string senha = "";
             dynamic handle;
 
-            if (args.Count < 3)
-                return (false, "A operação Auntenticar esperava 3 argumentos, mas eles não foram encontrados.");
-
-            using (var iter = args.GetEnumerator())
-            {
-                usuario = iter.Current.Valor;
-                if (iter.MoveNext())
-                    matricula = iter.Current.Valor;
-                if (iter.MoveNext())
-                    senha = iter.Current.Valor;
-            }
-
+            saida = vars.obterVar("PLENUS_USUARIO");
+            if (saida != null)
+                usuario = saida;
+            else
+                return (false, "A variável global 'PLENUS_USUARIO' era esperada, mas não foi encontrada.");
+            saida = vars.obterVar("PLENUS_MAT");
+            if (saida != null)
+                matricula = saida;
+            else
+                return (false, "A variável global 'PLENUS_MAT' era esperada, mas não foi encontrada.");
+            saida = vars.obterVar("PLENUS_SENHA");
+            if (saida != null)
+                senha = saida;
+            else
+                return (false, "A variável global 'PLENUS_SENHA' era esperada, mas não foi encontrada.");
             handle = vars.obterVar("plenus.handle");
             if (handle != null)
             {
@@ -118,22 +124,22 @@ namespace BibliotecaPadrao
                 return (true, null);
             }
 
-            return (false, "Era esperado uma janela para enviar comandos.");
+            return (false, "Uma janela do Plenus era esperada, mas não foi encontrada.");
         };
 
         // arg1 = texto a digitar na tela
         // usa a variável plenus.handle
         private Funcao _funcaoDigitar = (vars, args) =>
         {
+            IEnumerator<string> lista;
             string texto;
             dynamic handle;
 
-            if (args.Count < 1)
+            if (args.Cont < 1)
                 return (false, "A operação Digitar esperava 1 argumento, mas ele não foi encontrado.");
-            using (var iter = args.GetEnumerator())
-            {
-                texto = iter.Current.Valor;
-            }
+            lista = args.GetEnumerator();
+            lista.MoveNext();
+            texto = lista.Current;
             handle = vars.obterVar("plenus.handle");
             if (handle != null)
             {
@@ -143,7 +149,7 @@ namespace BibliotecaPadrao
                 return (true, null);
             }
 
-            return (false, "Era esperado uma janela para enviar comandos.");
+            return (false, "Uma janela do Plenus era esperada, mas não foi encontrada.");
         };
 
         public Plenus() : base("Plenus")
@@ -155,7 +161,7 @@ namespace BibliotecaPadrao
         {
             base.adicionarComandos();
             Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 0));
-            Funcoes.Add("Autenticar", new FuncaoInfo(_funcaoAutenticar, 3));
+            Funcoes.Add("Autenticar", new FuncaoInfo(_funcaoAutenticar, 0));
             Funcoes.Add("CopiarTela", new FuncaoInfo(_funcaoDigitar, 0));
             Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
         }

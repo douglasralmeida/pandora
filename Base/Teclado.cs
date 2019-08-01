@@ -8,11 +8,11 @@ namespace Base
 {
     public static class Teclado
     {
-        public static string TEC_ENTER = "TEC_ENTER";
+        public static string TEC_ENTER = "{ENTER}";
 
-        public static string TEC_TAB = "TEC_TAB";
+        public static string TEC_TAB = "{TAB}";
 
-        public static string TEC_RETURN = "TEC_RETURN";
+        public static string TEC_ESC = "{ESC}";
 
         [DllImport("user32.dll")]
         static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);

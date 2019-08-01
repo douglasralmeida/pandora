@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 
 namespace Execucao
@@ -64,7 +65,13 @@ namespace Execucao
 
         private bool executarProximaInstrucao()
         {
-            return _comandoatual.executarAsync(VariaveisFluxo, Atraso).Result;
+            bool resultado;
+
+            Debug.WriteLine("Executar " + _comandoatual.ToString());
+            resultado = _comandoatual.executarAsync(VariaveisFluxo, Atraso).Result;
+            Debug.WriteLine("Comando executado.");
+
+            return resultado;
         }
 
         public void processar()
