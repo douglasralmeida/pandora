@@ -128,7 +128,9 @@ namespace Modelagem
                 if (checarCarteira())
                 {
                     central.preparar();
-                     // chama central.processar() em uma thread separada
+                    // chama central.processar() em uma thread separada
+                    t.SetApartmentState(ApartmentState.STA);
+                    t.IsBackground = true;
                      t.Start();
                      Thread.Sleep(5000);
                 }

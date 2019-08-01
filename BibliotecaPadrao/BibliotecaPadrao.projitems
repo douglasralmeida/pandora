@@ -12,5 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Biblioteca.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BlocoNotas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plenus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Texto.cs" />
   </ItemGroup>
 </Project>

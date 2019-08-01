@@ -1,4 +1,8 @@
-
+using Execucao;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Base
 {
@@ -6,7 +10,11 @@ namespace Base
     {
         private const string CONDICAO_INVALIDA = "O pacote informado possui dados de condições inválidos.";
 
+        private string _descricao;
+
         private Modulo _modulo;
+
+        private string Descricao { get => _descricao; set => _descricao = value; }
 
         public Modulo Modulo
         {
@@ -22,14 +30,14 @@ namespace Base
             }
         }
 
-        public ObservableCollection<Partao> Portoes { get; private set; }
+        public ObservableCollection<Portao> Portoes { get; private set; }
 
         public Condicao(string nome)
         {
             prepararCondicao();
         }
 
-        public Tarefa(XElement xml)
+        public Condicao(XElement xml)
         {
             prepararCondicao();
             analisarXml(xml);
@@ -43,7 +51,7 @@ namespace Base
             XElement portoes;
             string[] elementosnecessarios = { "nome", "descricao", "modulo" };
 
-            XMLAuxiliar.checarFilhosXML(xml, elementosnecessarios, TAREFA_INVALIDA);
+            XMLAuxiliar.checarFilhosXML(xml, elementosnecessarios, CONDICAO_INVALIDA);
             _nome = xml.Element("nome").Value;
             _descricao = xml.Element("descricao").Value;
             nomemodulo = xml.Element("modulo").Value;
