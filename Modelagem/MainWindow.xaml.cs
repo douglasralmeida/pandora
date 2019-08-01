@@ -38,6 +38,7 @@ namespace Modelagem
         Dictionary<string, Variavel> _variaveis;
 
         private Carteira carteiraSelecionada;
+        private MenuItem carteiraMenu;
 
         public MainWindow()
         {
@@ -47,6 +48,7 @@ namespace Modelagem
             _editor.novo(_app.Configuracoes.UsuarioNome);
             _entradas = new Entradas();
             _variaveis = new Dictionary<string, Variavel>();
+            carteiraMenu = null;
             carteiraSelecionada = null;
             DataContext = _edicao;
             ControlePrincipal.Content = _edicao;
@@ -162,7 +164,6 @@ namespace Modelagem
             entradasVisao = new EntradasView(cabecalho, entradas);
             entradasVisao.Owner = Application.Current.MainWindow;
             entradasVisao.ShowDialog();
-
             if (entradasVisao.DialogResult ?? true)
             {
                 _entradas.Limpar();
@@ -205,7 +206,8 @@ namespace Modelagem
 
             if (carteirasVisao.DialogResult ?? true)
             {
-
+                if (carteiraMenu != null)
+                    Carteira_OnClick(carteiraMenu, new RoutedEventArgs());
             }
         }
 
@@ -224,6 +226,7 @@ namespace Modelagem
                 checarSenha = csproc
             };
             carteiraSelecionada = (menu.CommandParameter as Carteira);
+            carteiraMenu = menu;
             sd.ShowDialog();
             if (sd.DialogResult ?? true)
             {
@@ -233,6 +236,7 @@ namespace Modelagem
             {
                 carteiraSelecionada = null;
                 menu.IsChecked = false;
+                _variaveis.Clear();
                 CaixaDialogo.ErroSimples(this, SENHA_ERRADA);
             }
         }

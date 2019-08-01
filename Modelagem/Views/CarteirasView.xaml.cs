@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Modelagem
 {
@@ -94,7 +95,11 @@ namespace Modelagem
 
         private void VisaoCarteira_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-
+            if (e.PropertyName == "ResultadoDialogo")
+            {
+                DialogResult = visaoCarteira.ResultadoDialogo;
+                //Close();
+            }
         }
 
         private void irParaPaginaInicial()

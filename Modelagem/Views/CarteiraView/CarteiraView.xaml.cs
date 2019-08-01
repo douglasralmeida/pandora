@@ -49,25 +49,32 @@ namespace Modelagem
         const string ERRO_SENHAS_DIFERENTES = "As senhas informadas estão diferentes. Informe a mesma senha em ambos os campos de senha e tente novamente.";
         const string ERRO_RESP_JAEXISTE = "Já existe uma carteira onde seu responsável possui o mesmo nome que o nome informado. Escolha um nome diferente e tente novamente.";
 
-        public bool Exclusao { get; private set; }
-
         App _app = (Application.Current as App);
 
         Carteira carteira;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        bool? resultado = false;
 
-        public string NomeCarteira
+        public bool? ResultadoDialogo
         {
-            get => carteira.Nome;
+            get => resultado;
+
+            set
+            {
+                resultado = value;
+                OnPropertyChanged("ResultadoDialogo");
+            }
         }
+
+        public bool Exclusao { get; private set; }
 
         public List<CarteiraItem> ItensCarteira { get; }
 
-        public bool PodeExcluir
-        {
-            get => !carteira.Nova;
-        }
+        public string NomeCarteira => carteira.Nome;
+
+        public bool PodeExcluir => !carteira.Nova;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string Responsavel { get; set; }
 
@@ -165,7 +172,7 @@ namespace Modelagem
                 CaixaDialogo.ErroSimples(this, ERRO_NOMERESPONSAVEL_VAZIO);
                 return;
             }
-            if (_app.Carteiras.ProcurarPorResponsavel(Responsavel))
+            if (carteira.Nova && _app.Carteiras.ProcurarPorResponsavel(Responsavel))
             {
                 CaixaDialogo.ErroSimples(this, ERRO_RESP_JAEXISTE);
                 return;
@@ -176,19 +183,23 @@ namespace Modelagem
                 return;
             }
             salvarCarteira();
+            ResultadoDialogo = true;
         }
 
         private void salvarCarteira()
         {
+            bool ehnova;
             byte[] hash;
 
+            ehnova = carteira.Nova;
             SHA512 sha = new SHA512Managed();
             hash  = sha.ComputeHash(Encoding.ASCII.GetBytes(CaixaSenha1.Password));
             foreach (CarteiraItem item in ItensCarteira)
                 carteira.alterarItem(item.Nome, hash, item.Valor);
             carteira.alterarItem("PALAVRA_MAGICA", hash, "!abracadabra1");
             carteira.Salvar(Responsavel);
-            _app.Carteiras.AdicionarCarteira(carteira);
+            if (ehnova)
+                _app.Carteiras.AdicionarCarteira(carteira);
         }
     }
 }
