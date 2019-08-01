@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Base;
+using Modelagem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Execucao
 {
@@ -97,10 +100,13 @@ namespace Execucao
 
         public Comando(string nome, Funcao funcao)
         {
+            App app = (Application.Current as App);
+            Config config = app.Configuracoes;
+
             Nome = nome;
             Dados = null;
             _funcao = funcao;
-            Espera = 0;
+            Espera = config.Intervalo;
             ListaParametros = new Parametros();
             Retorno = null;
         }
@@ -119,7 +125,7 @@ namespace Execucao
             //Parametros = argumentos da execução
             (executou, Retorno) = _funcao(variaveis, ListaParametros);
             if (espera > 0)
-                await Task.Delay(espera * 1000);
+                await Task.Delay(espera);
 
             return executou;
         }

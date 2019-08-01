@@ -15,12 +15,10 @@ namespace Base
 
         private string _dirtrabalho;
 
+        /* Local onde serão gravadas os arquivos de saída */
         public string DirTrabalho
         {
-            get
-            {
-                return _dirtrabalho;
-            }
+            get => _dirtrabalho;
 
             set
             {
@@ -29,41 +27,16 @@ namespace Base
             }
         }
 
-        public string UsuarioNome
-        {
-            get
-            {
-                return _usuarioNome;
-            }
-        }
+        /* Tempo em ms de intervalo entre operações */
+        public int Intervalo { get; set; }
 
-        public Dictionary<string, Variavel> Entradas
-        {
-            get
-            {
-                return _entradas;
-            }
-        }
+        public string UsuarioNome => _usuarioNome;
 
         public Config()
         {
             _dirtrabalho = "%USERPROFILE%\\Desktop\\Pandora";
-            _entradas = new Dictionary<string, Variavel>();
+            Intervalo = 600;
             _usuarioNome = "Usuário sem nome";
-        }
-
-        public void setEntradasFromString(string entradas)
-        {
-            string linha;
-            string[] par = { };
-            
-            _entradas.Clear();
-            using (StringReader sr = new StringReader(entradas))
-            {
-                while ((linha = sr.ReadLine()) != null)
-                    par = linha.Split('=');
-                    _entradas.Add(par[0], new Variavel(par[1]));
-            }
         }
     }
 }

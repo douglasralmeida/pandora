@@ -87,7 +87,7 @@ namespace BibliotecaPadrao
                 builder.Clear();
 
                 builder.Append(matricula);
-                builder.Append(Teclado.TEC_TAB);
+                builder.Append(Teclado.TEC_TAB);    
                 builder.Append(senha);
                 builder.Append(Teclado.TEC_ENTER);
                 System.Windows.Forms.SendKeys.SendWait(builder.ToString());
