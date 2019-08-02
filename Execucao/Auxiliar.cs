@@ -40,8 +40,11 @@ namespace Execucao
             Process proc;
 
             proc = Process.GetProcessById(pid);
-            proc.CloseMainWindow();
-            proc.Close();
+            if (proc.Id > 0)
+            {
+                proc.CloseMainWindow();
+                proc.Close();
+            }
         }
 
         public static string obterDirSistema()

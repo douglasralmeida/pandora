@@ -199,7 +199,7 @@ namespace Execucao
             Funcao funcao;
             string parametroProcessado;
 
-            Debug.WriteLine("Tarefa: " + tarefa);
+            Debug.WriteLine("Preparar Tarefa: " + tarefa);
 
             foreach (Operacao op in tarefa.Operacoes)
             {
@@ -208,7 +208,7 @@ namespace Execucao
                 comando = new Comando(op.Nome, funcao);
                 comando.Dados = _instancia.variaveis;
 
-                Debug.WriteLine("Parametros antes: " + op.Parametros);
+                Debug.WriteLine(" Parametros antes: " + op.Parametros);
 
                 // listaParametros[0] é o nome do comando
                 for (i = 1; i < op.ListaParametros.Length; i++)
@@ -218,7 +218,7 @@ namespace Execucao
                     comando.AddParametro(new Variavel(parametroProcessado));
                 }
 
-                Debug.Write("Parametros depois: " + comando.ListaParametros + "\n");
+                Debug.Write(" Parametros depois: " + comando.ListaParametros + "\n");
                 comandos.Add(comando);
             }
 
@@ -403,11 +403,15 @@ namespace Execucao
         public void processar()
         {
             // primeiro, executa os comandos da fase pré-execução
+            Debug.WriteLine("Fase Pré-execução");
+            Debug.WriteLine("=================");
             _instancia.preexecucao.processar();
             TotalExitos++;
 
             // segundo, executa os comandos da fase principal
             // um processamento para cada entrada disponível
+            Debug.WriteLine("Fase Execução");
+            Debug.WriteLine("=================");
             foreach (Fluxo f in _instancia.execucao)
             {
                 f.VariaveisFluxo = _instancia.preexecucao.VariaveisFluxo.gerarCopia();
@@ -416,6 +420,8 @@ namespace Execucao
             }
 
             // terceiro, executa os comandos da fase pos-execução
+            Debug.WriteLine("Fase Pós-execução");
+            Debug.WriteLine("=================");
             _instancia.posexecucao.processar();
             TotalExitos++;
         }
