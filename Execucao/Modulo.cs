@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -58,6 +59,30 @@ namespace Execucao
 
         public Dictionary<string, ConstanteInfo> ConstantesNecessarias { get; private set; }
 
+        // sem argumentos
+        // usa uma variável: Global.DirTrabalho
+        private Funcao _funcaoExibirDirTrabalho = (vars, args) =>
+        {
+            dynamic dados;
+
+            dados = vars.obterVar("global.dirtrabalho");
+            if (dados != null)
+            {
+                ProcessStartInfo si = new ProcessStartInfo(dados);
+                si.UseShellExecute = true;
+                try
+                {
+                    Process.Start(si);
+                }
+                catch (Win32Exception we)
+                {
+                    return (false, "Falha na execução da operação ExibirDiretorioTrabalho: " + we.Message);
+                }
+            }
+
+            return (true, null);
+        };
+
         public Modulo(string nome)
         {
             ConstantesNecessarias = new Dictionary<string, ConstanteInfo>();
@@ -69,7 +94,7 @@ namespace Execucao
 
         public virtual void adicionarComandos()
         {
-            
+            Funcoes.Add("ExibirDiretorioTrabalho", new FuncaoInfo(_funcaoExibirDirTrabalho, 0));
         }
 
         public virtual void adicionarConstNecessarias()

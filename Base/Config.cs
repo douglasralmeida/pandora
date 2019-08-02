@@ -34,7 +34,7 @@ namespace Base
 
         public Config()
         {
-            _dirtrabalho = "%USERPROFILE%\\Desktop\\Pandora";
+            _dirtrabalho = Environment.GetEnvironmentVariable("USERPROFILE") + "\\Desktop\\Pandora\\";
             Intervalo = 600;
             _usuarioNome = "Usuário sem nome";
         }

@@ -2,8 +2,10 @@
 using Execucao;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading;
+using System.Windows;
 
 namespace BibliotecaPadrao
 {
@@ -152,6 +154,91 @@ namespace BibliotecaPadrao
             return (false, "Uma janela do Plenus era esperada, mas não foi encontrada.");
         };
 
+        // sem argumentos
+        // usa a constante plenus.pid
+        private Funcao _funcaoEncerrarPrograma = (vars, args) =>
+        {
+            dynamic pid;
+
+            pid = vars.obterVar("plenus.pid");
+            if (pid != null)
+            {
+                int id = pid;
+                if (id == 0)
+                    return (false, "Era esperado um PID válido do Plenus para fechar.");
+                Auxiliar.encerrarPrograma(id);
+                return (true, null);
+            }
+
+            return (false, "Era esperado o programa Plenus para fechar.");
+        };
+
+        // dois argumentos: tipoextensao, nomearquivo
+        // usa variáveis: global.dirtrabalho
+        private Funcao _funcaoSalvarTela = (vars, args) =>
+        {
+            IEnumerator<string> lista;
+            bool extok = false;
+            string[] extaceitaveis = { "pdf", "txt" };
+            int resultado;
+            dynamic handle;
+            string dirtrabalho;
+            string nomearquivo;
+            string ext;
+            string texto;
+
+            if (args.Cont < 2)
+                return (false, "A operação SalvarTela esperava 2 argumentos, mas eles não foram encontrados.");
+            lista = args.GetEnumerator();
+            lista.MoveNext();
+            ext = lista.Current;
+            foreach(string s in extaceitaveis)
+                extok |= (s == ext);
+            if (!extok)
+                return (false, "O primeiro parâmetro da operação SalvarTela está incorreto. Era esperado: pdf ou txt.");
+            lista.MoveNext();
+            nomearquivo = lista.Current;
+            dirtrabalho = vars.obterVar("global.dirtrabalho");
+            if (dirtrabalho == null)
+                return (false, "O diretório de trabalho do Pandora não foi configurado.");
+            handle = vars.obterVar("plenus.handle");
+            if (handle != null)
+            {
+                //clicar em Editar->Sel. Tudo
+                resultado = Base.Menu.clicar(handle, 2, 3);
+                if (resultado != 0)
+                    return (false, "Erro.");
+
+                //clicar em Editar->Copiar
+                resultado = Base.Menu.clicar(handle, 2, 1);
+                if (resultado != 0)
+                    return (false, "Erro.");
+
+                //dorme 1 seg aguardando processamento
+                System.Threading.Thread.Sleep(1000);
+
+                //obtém o texto da área de transferência
+                texto = Clipboard.GetText();
+
+                //salva em um arquivo PDF
+                try
+                {
+                    if (ext == "pdf")
+                        PDF.gerarDeTexto(texto, dirtrabalho + nomearquivo);
+                    else
+                        TXT.gerarDeTexto(texto, dirtrabalho + nomearquivo);
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    return (false, "O diretório de trabalho especificado está inacessível ou não existe.");
+                }
+
+                return (true, null);
+            }
+
+            return (false, "Uma janela do Plenus era esperada, mas não foi encontrada.");
+        };
+
         public Plenus() : base("Plenus")
         {
             
@@ -164,6 +251,8 @@ namespace BibliotecaPadrao
             Funcoes.Add("Autenticar", new FuncaoInfo(_funcaoAutenticar, 0));
             Funcoes.Add("CopiarTela", new FuncaoInfo(_funcaoDigitar, 0));
             Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
+            Funcoes.Add("EncerrarPrograma", new FuncaoInfo(_funcaoDigitar, 0));
+            Funcoes.Add("SalvarTela", new FuncaoInfo(_funcaoSalvarTela, 2));
         }
 
         public override void adicionarConstNecessarias()

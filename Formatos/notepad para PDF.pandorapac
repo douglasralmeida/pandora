@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pacote>
+  <cabecalho>
+    <versao>1</versao>
+    <geracao nome="Usuário sem nome" data="2019-08-01T22:42:10.5871163-03:00" />
+  </cabecalho>
+  <conteudo>
+    <processos>
+      <processo>
+        <nome>NovoProcesso1</nome>
+        <descricao />
+        <atividades>
+          <atividade fase="normal">
+            <tarefa>Digitar no Bloco de Notas</tarefa>
+          </atividade>
+          <atividade fase="normal">
+            <tarefa>Salvar em PDF</tarefa>
+          </atividade>
+        </atividades>
+      </processo>
+    </processos>
+    <tarefas>
+      <tarefa>
+        <nome>Digitar no Bloco de Notas</nome>
+        <descricao></descricao>
+        <modulo>BlocoNotas</modulo>
+        <operacoes>
+          <operacao>
+            <comando>AbrirPrograma </comando>
+          </operacao>
+          <operacao>
+            <comando>Digitar "CRUZEIRO"</comando>
+          </operacao>
+          <operacao>
+            <comando>Copiar </comando>
+          </operacao>
+          <operacao>
+            <comando>FecharPrograma </comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+      <tarefa>
+        <nome>Salvar em PDF</nome>
+        <descricao></descricao>
+        <modulo>Texto</modulo>
+        <operacoes>
+          <operacao>
+            <comando>Colar </comando>
+          </operacao>
+          <operacao>
+            <comando>Salvar "pdf" "arquivo.pdf"</comando>
+          </operacao>
+        </operacoes>
+      </tarefa>
+    </tarefas>
+  </conteudo>
+</pacote>

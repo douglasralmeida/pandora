@@ -59,6 +59,12 @@ namespace Modelagem
             Variavel variavel;
             VarGlobais varGlobais = (Application.Current as App).VarGlobais;
 
+            //configurações
+            variavel = new Variavel(_app.Configuracoes.DirTrabalho);
+            variavel.Opcional = false;
+            variavel.Protegida = false;
+            central.adicionarVariaveis("global.dirtrabalho", variavel);
+
             //variáveis globais
             foreach (Dado dado in varGlobais.Lista)
             {
@@ -190,7 +196,6 @@ namespace Modelagem
             varGlobais.Owner = Application.Current.MainWindow;
             varGlobais.abrirVar();
             varGlobais.ShowDialog();
-
             if (varGlobais.DialogResult ?? true)
             {
 
@@ -276,7 +281,6 @@ namespace Modelagem
             KeyValuePair<string, ConstanteInfo>[] ctes = BibliotecaPadrao.Biblioteca.obterCtesChaves();
 
             _variaveis.Clear();
-
             valor = carteiraSelecionada.obterItem("PALAVRA_MAGICA", hash);
             if (valor != "!abracadabra1")
                 return false;
@@ -285,13 +289,9 @@ namespace Modelagem
                 if (!c.Value.individual)
                     continue;
                 if (carteiraSelecionada.Dados.ContainsKey(c.Key))
-                {
                     valor = carteiraSelecionada.obterItem(c.Key, hash);
-                }
                 else
-                {
                     valor = "";
-                }
                 Variavel var = new Variavel(valor);
                 var.Opcional = false;
                 var.Protegida = c.Value.oculta;
