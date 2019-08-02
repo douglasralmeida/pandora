@@ -13,7 +13,6 @@ namespace BibliotecaPadrao
         // gera uma variável: Texto.Variavel
         private Funcao _funcaoColar = (vars, args) =>
         {
-            dynamic handle;
             string dados = "";
 
             dados = Clipboard.GetText();

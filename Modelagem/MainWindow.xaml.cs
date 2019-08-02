@@ -134,8 +134,8 @@ namespace Modelagem
                     // chama central.processar() em uma thread separada
                     t.SetApartmentState(ApartmentState.STA);
                     t.IsBackground = true;
-                     t.Start();
-                     Thread.Sleep(5000);
+                    t.Start();
+                    Thread.Sleep(1000);
                 }
                 else
                 {

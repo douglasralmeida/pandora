@@ -138,7 +138,7 @@ namespace Execucao
             prepararFluxos();
 
             // inclui as atividades do processo no fluxo de execução
-            incluirNosFluxos(processo);
+            incluirProcesso(processo);
 
             ObjetoCarregado = objeto;
             OnObjetoCarregarDepois(objeto);
@@ -240,41 +240,52 @@ namespace Execucao
             _instancia.posexecucao.VariaveisFluxo = _instancia.variaveis;
         }
 
-        private void incluirNosFluxos(Processo processo)
+        private void incluirTarefa(Tarefa tarefa, AtividadeFase fase)
         {
-            int i;
-            Tarefa tarefa;
-            
+            int i = 0;
+
+            switch (fase)
+            {
+                case AtividadeFase.FasePre:
+                    foreach (Comando c in comandosDeTarefa(tarefa, i))
+                        _instancia.preexecucao.adicionarComando(c);
+                    break;
+
+                case AtividadeFase.FasePos:
+                    foreach (Comando c in comandosDeTarefa(tarefa, i))
+                        _instancia.posexecucao.adicionarComando(c);
+                    break;
+
+                default:
+                    foreach (Fluxo f in _instancia.execucao)
+                    {
+                        foreach (Comando c in comandosDeTarefa(tarefa, i))
+                            f.adicionarComando(c);
+                        i++;
+                    }
+                    break;
+            }
+        }
+
+        private void incluirProcessoRecursivo(Processo processo, AtividadeFase fase)
+        {
             foreach (Atividade a in processo.Atividades)
             {
                 if (a.ObjetoRelacionado is Processo)
-                    incluirNosFluxos((Processo)a.ObjetoRelacionado);
+                    incluirProcessoRecursivo((Processo)a.ObjetoRelacionado, fase);
                 else
-                {
-                    tarefa = (Tarefa)a.ObjetoRelacionado;
-                    i = 0;
-                    switch (a.Fase)
-                    {
-                        case AtividadeFase.FasePre:
-                            foreach (Comando c in comandosDeTarefa(tarefa, i))
-                                _instancia.preexecucao.adicionarComando(c);
-                            break;
+                    incluirTarefa((Tarefa)a.ObjetoRelacionado, fase);
+            }
+        }
 
-                        case AtividadeFase.FasePos:
-                            foreach (Comando c in comandosDeTarefa(tarefa, i))
-                                _instancia.posexecucao.adicionarComando(c);
-                            break;
-
-                        default:
-                            foreach (Fluxo f in _instancia.execucao)
-                            {
-                                foreach (Comando c in comandosDeTarefa(tarefa, i))
-                                    f.adicionarComando(c);
-                                i++;
-                            }
-                            break;
-                    }
-                }
+        private void incluirProcesso(Processo processo)
+        {
+            foreach (Atividade a in processo.Atividades)
+            {
+                if (a.ObjetoRelacionado is Processo)
+                    incluirProcessoRecursivo((Processo)a.ObjetoRelacionado, a.Fase);
+                else
+                    incluirTarefa((Tarefa)a.ObjetoRelacionado, a.Fase);
             }
         }
 
