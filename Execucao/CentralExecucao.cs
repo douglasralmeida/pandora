@@ -123,6 +123,13 @@ namespace Execucao
                 processo = (Processo)objeto;
             }
 
+            //verifica a existencia de referências circulares (ciclos)
+            if (checarCiclos(processo))
+            {
+                Erros.Adicionar("SX0001", new string[0]);
+                return false;
+            }
+
             // verifica quais módulos são utilizados pelas tarefas e subprocessos
             checarModulos(processo);
 
@@ -144,6 +151,11 @@ namespace Execucao
             OnObjetoCarregarDepois(objeto);
 
             return true;
+        }
+
+        private bool checarCiclos(Processo processo)
+        {
+            return processo.possuiCiclo();
         }
 
         private void checarCtesNecessarias()

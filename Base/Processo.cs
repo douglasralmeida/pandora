@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -8,6 +9,13 @@ using System.Xml.Linq;
 
 namespace Base
 {
+    public enum ProcessoMarca
+    {
+        MarcaBranca,
+        MarcaCinza,
+        MarcaPreta
+    }
+
     public class Processo : Objeto
     {
         private const string PROCESSO_INVALIDO = "O pacote informado possui dados de processos inválidos.";
@@ -37,6 +45,8 @@ namespace Base
                 }
             }
         }
+
+        public ProcessoMarca Marca { get; set; }
 
         public Processo(string nome, ObservableCollection<Tarefa> tarefas, ObservableCollection<Processo> processos)
         {
@@ -101,6 +111,39 @@ namespace Base
         private void Atividades_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
         {
             OnPropertyChanged("Atividades");
+        }
+
+        //Faz uma busca em profundidade no processo e seus subprocessos
+        public bool buscaProfundidade()
+        {
+            Processo p;
+
+            foreach(Atividade a in Atividades)
+            {
+                if (a.ObjetoRelacionado is Processo)
+                {
+                    p = (Processo)a.ObjetoRelacionado;
+                    if (p.Marca == ProcessoMarca.MarcaPreta)
+                        continue;
+                    if (p.Marca == ProcessoMarca.MarcaCinza)
+                        return true;
+                    p.Marca = ProcessoMarca.MarcaCinza;
+                    if (p.buscaProfundidade())
+                        return true;
+                }
+            }
+            Marca = ProcessoMarca.MarcaPreta;   
+
+            return false;
+        }
+
+        public bool possuiCiclo()
+        {
+            foreach (Processo p in _processos)
+                p.Marca = ProcessoMarca.MarcaBranca;
+            Marca = ProcessoMarca.MarcaCinza;
+
+            return buscaProfundidade();
         }
 
         //verifica se uma tarefa ou um processo é um subprocesso
@@ -240,6 +283,7 @@ namespace Base
             xmlAtividades = new Dictionary<string, List<XElement>>();
             Atividades = new ObservableCollection<Atividade>();
             Atividades.CollectionChanged += Atividades_CollectionChanged;
+            Marca = ProcessoMarca.MarcaBranca;
             Visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase", new AtividadeFaseConverter()));
         }
     }

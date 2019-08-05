@@ -2,13 +2,13 @@
 <pacote>
   <cabecalho>
     <versao>1</versao>
-    <geracao nome="Usuário sem nome" data="2019-07-27T00:11:50.2908048-03:00" />
+    <geracao nome="Usuário sem nome" data="2019-08-02T21:16:33.2277448-03:00" />
   </cabecalho>
   <conteudo>
     <processos>
       <processo>
         <nome>INFBEN</nome>
-        <descricao />
+        <descricao></descricao>
         <atividades>
           <atividade fase="pre">
             <tarefa>Abrir o SUB</tarefa>
@@ -32,10 +32,7 @@
             <comando>Autenticar </comando>
           </operacao>
           <operacao>
-            <comando>Digitar "BEN SIS"</comando>
-          </operacao>
-          <operacao>
-            <comando>Digitar "{ENTER}"</comando>
+            <comando>Digitar "BEN SIS{ENTER}"</comando>
           </operacao>
         </operacoes>
       </tarefa>

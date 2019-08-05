@@ -311,6 +311,25 @@ namespace Base
             TarefaAdded?.Invoke(this, tarefa);
         }
 
+        // Usa busca em profundidade para encontrar
+        // referências circulares em no pacote
+        public bool possuiCiclo()
+        {
+            foreach (Processo p in Processos)
+                p.Marca = ProcessoMarca.MarcaBranca;
+
+            foreach (Processo p in Processos)
+            {
+                if (p.Marca == ProcessoMarca.MarcaPreta)
+                    continue;
+                p.Marca = ProcessoMarca.MarcaCinza;
+                if (p.buscaProfundidade())
+                    return true;
+            }
+
+            return false;
+        }
+
         void Processos_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)
         {
             OnPropertyChanged("Processos");

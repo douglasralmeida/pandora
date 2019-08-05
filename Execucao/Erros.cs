@@ -47,7 +47,7 @@ namespace Execucao
             new Erro("CT0002", "O item da carteira '{0}' é de preenchimento obrigatório, mas não foi informado.", ErroTipo.Erro, new string[0]),
             new Erro("ET0001", "Era esperado um valor de entrada chamado '{0}', mas não foi informado.", ErroTipo.Aviso, new string[0]),
             new Erro("VG0001", "A variável global '{0}' é obrigatória, mas não foi informada.", ErroTipo.Erro, new string[0]),
-            new Erro("SX0001", "Existe um ciclo de subprocessos na modelagem.", ErroTipo.Erro, new string[0])
+            new Erro("SX0001", "Foi encontrado um ciclo nos subprocessos na modelagem.", ErroTipo.Erro, new string[0])
         };
 
         public static Erro obter(string codigo, string[] valores)
