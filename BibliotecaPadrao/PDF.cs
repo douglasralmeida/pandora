@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BibliotecaPadrao
 {
-    public static class PDF
+    public class PDF
     {
         public static void gerarDeTexto(string texto, string nomearquivo)
         {
@@ -21,5 +21,7 @@ namespace BibliotecaPadrao
             document.Add(new Paragraph(texto));
             document.Close();
         }
+
+
     }
 }

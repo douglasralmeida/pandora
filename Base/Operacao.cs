@@ -128,7 +128,7 @@ namespace Base
                     lista.Add(p.Item3);
             }
 
-            return lista.ToArray();
+            return lista.Distinct().ToArray();
         }
 
         public override string ToString()

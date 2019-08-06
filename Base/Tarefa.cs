@@ -166,7 +166,7 @@ namespace Base
                     lista.AddRange(o.obterEntradas());
             }
 
-            return lista.ToArray();
+            return lista.Distinct().ToArray();
         }
 
         void Operacoes_CollectionChanged(object Sender, NotifyCollectionChangedEventArgs Args)

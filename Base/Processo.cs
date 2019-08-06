@@ -113,39 +113,6 @@ namespace Base
             OnPropertyChanged("Atividades");
         }
 
-        //Faz uma busca em profundidade no processo e seus subprocessos
-        public bool buscaProfundidade()
-        {
-            Processo p;
-
-            foreach(Atividade a in Atividades)
-            {
-                if (a.ObjetoRelacionado is Processo)
-                {
-                    p = (Processo)a.ObjetoRelacionado;
-                    if (p.Marca == ProcessoMarca.MarcaPreta)
-                        continue;
-                    if (p.Marca == ProcessoMarca.MarcaCinza)
-                        return true;
-                    p.Marca = ProcessoMarca.MarcaCinza;
-                    if (p.buscaProfundidade())
-                        return true;
-                }
-            }
-            Marca = ProcessoMarca.MarcaPreta;   
-
-            return false;
-        }
-
-        public bool possuiCiclo()
-        {
-            foreach (Processo p in _processos)
-                p.Marca = ProcessoMarca.MarcaBranca;
-            Marca = ProcessoMarca.MarcaCinza;
-
-            return buscaProfundidade();
-        }
-
         //verifica se uma tarefa ou um processo é um subprocesso
         //do processo atual
         public bool contemAtividade(Objeto objeto)
@@ -272,7 +239,18 @@ namespace Base
                     lista.AddRange(a.ObjetoRelacionado.obterEntradas());
             }
 
-            return lista.ToArray();
+            return lista.Distinct().ToArray();
+        }
+
+        public bool possuiCiclo()
+        {
+            if (_processos == null)
+                return false;
+            foreach (Processo p in _processos)
+                p.Marca = ProcessoMarca.MarcaBranca;
+            Marca = ProcessoMarca.MarcaCinza;
+
+            return buscaProfundidade();
         }
 
         private void prepararProcesso(ObservableCollection<Tarefa> tarefas, ObservableCollection<Processo> processos)
@@ -285,6 +263,30 @@ namespace Base
             Atividades.CollectionChanged += Atividades_CollectionChanged;
             Marca = ProcessoMarca.MarcaBranca;
             Visao.GroupDescriptions.Add(new PropertyGroupDescription("Fase", new AtividadeFaseConverter()));
+        }
+
+        //Faz uma busca em profundidade no processo e seus subprocessos
+        public bool buscaProfundidade()
+        {
+            Processo p;
+
+            foreach (Atividade a in Atividades)
+            {
+                if (a.ObjetoRelacionado is Processo)
+                {
+                    p = (Processo)a.ObjetoRelacionado;
+                    if (p.Marca == ProcessoMarca.MarcaPreta)
+                        continue;
+                    if (p.Marca == ProcessoMarca.MarcaCinza)
+                        return true;
+                    p.Marca = ProcessoMarca.MarcaCinza;
+                    if (p.buscaProfundidade())
+                        return true;
+                }
+            }
+            Marca = ProcessoMarca.MarcaPreta;
+
+            return false;
         }
     }
 }
