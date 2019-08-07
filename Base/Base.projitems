@@ -20,7 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Portao.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tarefa.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Conversor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operacao.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Teclado.cs" />

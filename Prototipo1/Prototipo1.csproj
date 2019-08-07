@@ -88,6 +88,9 @@
     <Reference Include="itext.svg, Version=7.1.7.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\itext7.7.1.7\lib\net40\itext.svg.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -170,5 +173,6 @@
   <Import Project="..\Execucao\Execucao.projitems" Label="Shared" />
   <Import Project="..\Dialogo\Dialogo.projitems" Label="Shared" />
   <Import Project="..\BibliotecaPadrao\BibliotecaPadrao.projitems" Label="Shared" />
+  <Import Project="..\Conversores\Conversores.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

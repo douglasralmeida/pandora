@@ -1,4 +1,5 @@
 ﻿using Base;
+using Conversores;
 using Execucao;
 using System;
 using System.Collections.Generic;
@@ -104,9 +105,19 @@ namespace BibliotecaPadrao
         // não usa variáveis
         private Funcao _funcaoCopiarTela = (vars, args, opcoes) =>
         {
+            IConversor conversor;
             int resultado;
             dynamic handle;
+            string dados;
 
+            try
+            {
+                conversor = new PlenusConversor();
+            }
+            catch
+            {
+                return (false, "Não foi possível carregar os filtros de conversão do Plenus.");
+            }
             handle = vars.obterVar("plenus.handle");
             if (handle != null)
             {
@@ -121,7 +132,12 @@ namespace BibliotecaPadrao
                     return (false, "Erro.");
 
                 //dorme 1 seg aguardando processamento
-                System.Threading.Thread.Sleep(1000);
+                Thread.Sleep(1000);
+
+                //Cola em uma string para limpeza de lixo da tela Plenus
+                dados = Clipboard.GetText();
+                dados = conversor.processar(dados);
+                Clipboard.SetText(dados);
 
                 return (true, null);
             }
@@ -177,6 +193,7 @@ namespace BibliotecaPadrao
         // usa variáveis: global.dirtrabalho
         private Funcao _funcaoSalvarTela = (vars, args, opcoes) =>
         {
+            IConversor conversor;
             IEnumerator<string> lista;
             bool extok = false;
             string[] extaceitaveis = { "pdf", "txt" };
@@ -189,6 +206,14 @@ namespace BibliotecaPadrao
 
             if (args.Cont < 2)
                 return (false, "A operação SalvarTela esperava 2 argumentos, mas eles não foram encontrados.");
+            try
+            {
+                conversor = new PlenusConversor();
+            }
+            catch
+            {
+                return (false, "Não foi possível carregar os filtros de conversão do Plenus.");
+            }
             lista = args.GetEnumerator();
             lista.MoveNext();
             ext = lista.Current;
@@ -220,7 +245,10 @@ namespace BibliotecaPadrao
                 //obtém o texto da área de transferência
                 texto = Clipboard.GetText();
 
-                //salva em um arquivo PDF
+                //Limpeza de lixo da tela Plenus
+                texto = conversor.processar(texto);
+
+                //salva em um arquivo PDF ou TXT
                 try
                 {
                     if (ext == "pdf")
@@ -249,9 +277,9 @@ namespace BibliotecaPadrao
             base.adicionarComandos();
             Funcoes.Add("AbrirPrograma", new FuncaoInfo(_funcaoAbrirPrograma, 0));
             Funcoes.Add("Autenticar", new FuncaoInfo(_funcaoAutenticar, 0));
-            Funcoes.Add("CopiarTela", new FuncaoInfo(_funcaoDigitar, 0));
+            Funcoes.Add("CopiarTela", new FuncaoInfo(_funcaoCopiarTela, 0));
             Funcoes.Add("Digitar", new FuncaoInfo(_funcaoDigitar, 1));
-            Funcoes.Add("EncerrarPrograma", new FuncaoInfo(_funcaoDigitar, 0));
+            Funcoes.Add("FecharPrograma", new FuncaoInfo(_funcaoEncerrarPrograma, 0));
             Funcoes.Add("SalvarTela", new FuncaoInfo(_funcaoSalvarTela, 2));
         }
 

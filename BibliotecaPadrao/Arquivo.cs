@@ -21,16 +21,27 @@ namespace BibliotecaPadrao
             return (true, "");
         };
 
-        private Funcao _funcaoMesclarArquivo = (vars, args, opcoes) =>
+        private Funcao _funcaoMesclarArquivosPDF = (vars, args, opcoes) =>
         {
-            IEnumerator<string> lista;
-            string nomearquivo;
+            List<string> arquivos;
+            string arquivosaida;
+            dynamic dados;
+            string dirtrabalho;
 
-            if (args.Cont < 1)
-                return (false, "A operação MesclarArquivo esperava 2 argumentos, mas eles não foram encontrados.");
-            lista = args.GetEnumerator();
-            lista.MoveNext();
-            nomearquivo = lista.Current;
+            if (args.Cont < 3)
+                return (false, "A operação MesclarArquivosPDF esperava 3 argumentos, mas eles não foram encontrados.");
+            dados = vars.obterVar("global.dirtrabalho");
+            if (dados != null)
+                dirtrabalho = dados;
+            else
+                dirtrabalho = "";
+            arquivos = new List<string>();
+            foreach (string item in args)
+                arquivos.Add(dirtrabalho + item);
+            arquivosaida = arquivos[arquivos.Count - 1];
+            arquivos.RemoveAt(arquivos.Count - 1);
+
+            PDF.mesclar(arquivos.ToArray(), arquivosaida);
 
             return (true, "");
         };
@@ -52,7 +63,13 @@ namespace BibliotecaPadrao
 
         public Arquivo() : base("Arquivo")
         {
+            
+        }
 
+        public override void adicionarComandos()
+        {
+            base.adicionarComandos();
+            Funcoes.Add("MesclarArquvosPDF", new FuncaoInfo(_funcaoMesclarArquivosPDF, 3));
         }
     }
 }

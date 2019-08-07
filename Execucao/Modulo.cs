@@ -55,7 +55,7 @@ namespace Execucao
             get; set;
         }
 
-        public Dictionary<string, FuncaoInfo> Funcoes { get; private set; }
+        public SortedDictionary<string, FuncaoInfo> Funcoes { get; private set; }
 
         public Dictionary<string, ConstanteInfo> ConstantesNecessarias { get; private set; }
 
@@ -72,6 +72,23 @@ namespace Execucao
             lista.MoveNext();
             intervalo = lista.Current;
             opcoes.Atraso = int.Parse(intervalo);
+
+            return (true, null);
+        };
+
+        // usa um argumento
+        // usa uma variável: Global.DirTrabalho
+        private Funcao _funcaoDefinirDirTrabalho = (vars, args, opcoes) =>
+        {
+            IEnumerator<string> lista;
+            string dir;
+
+            if (args.Cont < 1)
+                return (false, "A operação DefinirDiretorioTrabalho esperava 1 argumento, mas ele não foi encontrado.");
+            lista = args.GetEnumerator();
+            lista.MoveNext();
+            dir = lista.Current;
+            vars.adicionar("global.dirtrabalho", new Variavel(dir));
 
             return (true, null);
         };
@@ -100,10 +117,29 @@ namespace Execucao
             return (true, null);
         };
 
+        // sem argumentos
+        // usa uma variável: Global.DirTrabalho
+        private Funcao _funcaoLimparDirTrabalho = (vars, args, opcoes) =>
+        {
+            dynamic dados;
+
+            dados = vars.obterVar("global.dirtrabalho");
+            if (dados != null)
+            {
+                DirectoryInfo di = new DirectoryInfo(dados);
+                foreach (FileInfo arquivo in di.EnumerateFiles())
+                    arquivo.Delete();
+                foreach (DirectoryInfo dir in di.EnumerateDirectories())
+                    dir.Delete(true);
+            }
+
+            return (true, null);
+        };
+
         public Modulo(string nome)
         {
             ConstantesNecessarias = new Dictionary<string, ConstanteInfo>();
-            Funcoes = new Dictionary<string, FuncaoInfo>();
+            Funcoes = new SortedDictionary<string, FuncaoInfo>();
             adicionarComandos();
             adicionarConstNecessarias();
             Nome = nome;
@@ -112,7 +148,9 @@ namespace Execucao
         public virtual void adicionarComandos()
         {
             Funcoes.Add("DefinirIntervaloExecucao", new FuncaoInfo(_funcaoDefinirIntervaloExecucao, 1));
+            Funcoes.Add("DefinirDiretorioTrabalho", new FuncaoInfo(_funcaoDefinirDirTrabalho, 1));
             Funcoes.Add("ExibirDiretorioTrabalho", new FuncaoInfo(_funcaoExibirDirTrabalho, 0));
+            Funcoes.Add("LimparDiretorioTrabalho", new FuncaoInfo(_funcaoLimparDirTrabalho, 0));
         }
 
         public virtual void adicionarConstNecessarias()
