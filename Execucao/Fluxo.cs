@@ -26,11 +26,6 @@ namespace Execucao
             }
         }
 
-        public int Atraso
-        {
-            get; set;
-        }
-
         public int Linha
         {
             get
@@ -56,7 +51,6 @@ namespace Execucao
         public Fluxo(int id)
         {
             _id = id;
-            Atraso = 0;
             _posicao = 0;
             _linha = 0;
             _comandoatual = null;
@@ -68,7 +62,7 @@ namespace Execucao
             bool resultado;
 
             Debug.WriteLine("Executar " + _comandoatual.ToString());
-            resultado = _comandoatual.executarAsync(VariaveisFluxo, Atraso).Result;
+            resultado = _comandoatual.executarAsync(VariaveisFluxo).Result;
             Debug.WriteLine("Comando executado.");
 
             return resultado;

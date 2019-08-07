@@ -123,6 +123,7 @@ namespace Modelagem
             t.Name = "Pandora_Execucao";
 
             central.Erros = _editor.Erros;
+            central.IntervaloExecucao = _app.Configuracoes.Intervalo;
             _depurador = new Depuracao(central);
             _depuracao = new DepuracaoView(_depurador);
             _editor.limparErros();
@@ -178,9 +179,7 @@ namespace Modelagem
                 {
                     Execucao.Entrada ent = new Execucao.Entrada();
                     foreach (DataColumn coluna in entradasVisao.Dados.Columns)
-                    {
                         ent.AdicionarVariavel(coluna.Caption, linha[coluna].ToString());
-                    }
                     if (!ent.TudoVazio)
                         _entradas.Adicionar(ent);
                 }              

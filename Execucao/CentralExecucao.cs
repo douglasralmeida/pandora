@@ -1,13 +1,21 @@
 ﻿using Base;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Execucao
 {
+    public class ExecucaoOpcoes
+    {
+        public int Atraso { get; set; }
+
+        public ExecucaoOpcoes()
+        {
+
+        }
+    }
+
     //
     // Resumo:
     //     Representa o método que manipulará o evento Execucao.CentralExecucao.ObjetoCarregarAntes,
@@ -75,6 +83,13 @@ namespace Execucao
 
         public Erros Erros { get; set; }
 
+        public int IntervaloExecucao
+        {
+            get => Opcoes.Atraso;
+
+            set => Opcoes.Atraso = value;
+        }
+
         public List<Modulo> ModulosUtilizados { get; private set; }
 
         public Objeto ObjetoCarregado { get; private set; }
@@ -82,6 +97,8 @@ namespace Execucao
         public event ObjetoCarregarAntesEventHandler ObjetoCarregarAntes;
 
         public event ObjetoCarregarDepoisEventHandler ObjetoCarregarDepois;
+
+        public ExecucaoOpcoes Opcoes { get; private set; }
 
         public int TotalExitos { get; private set; }
 
@@ -98,6 +115,7 @@ namespace Execucao
         public CentralExecucao()
         {
             ModulosUtilizados = new List<Modulo>();
+            Opcoes = new ExecucaoOpcoes();
             TotalExitos = 0;
             TotalFalhas = 0;
         }
@@ -217,7 +235,7 @@ namespace Execucao
             {
                 tarefa.Modulo.Funcoes.TryGetValue(op.Nome, out funcaoinfo);
                 funcao = funcaoinfo.funcao;
-                comando = new Comando(op.Nome, funcao);
+                comando = new Comando(op.Nome, funcao, Opcoes);
                 comando.Dados = _instancia.variaveis;
 
                 Debug.WriteLine(" Parametros antes: " + op.Parametros);

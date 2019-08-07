@@ -21,7 +21,5 @@ namespace BibliotecaPadrao
             document.Add(new Paragraph(texto));
             document.Close();
         }
-
-
     }
 }

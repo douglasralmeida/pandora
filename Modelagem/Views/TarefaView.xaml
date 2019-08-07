@@ -56,8 +56,8 @@
                 <ListView x:Name="listaOperacoes" ItemsSource="{Binding Operacoes}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn HeaderContainerStyle="{StaticResource ListViewStyle}" Header="Comando" Width="120" DisplayMemberBinding="{Binding Nome}" />
-                            <GridViewColumn HeaderContainerStyle="{StaticResource ListViewStyle}" Header="Parâmetros" Width="320" DisplayMemberBinding="{Binding Parametros}" />
+                            <GridViewColumn HeaderContainerStyle="{StaticResource ListViewStyle}" Header="Comando" Width="160" DisplayMemberBinding="{Binding Nome}" />
+                            <GridViewColumn HeaderContainerStyle="{StaticResource ListViewStyle}" Header="Parâmetros" Width="400" DisplayMemberBinding="{Binding Parametros}" />
                         </GridView>
                     </ListView.View>
                     <ListView.Resources>

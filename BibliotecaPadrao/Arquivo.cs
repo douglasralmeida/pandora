@@ -7,7 +7,7 @@ namespace BibliotecaPadrao
 {
     public class Arquivo : Modulo
     {
-        private Funcao _funcaoAbrirArquivo = (vars, args) =>
+        private Funcao _funcaoAbrirArquivo = (vars, args, opcoes) =>
         {
             IEnumerator<string> lista;
             string nomearquivo;
@@ -21,7 +21,7 @@ namespace BibliotecaPadrao
             return (true, "");
         };
 
-        private Funcao _funcaoMesclarArquivo = (vars, args) =>
+        private Funcao _funcaoMesclarArquivo = (vars, args, opcoes) =>
         {
             IEnumerator<string> lista;
             string nomearquivo;
@@ -35,7 +35,7 @@ namespace BibliotecaPadrao
             return (true, "");
         };
 
-        private Funcao _funcaoSalvarArquivo = (vars, args) =>
+        private Funcao _funcaoSalvarArquivo = (vars, args, opcoes) =>
         {
             IEnumerator<string> lista;
             string nomearquivo;

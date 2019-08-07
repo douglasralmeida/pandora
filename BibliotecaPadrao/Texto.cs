@@ -12,7 +12,7 @@ namespace BibliotecaPadrao
         // sem argumentos
         // sem uso de variáveis
         // gera uma variável: Texto.Variavel
-        private Funcao _funcaoColar = (vars, args) =>
+        private Funcao _funcaoColar = (vars, args, opcoes) =>
         {
             string dados = "";
 
@@ -24,7 +24,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // usa uma variável: Texto.Variavel
-        private Funcao _funcaoCopiar = (vars, args) =>
+        private Funcao _funcaoCopiar = (vars, args, opcoes) =>
         {
             dynamic dados;
 
@@ -40,7 +40,7 @@ namespace BibliotecaPadrao
         // usa um argumentos texto
         // sem uso de variáveis
         // gera uma variável: Texto.Variavel
-        private Funcao _funcaoDefinir = (vars, args) =>
+        private Funcao _funcaoDefinir = (vars, args, opcoes) =>
         {
             string texto = "";
             IEnumerator<string> lista;
@@ -57,7 +57,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // usa uma variável: Texto.Variavel
-        private Funcao _funcaoExibir = (vars, args) =>
+        private Funcao _funcaoExibir = (vars, args, opcoes) =>
         {
             dynamic dados;
 
@@ -72,7 +72,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // usa uma variável: Texto.Variavel
-        private Funcao _funcaoLimpar = (vars, args) =>
+        private Funcao _funcaoLimpar = (vars, args, opcoes) =>
         {
             vars.adicionar("texto.variavel", new Variavel(""));
             return (true, null);
@@ -80,7 +80,7 @@ namespace BibliotecaPadrao
 
         // dois argumentos: tipoextensao, nomearquivo
         // usa variáveis: global.dirtrabalho, texto.variavel
-        private Funcao _funcaoSalvar = (vars, args) =>
+        private Funcao _funcaoSalvar = (vars, args, opcoes) =>
         {
             IEnumerator<string> lista;
             bool extok = false;

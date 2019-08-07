@@ -11,7 +11,7 @@ namespace BibliotecaPadrao
 {
     public class Plenus : Modulo
     {
-        private Funcao _funcaoAbrirPrograma = (vars, args) =>
+        private Funcao _funcaoAbrirPrograma = (vars, args, opcoes) =>
         {
             IntPtr handle;
             int pid;
@@ -52,7 +52,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // usa variáveis: PLENUS_USUARIO, PLENUS_MAT, PLENUS_SENHA, plenus.handle
-        private Funcao _funcaoAutenticar = (vars, args) =>
+        private Funcao _funcaoAutenticar = (vars, args, opcoes) =>
         {
             StringBuilder builder = new StringBuilder();
             dynamic saida;
@@ -102,7 +102,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // não usa variáveis
-        private Funcao _funcaoCopiarTela = (vars, args) =>
+        private Funcao _funcaoCopiarTela = (vars, args, opcoes) =>
         {
             int resultado;
             dynamic handle;
@@ -131,7 +131,7 @@ namespace BibliotecaPadrao
 
         // arg1 = texto a digitar na tela
         // usa a variável plenus.handle
-        private Funcao _funcaoDigitar = (vars, args) =>
+        private Funcao _funcaoDigitar = (vars, args, opcoes) =>
         {
             IEnumerator<string> lista;
             string texto;
@@ -156,7 +156,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // usa a constante plenus.pid
-        private Funcao _funcaoEncerrarPrograma = (vars, args) =>
+        private Funcao _funcaoEncerrarPrograma = (vars, args, opcoes) =>
         {
             dynamic pid;
 
@@ -175,7 +175,7 @@ namespace BibliotecaPadrao
 
         // dois argumentos: tipoextensao, nomearquivo
         // usa variáveis: global.dirtrabalho
-        private Funcao _funcaoSalvarTela = (vars, args) =>
+        private Funcao _funcaoSalvarTela = (vars, args, opcoes) =>
         {
             IEnumerator<string> lista;
             bool extok = false;

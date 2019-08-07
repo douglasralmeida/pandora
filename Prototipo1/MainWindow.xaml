@@ -15,7 +15,7 @@
         <Button Content="Salvar tela" HorizontalAlignment="Left" Height="34" Margin="10,327,0,0" VerticalAlignment="Top" Width="83" Click="Button_Click_1"/>
         <Button Content="Carregar tela salva" HorizontalAlignment="Left" Height="34" Margin="3,327,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_2" RenderTransformOrigin="-0.414,0.706" Grid.Column="1"/>
         <Button Content="Filtrar caracteres" HorizontalAlignment="Left" Height="34" Margin="136,327,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_3" Grid.Column="1"/>
-        <TextBox x:Name="textoExibir" Height="312" Margin="10,10,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontFamily="Consolas" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="textoExibir" Height="312" Margin="10,10,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontFamily="Consolas" Grid.ColumnSpan="2" AcceptsReturn="True"/>
 
     </Grid>
 </Window>

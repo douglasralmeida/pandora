@@ -1,12 +1,8 @@
-﻿using Base;
-using Modelagem;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Execucao
 {
@@ -77,7 +73,7 @@ namespace Execucao
     /* bool -> se funcao executou corretamente
      * string -> parametros da funcao
      */
-    public delegate (bool, string) Funcao(Variaveis variaveis, Parametros parametros);
+    public delegate (bool, string) Funcao(Variaveis variaveis, Parametros parametros, ExecucaoOpcoes opcoes);
 
     public class Comando
     {
@@ -92,40 +88,34 @@ namespace Execucao
             get; set;
         }
 
+        private ExecucaoOpcoes Opcoes { get; }
+
         public Parametros ListaParametros { get; }
 
         public int ParamObrigatorios => ListaParametros.ObrigatoriosCont;
 
         public string Retorno { get; private set; }
 
-        public Comando(string nome, Funcao funcao)
+        public Comando(string nome, Funcao funcao, ExecucaoOpcoes opcoes)
         {
-            App app = (Application.Current as App);
-            Config config = app.Configuracoes;
-
             Nome = nome;
             Dados = null;
             _funcao = funcao;
-            Espera = config.Intervalo;
+            Opcoes = opcoes;
             ListaParametros = new Parametros();
             Retorno = null;
         }
 
-        public async Task<bool> executarAsync(Variaveis variaveis, int atraso)
+        public async Task<bool> executarAsync(Variaveis variaveis)
         {
-            int espera;
             bool executou;
 
-            if (atraso > 0)
-                espera = atraso;
-            else
-                espera = Espera;
-
             //constantes = variáveis globais e carteira
-            //Parametros = argumentos da execução
-            (executou, Retorno) = _funcao(variaveis, ListaParametros);
-            if (espera > 0)
-                await Task.Delay(espera);
+            //parametros = argumentos da execução
+            //opcoes = opcoes da central de execução
+            (executou, Retorno) = _funcao(variaveis, ListaParametros, Opcoes);
+            if (Opcoes.Atraso > 0)
+                await Task.Delay(Opcoes.Atraso);
 
             return executou;
         }

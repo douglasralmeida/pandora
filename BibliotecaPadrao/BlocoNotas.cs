@@ -11,7 +11,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // sem uso de constantes
-        private Funcao _funcaoAbrirPrograma = (vars, args) =>
+        private Funcao _funcaoAbrirPrograma = (vars, args, opcoes) =>
         {
             IntPtr handle;
             int pid;
@@ -35,7 +35,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // sem uso de variáveis
-        private Funcao _funcaoColar = (vars, args) =>
+        private Funcao _funcaoColar = (vars, args, opcoes) =>
         {
             dynamic handle;
             string texto = "^V";
@@ -54,7 +54,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // sem uso de variáveis
-        private Funcao _funcaoCopiar = (vars, args) =>
+        private Funcao _funcaoCopiar = (vars, args, opcoes) =>
         {
             dynamic handle;
             string texto = "^A^C";
@@ -73,7 +73,7 @@ namespace BibliotecaPadrao
 
         // arg1 = texto a digitar na tela
         // usa a constante bloconotas.handle
-        private Funcao _funcaoDigitar = (vars, args) =>
+        private Funcao _funcaoDigitar = (vars, args, opcoes) =>
         {
             IEnumerator<string> lista;
             string texto;
@@ -98,7 +98,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // usa a constante bloconotas.pid
-        private Funcao _funcaoEncerrarPrograma = (vars, args) =>
+        private Funcao _funcaoEncerrarPrograma = (vars, args, opcoes) =>
         {
             dynamic pid;
 
@@ -117,7 +117,7 @@ namespace BibliotecaPadrao
 
         // sem argumentos
         // sem uso de variáveis
-        private Funcao _funcaoLimpar = (vars, args) =>
+        private Funcao _funcaoLimpar = (vars, args, opcoes) =>
         {
             dynamic handle;
             string texto = "^A{Del}";

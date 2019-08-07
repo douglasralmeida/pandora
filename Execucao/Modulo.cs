@@ -59,9 +59,26 @@ namespace Execucao
 
         public Dictionary<string, ConstanteInfo> ConstantesNecessarias { get; private set; }
 
+        // usa um argumento
+        // não usa variáveis
+        private Funcao _funcaoDefinirIntervaloExecucao = (vars, args, opcoes) =>
+        {
+            IEnumerator<string> lista;
+            string intervalo;
+
+            if (args.Cont < 1)
+                return (false, "A operação DefinirIntervaloExecucao esperava 1 argumento, mas ele não foi encontrado.");
+            lista = args.GetEnumerator();
+            lista.MoveNext();
+            intervalo = lista.Current;
+            opcoes.Atraso = int.Parse(intervalo);
+
+            return (true, null);
+        };
+
         // sem argumentos
         // usa uma variável: Global.DirTrabalho
-        private Funcao _funcaoExibirDirTrabalho = (vars, args) =>
+        private Funcao _funcaoExibirDirTrabalho = (vars, args, opcoes) =>
         {
             dynamic dados;
 
@@ -94,6 +111,7 @@ namespace Execucao
 
         public virtual void adicionarComandos()
         {
+            Funcoes.Add("DefinirIntervaloExecucao", new FuncaoInfo(_funcaoDefinirIntervaloExecucao, 1));
             Funcoes.Add("ExibirDiretorioTrabalho", new FuncaoInfo(_funcaoExibirDirTrabalho, 0));
         }
 
