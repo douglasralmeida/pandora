@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Execucao
 {
@@ -33,7 +28,6 @@ namespace Execucao
         }
     }
 
-
     public struct FuncaoInfo {
         public Funcao funcao;
         public int numArgumentos;
@@ -50,15 +44,40 @@ namespace Execucao
         [DllImport("user32.dll")]
         protected static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        public string Nome
-        {
-            get; set;
-        }
+        public string Nome { get; set; }
 
         public SortedDictionary<string, FuncaoInfo> Funcoes { get; private set; }
 
         public Dictionary<string, ConstanteInfo> ConstantesNecessarias { get; private set; }
 
+        //usa dois argumentos
+        //usa variáveis
+        private Funcao _funcaoAdicionarNaLista = (vars, args, opcoes) =>
+        {
+            dynamic dados;
+            List<string> lista;
+            string nomevar;
+            string valoratual;
+
+            if (args.Cont < 2)
+                return (false, "A operação AdicionarNaLista esperava 2 argumentos, mas eles não foram encontrados.");
+            lista = new List<string>();
+            foreach (string s in args)
+                    lista.Add("\"" + s + "\"");
+            nomevar = lista[0].Remove(0, 1);
+            nomevar = nomevar.Remove(nomevar.Length - 1);
+            lista.RemoveAt(0);
+            dados = vars.obterVar(nomevar, true);
+            if (dados == null)
+                dados = "";
+            valoratual = dados;
+            foreach (string s in lista)
+                valoratual += ' ' + s;
+            vars.adicionar(nomevar, true, new Variavel(valoratual));
+
+            return (true, null);
+        };
+        
         // usa um argumento
         // não usa variáveis
         private Funcao _funcaoDefinirIntervaloExecucao = (vars, args, opcoes) =>
@@ -88,7 +107,7 @@ namespace Execucao
             lista = args.GetEnumerator();
             lista.MoveNext();
             dir = lista.Current;
-            vars.adicionar("global.dirtrabalho", new Variavel(dir));
+            vars.adicionar("global.dirtrabalho", false, new Variavel(dir));
 
             return (true, null);
         };
@@ -99,7 +118,7 @@ namespace Execucao
         {
             dynamic dados;
 
-            dados = vars.obterVar("global.dirtrabalho");
+            dados = vars.obterVar("global.dirtrabalho", false);
             if (dados != null)
             {
                 ProcessStartInfo si = new ProcessStartInfo(dados);
@@ -123,7 +142,7 @@ namespace Execucao
         {
             dynamic dados;
 
-            dados = vars.obterVar("global.dirtrabalho");
+            dados = vars.obterVar("global.dirtrabalho", false);
             if (dados != null)
             {
                 DirectoryInfo di = new DirectoryInfo(dados);
@@ -147,6 +166,7 @@ namespace Execucao
 
         public virtual void adicionarComandos()
         {
+            Funcoes.Add("AdicionarNaLista", new FuncaoInfo(_funcaoAdicionarNaLista, 2));
             Funcoes.Add("DefinirIntervaloExecucao", new FuncaoInfo(_funcaoDefinirIntervaloExecucao, 1));
             Funcoes.Add("DefinirDiretorioTrabalho", new FuncaoInfo(_funcaoDefinirDirTrabalho, 1));
             Funcoes.Add("ExibirDiretorioTrabalho", new FuncaoInfo(_funcaoExibirDirTrabalho, 0));

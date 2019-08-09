@@ -21,17 +21,17 @@ namespace BibliotecaPadrao
             string nomeexe;
             string nomeconfig;
 
-            saida = vars.obterVar("PLENUS_EXE");
+            saida = vars.obterVar("PLENUS_EXE", false);
             if (saida != null)
                 nomeexe = saida;
             else
                 return (false, "Uma variável global era esperada, mas não foi encontrada.");
-            saida = vars.obterVar("PLENUS_CONFIG");
+            saida = vars.obterVar("PLENUS_CONFIG", false);
             if (saida != null)
                 nomeconfig = saida;
             else
                 return (false, "Uma variável global era esperada, mas não foi encontrada.");
-            saida = vars.obterVar("PLENUS_LOCAL");
+            saida = vars.obterVar("PLENUS_LOCAL", false);
             if (saida != null)
                 localarquivos = saida;
             else
@@ -41,8 +41,8 @@ namespace BibliotecaPadrao
             (handle, pid) = Auxiliar.executarPrograma(nomeexe, nomeconfig, localarquivos, 3000);
             if (handle != IntPtr.Zero)
             {
-                vars.adicionar("plenus.handle", new Variavel(handle));
-                vars.adicionar("plenus.pid", new Variavel(pid));
+                vars.adicionar("plenus.handle", false, new Variavel(handle));
+                vars.adicionar("plenus.pid", false, new Variavel(pid));
                 return (true, null);
             }
             else
@@ -62,22 +62,22 @@ namespace BibliotecaPadrao
             string senha = "";
             dynamic handle;
 
-            saida = vars.obterVar("PLENUS_USUARIO");
+            saida = vars.obterVar("PLENUS_USUARIO", false);
             if (saida != null)
                 usuario = saida;
             else
                 return (false, "A variável global 'PLENUS_USUARIO' era esperada, mas não foi encontrada.");
-            saida = vars.obterVar("PLENUS_MAT");
+            saida = vars.obterVar("PLENUS_MAT", false);
             if (saida != null)
                 matricula = saida;
             else
                 return (false, "A variável global 'PLENUS_MAT' era esperada, mas não foi encontrada.");
-            saida = vars.obterVar("PLENUS_SENHA");
+            saida = vars.obterVar("PLENUS_SENHA", false);
             if (saida != null)
                 senha = saida;
             else
                 return (false, "A variável global 'PLENUS_SENHA' era esperada, mas não foi encontrada.");
-            handle = vars.obterVar("plenus.handle");
+            handle = vars.obterVar("plenus.handle", false);
             if (handle != null)
             {
                 IntPtr p = handle;
@@ -118,7 +118,7 @@ namespace BibliotecaPadrao
             {
                 return (false, "Não foi possível carregar os filtros de conversão do Plenus.");
             }
-            handle = vars.obterVar("plenus.handle");
+            handle = vars.obterVar("plenus.handle", false);
             if (handle != null)
             {
                 //clicar em Editar->Sel. Tudo
@@ -158,7 +158,7 @@ namespace BibliotecaPadrao
             lista = args.GetEnumerator();
             lista.MoveNext();
             texto = lista.Current;
-            handle = vars.obterVar("plenus.handle");
+            handle = vars.obterVar("plenus.handle", false);
             if (handle != null)
             {
                 IntPtr p = handle;
@@ -176,7 +176,7 @@ namespace BibliotecaPadrao
         {
             dynamic pid;
 
-            pid = vars.obterVar("plenus.pid");
+            pid = vars.obterVar("plenus.pid", false);
             if (pid != null)
             {
                 int id = pid;
@@ -223,10 +223,10 @@ namespace BibliotecaPadrao
                 return (false, "O primeiro parâmetro da operação SalvarTela está incorreto. Era esperado: pdf ou txt.");
             lista.MoveNext();
             nomearquivo = lista.Current;
-            dirtrabalho = vars.obterVar("global.dirtrabalho");
+            dirtrabalho = vars.obterVar("global.dirtrabalho", false);
             if (dirtrabalho == null)
                 return (false, "O diretório de trabalho do Pandora não foi configurado.");
-            handle = vars.obterVar("plenus.handle");
+            handle = vars.obterVar("plenus.handle", false);
             if (handle != null)
             {
                 //clicar em Editar->Sel. Tudo

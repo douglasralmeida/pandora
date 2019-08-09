@@ -17,7 +17,7 @@ namespace BibliotecaPadrao
             string dados = "";
 
             dados = Clipboard.GetText();
-            vars.adicionar("texto.variavel", new Variavel(dados));
+            vars.adicionar("texto.variavel", false, new Variavel(dados));
 
             return (true, null);
         };
@@ -28,7 +28,7 @@ namespace BibliotecaPadrao
         {
             dynamic dados;
 
-            dados = vars.obterVar("texto.variavel");
+            dados = vars.obterVar("texto.variavel", false);
             if (dados != null)
             {
                 Clipboard.SetText(dados);
@@ -50,7 +50,7 @@ namespace BibliotecaPadrao
             lista = args.GetEnumerator();
             lista.MoveNext();
             texto = lista.Current;
-            vars.adicionar("texto.variavel", new Variavel(texto));
+            vars.adicionar("texto.variavel", false, new Variavel(texto));
 
             return (true, null);
         };
@@ -61,7 +61,7 @@ namespace BibliotecaPadrao
         {
             dynamic dados;
 
-            dados = vars.obterVar("texto.variavel");
+            dados = vars.obterVar("texto.variavel", false);
             if (dados != null)
             {
                 MessageBox.Show(dados);
@@ -74,7 +74,7 @@ namespace BibliotecaPadrao
         // usa uma variável: Texto.Variavel
         private Funcao _funcaoLimpar = (vars, args, opcoes) =>
         {
-            vars.adicionar("texto.variavel", new Variavel(""));
+            vars.adicionar("texto.variavel", false, new Variavel(""));
             return (true, null);
         };
 
@@ -101,10 +101,10 @@ namespace BibliotecaPadrao
                 return (false, "O primeiro parâmetro da operação SalvarTela está incorreto. Era esperado: pdf ou txt.");
             lista.MoveNext();
             nomearquivo = lista.Current;
-            dirtrabalho = vars.obterVar("global.dirtrabalho");
+            dirtrabalho = vars.obterVar("global.dirtrabalho", false);
             if (dirtrabalho == null)
                 return (false, "O diretório de trabalho do Pandora não foi configurado.");
-            dados = vars.obterVar("texto.variavel");
+            dados = vars.obterVar("texto.variavel", false);
             //salva em um arquivo PDF
             if (dados != null)
             {

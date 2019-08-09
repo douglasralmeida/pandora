@@ -122,7 +122,7 @@ namespace Execucao
 
         public void adicionarVariaveis(string nome, Variavel var)
         {
-            _instancia.variaveis.adicionar(nome, var);
+            _instancia.variaveis.adicionar(nome, false, var);
         }
 
         public bool carregar(Objeto objeto)
@@ -184,7 +184,7 @@ namespace Execucao
                 {
                     if (c.Value.obrigatoria)
                     {
-                        if (!ListaVariaveis.contemVar(c.Key))
+                        if (!ListaVariaveis.contemVar(c.Key, false))
                         {
                             string tipo;
                             string[] nome = new string[1];
@@ -395,7 +395,7 @@ namespace Execucao
                 }
                 else if (t.Item2 == "VAR")
                 {
-                    valor = _instancia.variaveis.obterVar(t.Item3);
+                    valor = _instancia.variaveis.obterVar(t.Item3, false);
                     if (valor == null)
                         valor = "";
                 }

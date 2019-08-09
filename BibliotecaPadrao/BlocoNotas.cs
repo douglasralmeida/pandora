@@ -23,8 +23,8 @@ namespace BibliotecaPadrao
             (handle, pid) = Auxiliar.executarPrograma(localExe, "", "", 3000);
             if (handle != IntPtr.Zero)
             {
-                vars.adicionar("bloconotas.handle", new Variavel(handle));
-                vars.adicionar("bloconotas.pid", new Variavel(pid));
+                vars.adicionar("bloconotas.handle", false, new Variavel(handle));
+                vars.adicionar("bloconotas.pid", false, new Variavel(pid));
                 return (true, null);
             }
             else
@@ -40,7 +40,7 @@ namespace BibliotecaPadrao
             dynamic handle;
             string texto = "^V";
 
-            handle = vars.obterVar("bloconotas.handle");
+            handle = vars.obterVar("bloconotas.handle", false);
             if (handle != null)
             {
                 IntPtr p = handle;
@@ -59,7 +59,7 @@ namespace BibliotecaPadrao
             dynamic handle;
             string texto = "^A^C";
 
-            handle = vars.obterVar("bloconotas.handle");
+            handle = vars.obterVar("bloconotas.handle",false);
             if (handle != null)
             {
                 IntPtr p = handle;
@@ -84,7 +84,7 @@ namespace BibliotecaPadrao
                 texto = lista.Current;
             else
                 texto = "";
-            handle = vars.obterVar("bloconotas.handle");
+            handle = vars.obterVar("bloconotas.handle", false);
             if (handle != null)
             {
                 IntPtr p = handle;
@@ -102,7 +102,7 @@ namespace BibliotecaPadrao
         {
             dynamic pid;
 
-            pid = vars.obterVar("bloconotas.pid");
+            pid = vars.obterVar("bloconotas.pid", false);
             if (pid != null)
             {
                 int id = pid;
@@ -122,7 +122,7 @@ namespace BibliotecaPadrao
             dynamic handle;
             string texto = "^A{Del}";
 
-            handle = vars.obterVar("bloconotas.handle");
+            handle = vars.obterVar("bloconotas.handle", false);
             if (handle != null)
             {
                 IntPtr p = handle;
