@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading;
+using System.Windows;
 
 namespace Execucao
 {
@@ -46,6 +48,7 @@ namespace Execucao
             new Erro("CT0001", "Nenhuma carteira foi aberta.", ErroTipo.Erro, new string[0]),
             new Erro("CT0002", "O item da carteira '{0}' é de preenchimento obrigatório, mas não foi informado.", ErroTipo.Erro, new string[0]),
             new Erro("ET0001", "Era esperado um valor de entrada chamado '{0}', mas não foi informado.", ErroTipo.Aviso, new string[0]),
+            new Erro("EX0001", "Ocorreu um erro durante a {0}, assim ela foi abortada.", ErroTipo.Erro, new string[0]),
             new Erro("VG0001", "A variável global '{0}' é obrigatória, mas não foi informada.", ErroTipo.Erro, new string[0]),
             new Erro("SX0001", "Foi encontrado um ciclo nos subprocessos na modelagem.", ErroTipo.Erro, new string[0])
         };
@@ -91,7 +94,12 @@ namespace Execucao
 
         public void Adicionar(string codigo, string[] valores)
         {
-            Lista.Add(ErroCatalogo.obter(codigo, valores));
+            //ObservableCollection foi criada na UIThread, assim precisa ser
+            //atualizada de forma assincrona.
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                Lista.Add(ErroCatalogo.obter(codigo, valores));
+            }));
         }
     }
 }

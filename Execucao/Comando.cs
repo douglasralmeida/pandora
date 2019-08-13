@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Base;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -68,6 +70,42 @@ namespace Execucao
         {
             lista.Add(variavel);
         }
+
+        internal bool processarVariaveis(Variaveis variaveis)
+        {
+            StringBuilder builder = new StringBuilder();
+            Tuple<string, string, string>[] tuplas;
+            dynamic valor;
+
+            //Pega cada item dos parâmetros da função...
+            foreach (Variavel v in lista)
+            {
+                builder.Clear();
+                tuplas = Parser.analisar(v.Valor, true);
+                //...e separa cada variável no parâmetro...
+                //...para cada variáveo no parâmetro...
+                foreach (Tuple<string, string, string> t in tuplas)
+                {
+                    valor = v.Valor;
+                    if (t.Item2 == "VAR")
+                    {
+                        //...procura na lista de variáveis da execução...
+                        valor = variaveis.obterVar(t.Item3, false);
+                        if (valor == null)
+                            return false;
+                        //...e substitui o nome da variável pelo seu valor.
+                        builder.Append(v.Valor.Replace(t.Item1, valor));
+                        builder.Append(' ');
+                    }
+                }
+                // remove o espaço extra
+                if (builder.Length > 0)
+                    builder.Remove(builder.Length - 1, 1);
+                v.Valor = builder.ToString();
+            }
+
+            return true;
+        }
     }
 
     /* bool -> se funcao executou corretamente
@@ -113,6 +151,8 @@ namespace Execucao
             //constantes = variáveis globais e carteira
             //parametros = argumentos da execução
             //opcoes = opcoes da central de execução
+            if (!ListaParametros.processarVariaveis(variaveis))
+                return false;
             (executou, Retorno) = _funcao(variaveis, ListaParametros, Opcoes);
             if (Opcoes.Atraso > 0)
                 await Task.Delay(Opcoes.Atraso);

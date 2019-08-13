@@ -8,53 +8,23 @@ namespace Execucao
 {
     class Fluxo
     {
-        private int _id;
-
         private Comando _comandoatual;
 
-        private ObservableCollection<Comando> _instrucoes;
+        public int Id { get; private set; }
 
-        private int _posicao;
-
-        private int _linha;
-
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
-        }
-
-        public int Linha
-        {
-            get
-            {
-                return _linha;
-            }
-        }
-
-        public ObservableCollection<Comando> Instrucoes
-        {
-            get
-            {
-                return _instrucoes;
-            }
-        }
+        public ObservableCollection<Comando> Instrucoes { get; private set; }
 
         //variáveis globais e carteira
-        public Variaveis VariaveisFluxo
-        {
-            get; set;
-        }
+        public Variaveis VariaveisFluxo { get; set;}
+
+        public int Posicao { get; private set; }
 
         public Fluxo(int id)
         {
-            _id = id;
-            _posicao = 0;
-            _linha = 0;
+            Id = id;
+            Posicao = 0;
             _comandoatual = null;
-            _instrucoes = new ObservableCollection<Comando>();
+            Instrucoes = new ObservableCollection<Comando>();
         }
 
         private bool executarProximaInstrucao()
@@ -68,23 +38,22 @@ namespace Execucao
             return resultado;
         }
 
-        public void processar()
+        public bool processar()
         {
-            foreach (Comando c in _instrucoes)
+            foreach (Comando c in Instrucoes)
             {
                 _comandoatual = c;
                 if (!executarProximaInstrucao())
-                {
-                    break;
-                }
-                _posicao++;
-                _linha++;
+                    return false;
+                Posicao++;
             }
+
+            return true;
         }
 
         public void adicionarComando(Comando comando)
         {
-            _instrucoes.Add(comando);
+            Instrucoes.Add(comando);
         }
     }
 }

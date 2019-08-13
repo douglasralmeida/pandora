@@ -6,6 +6,13 @@ using System.Text;
 
 namespace Execucao
 {
+    public enum ExecucacaoComando
+    {
+        ExecucaComandoContinuar = 0,
+        ExecucaComandoParar = 1,
+        ExecucaComandoPausar = 2
+    }
+
     public class ExecucaoOpcoes
     {
         public int Atraso { get; set; }
@@ -393,12 +400,12 @@ namespace Execucao
                         i++;
                     }
                 }
-                else if (t.Item2 == "VAR")
+                /*else if (t.Item2 == "VAR")
                 {
                     valor = _instancia.variaveis.obterVar(t.Item3, false);
                     if (valor == null)
                         valor = "";
-                }
+                }*/
                 builder.Append(param.Replace(t.Item1, valor));
                 builder.Append(' ');
             }
@@ -432,10 +439,20 @@ namespace Execucao
 
         public void processar()
         {
+            string[] param;
+
             // primeiro, executa os comandos da fase pré-execução
             Debug.WriteLine("Fase Pré-execução");
             Debug.WriteLine("=================");
-            _instancia.preexecucao.processar();
+            if (!_instancia.preexecucao.processar())
+            {
+                param = new string[2];
+                param[0] = "pré-execução";
+                param[1] = "";
+                Erros.Adicionar("EX0001", param);
+
+                return;
+            }
             TotalExitos++;
 
             // segundo, executa os comandos da fase principal
@@ -445,14 +462,30 @@ namespace Execucao
             foreach (Fluxo f in _instancia.execucao)
             {
                 f.VariaveisFluxo = _instancia.preexecucao.VariaveisFluxo.gerarCopia();
-                f.processar();
+                if (!f.processar())
+                {
+                    param = new string[2];
+                    param[0] = "execução nº " + TotalExitos.ToString();
+                    param[1] = "";
+                    Erros.Adicionar("EX0001", param);
+
+                    return;
+                }
                 TotalExitos++;
             }
 
             // terceiro, executa os comandos da fase pos-execução
             Debug.WriteLine("Fase Pós-execução");
             Debug.WriteLine("=================");
-            _instancia.posexecucao.processar();
+            if (!_instancia.posexecucao.processar())
+            {
+                param = new string[2];
+                param[0] = "pós-execução";
+                param[1] = "";
+                Erros.Adicionar("EX0001", param);
+
+                return;
+            }
             TotalExitos++;
         }
     }
