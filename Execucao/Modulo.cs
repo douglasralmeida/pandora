@@ -175,7 +175,7 @@ namespace Execucao
 
         public virtual void adicionarConstNecessarias()
         {
-
+            ConstantesNecessarias.Add("USUARIO_MAT", new ConstanteInfo("Matrícula para acesso ao sistemas do INSS", true, false, true));
         }
 
         public override string ToString()

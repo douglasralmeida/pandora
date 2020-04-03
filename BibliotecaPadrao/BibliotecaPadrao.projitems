@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)BlocoNotas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PDF.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plenus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Prisma.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Texto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TXT.cs" />
   </ItemGroup>

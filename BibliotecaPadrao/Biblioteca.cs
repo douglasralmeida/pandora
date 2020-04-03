@@ -43,7 +43,8 @@ namespace BibliotecaPadrao
             {
                 foreach(string s in m.ConstantesNecessarias.Keys)
                 {
-                    resultado.Add(s);
+                    if (!resultado.Contains(s))
+                        resultado.Add(s);
                 }
             }
 

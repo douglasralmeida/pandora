@@ -1,6 +1,7 @@
 ﻿using Base;
 using Conversores;
 using Execucao;
+using Modelagem;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +21,9 @@ namespace BibliotecaPadrao
             string localarquivos;
             string nomeexe;
             string nomeconfig;
+            string arquivoplenus = "pandoracv3.plc";
 
+            // Obter as variáveis globais
             saida = vars.obterVar("PLENUS_EXE", false);
             if (saida != null)
                 nomeexe = saida;
@@ -37,8 +40,19 @@ namespace BibliotecaPadrao
             else
                 return (false, "Uma variável global era esperada, mas não foi encontrada.");
 
-            //** Incluir uma configuração para este número
-            (handle, pid) = Auxiliar.executarPrograma(nomeexe, nomeconfig, localarquivos, 3000);
+            //Gera os arquivos de configuração do Plenus
+            try
+            {
+                string configdir = Directory.GetCurrentDirectory() + "\\config\\";
+                File.Copy(configdir + "cv3-par.config", localarquivos + arquivoplenus);
+            }
+            catch (IOException e)
+            {
+                return (false, "Ocorreu um erro ao copiar o arquivo de configuração do Plenus");
+            }
+
+            //Armazena o handle da janela e o pid para manipulações futuras
+            (handle, pid) = Auxiliar.executarPrograma(nomeexe, arquivoplenus, localarquivos, 3000);
             if (handle != IntPtr.Zero)
             {
                 vars.adicionar("plenus.handle", false, new Variavel(handle));
@@ -285,13 +299,14 @@ namespace BibliotecaPadrao
 
         public override void adicionarConstNecessarias()
         {
+            base.adicionarConstNecessarias();
+
             ConstantesNecessarias.Add("PLENUS_USUARIO", new ConstanteInfo("Usuário de acesso ao Plenus", true, false, true));
-            ConstantesNecessarias.Add("PLENUS_MAT", new ConstanteInfo("Matrícula para acesso ao Plenus", true, false, true));
             ConstantesNecessarias.Add("PLENUS_SENHA", new ConstanteInfo("Senha de acesso ao Plenus", true, true, true));
 
             ConstantesNecessarias.Add("PLENUS_EXE", new ConstanteInfo("Nome do arquivo executável do Plenus", false, true, true));
-            ConstantesNecessarias.Add("PLENUS_CONFIG", new ConstanteInfo("Nome do arquivo de configuração do Plenus", false, true, true));
-            ConstantesNecessarias.Add("PLENUS_LOCAL", new ConstanteInfo("Caminho dos arquivos do Plenus", false, true, true));
+            ConstantesNecessarias.Add("PLENUS_IP", new ConstanteInfo("IP do servidor CV3 para acesso via Plenus", false, true, true));
+            ConstantesNecessarias.Add("PLENUS_LOCAL", new ConstanteInfo("Diretório dos arquivos de configuração do Plenus", false, true, true));
         }
     }
 }
